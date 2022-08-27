@@ -10,7 +10,18 @@ export default function MetamaskConnect(props) {
         const accountOwner = await provider.send("eth_requestAccounts", []);
         props.initAccountOwner(accountOwner);
     };
-
+    //changes
+    const [owner, setowner] = useState(0);
+    const setAccountOwner = (address) => {
+        setowner(address);
+        localStorage.setItem("UserAddress", JSON.stringify(address));
+        console.log(address);
+    };
+    const wrapper = ()=>{
+        connect();
+        setAccountOwner();
+    }
+    //changes
     const connectButtonPage = (
         <Flex flexDirection="column">
             <Box
@@ -30,7 +41,7 @@ export default function MetamaskConnect(props) {
                     mb={8}
                 />
                 <Button
-                    onClick={connect}
+                    onClick={wrapper}
                     bg="#2F3C98"
                     colorScheme="facebook"
                     borderRadius={12}

@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const ManufacturerSchema = new Schema({
     userType: {
         type: String,
-        required: true,
     },
     phoneNumber: {
         type: String,

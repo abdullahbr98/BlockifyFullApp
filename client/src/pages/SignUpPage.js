@@ -29,40 +29,32 @@ function SignUpPage() {
     const [lname, setlname] = useState("");
     const [userType, setuserType] = useState("");
     const [accountAddress, setaccountAddress] = useState("");
-    const [buttonClick, setbuttonClick] = useState(false);
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         if (items) {
             setaccountAddress(items);
         }
-    }, [buttonClick]);
+    }, []);
     const userTypeHandler = (typeValue) => {
         console.log(typeValue);
         setuserType(typeValue);
     };
-    const user = {
-        userType: userType,
-        phoneNumber: phone,
-        firstName: fname,
-        lastName: lname,
-        username: username,
-        email: email,
-        password: password, //TODO make this bycrypt function
-        accountAddress: accountAddress[0],
-    };
 
     const signUpFunction = async () => {
-        console.log({ user });
+        // console.log({ user });
         const data = await axios.post(
             "http://localhost:8000/Manufacturer/signup",
-            { user }
+            { userType: userType,
+                phoneNumber: phone,
+                firstName: fname,
+                lastName: lname,
+                username: username,
+                email: email,
+                password: password, //TODO make this bycrypt function
+                accountAddress: accountAddress[0] }
         );
-        console.log(data);
         window.location.href = "http://localhost:3000/";
     };
-    // useEffect(() => {
-    //     signUpFunction();
-    // }, []);
     return (
         <>
             <Flex flexDirection={"row"} borderRadius={"12"}>

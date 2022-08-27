@@ -1,6 +1,6 @@
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import SignUpPage from "./pages/SignUpPage";
 import MetamaskConnect from "./pages/MetamaskConnect";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -11,6 +11,7 @@ function App() {
         localStorage.setItem("UserAddress", JSON.stringify(address));
         console.log(address);
     };
+    
     return (
         <>
             <Router>
