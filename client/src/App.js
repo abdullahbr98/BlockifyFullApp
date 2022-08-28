@@ -2,6 +2,7 @@ import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import { useState,useEffect } from "react";
 import SignUpPage from "./pages/SignUpPage";
+import SignInPage from "./pages/SignInPage";
 import MetamaskConnect from "./pages/MetamaskConnect";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {
@@ -29,6 +30,7 @@ function App() {
                         }
                     />
                     <Route path="/register" element={<SignUpPage />} />
+                    <Route path="/login" element={<SignInPage />} />
                 </Routes>
             </Router>
         </>
