@@ -106,7 +106,7 @@ export default function Navbar() {
                     flex={{ base: 1, md: 0 }}
                     justify={"flex-end"}
                     direction={"row"}
-                    spacing={6}
+                    spacing={2}
                 >
                     <Button
                         display={{ base: "none", md: "inline-flex" }}
@@ -119,6 +119,19 @@ export default function Navbar() {
                         }}
                     >
                         <a href="/register"> Sign Up</a>
+                    </Button>
+                    <Button
+                        display={{ base: "none", md: "inline-flex" }}
+                        fontSize={"sm"}
+                        fontWeight={600}
+                        variant="outline"
+                        color="green.400"
+                        borderColor="green.400"
+                        _hover={{
+                            bg: "green.100",
+                        }}
+                    >
+                        <a href="/login"> Log In</a>
                     </Button>
                 </Stack>
             </Flex>
