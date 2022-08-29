@@ -85,9 +85,11 @@ export default function Navbar({ guestAccess }) {
                         Blockify
                     </Text>
 
-                    <Flex display={{ base: "none", md: "flex" }} ml={10}>
+                    {guestAccess ? <Flex display={{ base: "none", md: "flex" }} ml={10}>
                         <DesktopNav />
-                    </Flex>
+                    </Flex> : <Flex display={{ base: "none", md: "flex" }} ml={10}>
+                        <Text fontWeight="normal" ms={12} fontSize="xl" color="black">Manufacturer Dashboard</Text>
+                    </Flex>}
                 </Flex>
                 <Text
                     fontWeight="bold"

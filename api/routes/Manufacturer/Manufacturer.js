@@ -134,6 +134,10 @@ router.post("/purchaseRequest", async (req, res) => {
     res.json("Request Sent !");
 });
 
+//TO DO create a GET request of fetching all authenticated sellers in the database
+
+//TO DO Products in Inventory GET request
+
 //new route
 //JWT EXPERIMENTATION
 router.post("/dashboard", auth, (req, res) => {
