@@ -26,7 +26,7 @@ import {
     ChevronRightIcon,
 } from "@chakra-ui/icons";
 
-export default function Navbar() {
+export default function Navbar({ guestAccess }) {
     const { isOpen, onToggle } = useDisclosure();
     const [accountAddress, setaccountAddress] = useState("");
     useEffect(() => {
@@ -102,38 +102,61 @@ export default function Navbar() {
                     userAddress: {accountAddress}
                 </Text>
 
-                <Stack
-                    flex={{ base: 1, md: 0 }}
-                    justify={"flex-end"}
-                    direction={"row"}
-                    spacing={2}
-                >
-                    <Button
-                        display={{ base: "none", md: "inline-flex" }}
-                        fontSize={"sm"}
-                        fontWeight={600}
-                        bg="blue.500"
-                        color="white"
-                        _hover={{
-                            bg: "pink.300",
-                        }}
+                {guestAccess ? (
+                    <Stack
+                        flex={{ base: 1, md: 0 }}
+                        justify={"flex-end"}
+                        direction={"row"}
+                        spacing={2}
                     >
-                        <a href="/register"> Sign Up</a>
-                    </Button>
-                    <Button
-                        display={{ base: "none", md: "inline-flex" }}
-                        fontSize={"sm"}
-                        fontWeight={600}
-                        variant="outline"
-                        color="green.400"
-                        borderColor="green.400"
-                        _hover={{
-                            bg: "green.100",
-                        }}
+                        <Button
+                            display={{ base: "none", md: "inline-flex" }}
+                            fontSize={"sm"}
+                            fontWeight={600}
+                            bg="blue.500"
+                            color="white"
+                            _hover={{
+                                bg: "pink.300",
+                            }}
+                        >
+                            <a href="/register"> Sign Up</a>
+                        </Button>
+                        <Button
+                            display={{ base: "none", md: "inline-flex" }}
+                            fontSize={"sm"}
+                            fontWeight={600}
+                            variant="outline"
+                            color="green.400"
+                            borderColor="green.400"
+                            _hover={{
+                                bg: "green.100",
+                            }}
+                        >
+                            <a href="/login"> Log In</a>
+                        </Button>
+                    </Stack>
+                ) : (
+                    <Stack
+                        flex={{ base: 1, md: 0 }}
+                        justify={"flex-end"}
+                        direction={"row"}
+                        spacing={2}
                     >
-                        <a href="/login"> Log In</a>
-                    </Button>
-                </Stack>
+                        <Button
+                            display={{ base: "none", md: "inline-flex" }}
+                            fontSize={"sm"}
+                            fontWeight={600}
+                            variant="outline"
+                            color="red.400"
+                            borderColor="red.400"
+                            _hover={{
+                                bg: "red.100",
+                            }}
+                        >
+                            <a href="/"> Log Out</a>
+                        </Button>
+                    </Stack>
+                )}
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
@@ -317,6 +340,7 @@ interface NavItem {
     children?: Array<NavItem>;
     href?: string;
 }
+
 
 const NAV_ITEMS: Array<NavItem> = [
     {

@@ -18,7 +18,34 @@ import logo from "../images/BlockifyLogo.png";
 import join from "../images/join.svg";
 function SignInPage() {
     const [show, setShow] = React.useState(false);
+    const [email, setemail] = useState("");
+    const [password, setpassword] = useState("");
     const handleClick = () => setShow(!show);
+    const [accountAddress, setaccountAddress] = useState("");
+    const [error, seterror] = useState(false);
+    useEffect(() => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        if (items) {
+            setaccountAddress(items);
+        }
+    }, []);
+    const handleSignIn = async ()=>{
+        try{const data = await axios.post(
+            "http://localhost:8000/Manufacturer/login", //TODO customize this to seller and buyer
+            { 
+                email: email,
+                password: password,
+                accountAddress: accountAddress[0] }
+        );
+
+        {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};
+        // console.log(data.data.userType);
+    }
+        catch(err){
+            seterror(true);
+        }
+        
+    }
     return (
         <>
             <Flex flexDirection={"row"} >
@@ -61,7 +88,10 @@ function SignInPage() {
                         <Input
                             focusBorderColor="blue.400"
                             bg="white"
-                            placeholder="Username"
+                            placeholder="Email"
+                            onChange={(e) => {
+                                setemail(e.target.value);
+                            }}
                         />
                     </Flex>
                     <Flex pt={5} px={20}>
@@ -71,6 +101,9 @@ function SignInPage() {
                                 pr="4.5rem"
                                 type={show ? "text" : "password"}
                                 placeholder="Enter password"
+                                onChange={(e) => {
+                                    setpassword(e.target.value);
+                                }}
                             />
                             <InputRightElement width="4.5rem">
                                 <Button
@@ -83,6 +116,7 @@ function SignInPage() {
                             </InputRightElement>
                         </InputGroup>
                     </Flex>
+                    {error ? <Flex px={20} py={5} justifyContent="center"> <Text color="red.300"> something went wrong try again later</Text></Flex> : " "}
                     <Flex justifyContent={"space-between"} px={20} py={5}>
                         <Link pt={2} ps={2} fontSize="sm" color="gray.500">Forgot Password</Link>
                         <Button
@@ -92,6 +126,7 @@ function SignInPage() {
                             h={"6vh"}
                             borderRadius={20}
                             fontSize="sm"
+                            onClick={handleSignIn}
                         >
                             Sign In 
                         </Button>
@@ -100,7 +135,7 @@ function SignInPage() {
                     <Divider color="pink"/>
                     </Box>
                     <Flex justifyContent={"space-between"} px={20} py={5}>
-                        <Link pt={2} ps={2} fontSize="sm" color="gray.500">Need an account?</Link>
+                        <Text pt={2} ps={2} fontSize="sm" color="gray.500">Need an account?</Text>
                         <Button
                             fontSize="sm"
                             variant={"outline"}
@@ -109,8 +144,11 @@ function SignInPage() {
                             w={"40%"}
                             h={"6vh"}
                             borderRadius={20}
+                            href="/register"
                         >
+                            <Link href="/register">
                             Get Started
+                            </Link>
                         </Button>
                     </Flex>
                 </Box>

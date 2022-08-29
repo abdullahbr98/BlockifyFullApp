@@ -4,11 +4,12 @@
 // Purchase Request
 
 var express = require("express");
+var jwt = require("jsonwebtoken");
 var ethers = require("ethers");
 var router = express.Router();
 var Manufacturer = require("../../models/Manufacturer");
 var PurchaseRequest = require("../../models/purchaseRequest");
-
+const auth = require("../../middleware/auth");
 // Importing ABI and BYTE CODE for Contract Deployment
 const {
     SELLER_AUTHENTICATION_ABI,
@@ -74,6 +75,16 @@ router.post("/signup", async (req, res) => {
         authContractAddress: authContract.address,
         productsContractAddress: productsContract.address,
     });
+    // Create token
+    const token = jwt.sign(
+        { user_id: manufacturer._id, email },
+        process.env.TOKEN_KEY,
+        {
+            expiresIn: "2h",
+        }
+    );
+    // save user token
+    manufacturer.token = token;
     await manufacturer.save();
 
     res.json("Sign up Successfull !");
@@ -89,12 +100,24 @@ router.post("/login", async (req, res) => {
         password: password,
         accountAddress: accountAddress,
     });
+
+    //jwt
+    const token = jwt.sign(
+        { user_id: result._id, email },
+        process.env.TOKEN_KEY,
+        {
+            expiresIn: "2h",
+        }
+    );
+    // save user token
+    result.token = token;
+    //jwt
     let response = "";
     result !== null
         ? (response = "Login Successful !")
         : (response = "Invalid Credentials");
 
-    res.json(response);
+    res.json(result);
 });
 
 // Purchase Request Route
@@ -109,6 +132,12 @@ router.post("/purchaseRequest", async (req, res) => {
     await purchaseRequest.save();
 
     res.json("Request Sent !");
+});
+
+//new route
+//JWT EXPERIMENTATION
+router.post("/dashboard", auth, (req, res) => {
+    res.status(200).send("Welcome 🙌 ");
 });
 
 module.exports = router;

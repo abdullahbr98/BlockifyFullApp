@@ -10,7 +10,7 @@ export default function LandingPage() {
     return (
       <>
             <Box className="App" ms={100} me={100} mt={25}>
-                <Navbar />
+                <Navbar guestAccess={true}/>
                 <Slogan />
                 <Section />
                 <Faqs/>

@@ -4,6 +4,8 @@ import { useState,useEffect } from "react";
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
 import MetamaskConnect from "./pages/MetamaskConnect";
+import ManufacturerHomeScreen from "./pages/ManufacturerHomeScreen";
+
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {
     const [owner, setowner] = useState(0);
@@ -31,6 +33,7 @@ function App() {
                     />
                     <Route path="/register" element={<SignUpPage />} />
                     <Route path="/login" element={<SignInPage />} />
+                    <Route path="/manufacturer/:id" element={<ManufacturerHomeScreen />} />
                 </Routes>
             </Router>
         </>

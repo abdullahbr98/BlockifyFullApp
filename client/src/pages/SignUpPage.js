@@ -63,7 +63,6 @@ function SignUpPage() {
                     height="100vh"
                     bg="blue.400"
                     align="center"
-                    borderRadius={8}
                 >
                     <Box
                         height="100vh"
@@ -87,7 +86,7 @@ function SignUpPage() {
                         </Box>
                     </Box>
                 </Box>
-                <Box flex={1} align="center" px={"200"}>
+                <Box flex={1} align="center" px={"200"} bg="blackAlpha.50">
                     <Flex align={"center"} justifyContent="center" py={7}>
                         <Image src={logo} height={"30px"} width={"30px"} />
                         <Text fontWeight={"bold"} ms={2}>
@@ -107,7 +106,7 @@ function SignUpPage() {
                     </Flex>
                     <Flex align={"center"} justifyContent="center" py={5}>
                         <Text>Already signed up?</Text>{" "}
-                        <Link color={"blue.600"}> Login</Link>
+                        <Link color={"blue.600"} href="/login"> Login</Link>
                     </Flex>
                     <Flex align={"center"} justifyContent="center">
                         <RadioCardUse userTypeHandler={userTypeHandler} />
@@ -119,6 +118,7 @@ function SignUpPage() {
                                 type="tel"
                                 placeholder="phone number"
                                 focusBorderColor="blue.400"
+                                bg="white"
                                 onChange={(e) => {
                                     setphone(e.target.value);
                                 }}
@@ -127,6 +127,7 @@ function SignUpPage() {
                     </Flex>
                     <Flex pt={3}>
                         <Input
+                            bg="white"
                             focusBorderColor="blue.400"
                             placeholder="First Name"
                             onChange={(e) => {
@@ -134,6 +135,7 @@ function SignUpPage() {
                             }}
                         />
                         <Input
+                            bg="white"
                             focusBorderColor="blue.400"
                             placeholder="Last Name"
                             onChange={(e) => {
@@ -143,6 +145,7 @@ function SignUpPage() {
                     </Flex>
                     <Flex pt={3}>
                         <Input
+                            bg="white"
                             focusBorderColor="blue.400"
                             placeholder="Create a username"
                             onChange={(e) => {
@@ -152,6 +155,7 @@ function SignUpPage() {
                     </Flex>
                     <Flex pt={3}>
                         <Input
+                            bg="white"
                             focusBorderColor="blue.400"
                             placeholder="Your email address"
                             onChange={(e) => {
@@ -162,6 +166,7 @@ function SignUpPage() {
                     <Flex pt={3}>
                         <InputGroup size="md">
                             <Input
+                                bg="white"
                                 pr="4.5rem"
                                 type={show ? "text" : "password"}
                                 placeholder="Enter password"
@@ -183,6 +188,7 @@ function SignUpPage() {
                     <Flex py={3}>
                         <InputGroup size="md">
                             <Input
+                                bg="white"
                                 pr="4.5rem"
                                 type={show1 ? "text" : "password"}
                                 placeholder="Confirm password"

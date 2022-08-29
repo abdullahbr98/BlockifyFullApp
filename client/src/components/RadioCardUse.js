@@ -17,6 +17,7 @@ function RadioCard(props) {
           borderWidth='1px'
           borderRadius='md'
           boxShadow='md'
+          bg="white"
           _checked={{
             bg: 'blue.400',
             color: 'white',
