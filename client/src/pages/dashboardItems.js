@@ -1,23 +1,8 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import React from "react";
 import { Box, Flex, Text, Button } from "@chakra-ui/react";
-import ManufacturerTable from "../pages/ManufacturerTable"
-import { ArrowBackIcon } from '@chakra-ui/icons'
-import dashboardItems from "../pages/dashboardItems"
-export default function ManufacturerHomeScreen() {
-    const { id } = useParams();
-    const [products, setproducts] = useState(false);
+export default function dashboardItems({setproducts}) {
     return (
-        <Box>
-            <Box className="App" mx={100} mt={25}>
-                <Navbar guestAccess={false} />
-            </Box>
-            {/* TO DO bg="blackAlpha.50" */}
-
-            {!products ? (
-                // <dashboardItems setproducts={setproducts}/>
-                <Box px={120} h={"80vh"}>
+            <Box px={120} h={"80vh"}>
                 <Flex justifyContent="space-between">
                     <Box
                         opacity="0.8"
@@ -182,20 +167,5 @@ export default function ManufacturerHomeScreen() {
                     </Box>
                 </Flex>
             </Box>
-            ) : (
-                <Box mx={125} mt={10}>
-                    <Button
-                        colorVariant="teal"
-                        onClick={() => {
-                            setproducts(false);
-                        }}
-                        mb={5}
-                    >
-                        <ArrowBackIcon w={5} h={5}/>
-                    </Button>
-                    <ManufacturerTable/>
-                </Box>
-            )}
-        </Box>
     );
 }

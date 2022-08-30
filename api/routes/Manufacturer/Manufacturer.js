@@ -2,14 +2,15 @@
 // Sign Up
 // Login
 // Purchase Request
-
 var express = require("express");
+const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var ethers = require("ethers");
 var router = express.Router();
 var Manufacturer = require("../../models/Manufacturer");
 var PurchaseRequest = require("../../models/purchaseRequest");
 const auth = require("../../middleware/auth");
+
 // Importing ABI and BYTE CODE for Contract Deployment
 const {
     SELLER_AUTHENTICATION_ABI,
@@ -20,13 +21,16 @@ const {
 
 // Manufacturer Sign Up Route
 router.post("/signup", async (req, res) => {
+
+    //generating salt 
+    const salt = await bcrypt.genSalt(10);
     const userType = req.body.userType;
     const phoneNumber = req.body.phoneNumber;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const username = req.body.username;
     const email = req.body.email;
-    const password = req.body.password;
+    const password = await bcrypt.hash(req.body.password, salt);
     const accountAddress = req.body.accountAddress;
 
     const signer = new ethers.providers.JsonRpcProvider(
@@ -92,14 +96,14 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const email = req.body.email;
-    const password = req.body.password;
     const accountAddress = req.body.accountAddress;
 
     const result = await Manufacturer.findOne({
         email: email,
-        password: password,
         accountAddress: accountAddress,
     });
+
+    const validPassword = await bcrypt.compare(req.body.password, result.password);
 
     //jwt
     const token = jwt.sign(
@@ -113,7 +117,7 @@ router.post("/login", async (req, res) => {
     result.token = token;
     //jwt
     let response = "";
-    result !== null
+    validPassword !== null
         ? (response = "Login Successful !")
         : (response = "Invalid Credentials");
 
