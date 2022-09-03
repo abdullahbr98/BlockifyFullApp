@@ -18,7 +18,7 @@ import { useEffect } from "react";
 export default function ManufacturerTable() {
     const [pendingRequests,setPendingRequests] = useState([])
     useEffect(()=>{
-        setPendingRequests(localStorage.getItem('pendingRequests'));
+        setPendingRequests(JSON.parse(localStorage.getItem('pendingRequests')));
     },[])
     return (
         <>
@@ -36,7 +36,7 @@ export default function ManufacturerTable() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {pendingRequests.map((pendingRequest)=>{
+                        {pendingRequests?.map((pendingRequest)=>{
                             return (
                                 <Tr>
                             <Td isNumeric>{pendingRequest.sellerAddress}</Td>

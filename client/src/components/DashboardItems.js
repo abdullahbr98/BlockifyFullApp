@@ -13,8 +13,14 @@ export default function DashboardItems({ setProductsFunc }) {
         const count = data.length;
         console.log("Count : ", count);
         setPendingRequestsCount(count);
+<<<<<<< HEAD
         setPendingRequests(data)
         localStorage.setItem('pendingRequests', pendingRequests);
+=======
+        setPendingRequests(data);
+        console.log(data);
+        localStorage.setItem('pendingRequests', JSON.stringify(data));
+>>>>>>> c8fa6f09e319317a3142ae7610fa4f61430b37ee
     };
     useEffect(() => {
         getPendingRequests();
