@@ -36,7 +36,7 @@ export default function DashboardItems({ setProductsFunc }) {
                         </Text>
                         <Flex justifyContent="space-between">
                             <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
-                                4
+                                {pendingRequestsCount}
                             </Text>
                             <Button
                                 color="black"
