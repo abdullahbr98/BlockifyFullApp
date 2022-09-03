@@ -31,7 +31,10 @@ router.post('/productRequest',async(req,res)=>{
     await productRequest.save();
 
     res.json('Request Sent !')
+})
 
+router.get('/productRequest',async(req,res)=>{
+    
 })
 
 module.exports = router

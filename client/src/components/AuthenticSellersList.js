@@ -10,21 +10,24 @@ import {
     Tbody,
     TableCaption,
     Badge,
-    Stack
+    Stack,
+    Text,
+    Box
 } from "@chakra-ui/react";
-export default function ManufacturerTable() {
+export default function AuthenticSellerList() {
     return (
-        <>
+        <Box px={120} h={"80vh"}>
+            <Text align="center" fontSize={"2xl"} color="black" my={4}>Pending Product Requests</Text>
             <TableContainer>
                 <Table variant="striped" >
                     <TableCaption>
-                        Manufacturer Product distribution Control Panel
+                        List of Authentic sellers 
                     </TableCaption>
                     <Thead>
                         <Tr>
                             <Th isNumeric>User Address </Th>
-                            <Th isNumeric>Product Requested</Th>
-                            <Th isNumeric>Approve or deny</Th>
+                            <Th isNumeric>Products owned</Th>
+                            <Th isNumeric>Remove from list</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -35,9 +38,6 @@ export default function ManufacturerTable() {
                             <Td isNumeric>6</Td>
                             <Td>
                                 <Stack direction="row" justifyContent="end">
-                                    <Badge colorScheme="green" cursor="pointer">
-                                        Accept
-                                    </Badge>
                                     <Badge colorScheme="red" cursor="pointer">
                                         Remove
                                     </Badge>
@@ -47,6 +47,6 @@ export default function ManufacturerTable() {
                     </Tbody>
                 </Table>
             </TableContainer>
-        </>
+        </Box>
     );
 }

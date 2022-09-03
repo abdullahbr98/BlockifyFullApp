@@ -26,7 +26,7 @@ import {
     ChevronRightIcon,
 } from "@chakra-ui/icons";
 
-export default function Navbar({ guestAccess }) {
+export default function Navbar({ guestAccess,heading }) {
     const { isOpen, onToggle } = useDisclosure();
     const [accountAddress, setaccountAddress] = useState("");
     useEffect(() => {
@@ -88,7 +88,7 @@ export default function Navbar({ guestAccess }) {
                     {guestAccess ? <Flex display={{ base: "none", md: "flex" }} ml={10}>
                         <DesktopNav />
                     </Flex> : <Flex display={{ base: "none", md: "flex" }} ml={10}>
-                        <Text fontWeight="normal" ms={12} fontSize="xl" color="black">Manufacturer Dashboard</Text>
+                        <Text fontWeight="normal" ms={12} fontSize="xl" color="black">{heading}</Text>
                     </Flex>}
                 </Flex>
                 <Text

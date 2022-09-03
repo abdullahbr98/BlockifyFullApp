@@ -42,28 +42,26 @@ function SignUpPage() {
 
     const signUpFunction = async () => {
         // console.log({ user });
+        //axios intercepter
         const data = await axios.post(
             "http://localhost:8000/Manufacturer/signup",
-            { userType: userType,
+            {
+                userType: userType,
                 phoneNumber: phone,
                 firstName: fname,
                 lastName: lname,
                 username: username,
                 email: email,
                 password: password, //TODO make this bycrypt function
-                accountAddress: accountAddress[0] }
+                accountAddress: accountAddress[0],
+            }
         );
         window.location.href = "http://localhost:3000/";
     };
     return (
         <>
             <Flex flexDirection={"row"} borderRadius={"12"}>
-                <Box
-                    flex={1}
-                    height="100vh"
-                    bg="blue.400"
-                    align="center"
-                >
+                <Box flex={1} height="100vh" bg="blue.400" align="center">
                     <Box
                         height="100vh"
                         width="60vh"
@@ -106,7 +104,10 @@ function SignUpPage() {
                     </Flex>
                     <Flex align={"center"} justifyContent="center" py={5}>
                         <Text>Already signed up?</Text>{" "}
-                        <Link color={"blue.600"} href="/login"> Login</Link>
+                        <Link color={"blue.600"} href="/login">
+                            {" "}
+                            Login
+                        </Link>
                     </Flex>
                     <Flex align={"center"} justifyContent="center">
                         <RadioCardUse userTypeHandler={userTypeHandler} />

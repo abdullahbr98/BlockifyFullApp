@@ -1,7 +1,25 @@
-import React from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
-export default function dashboardItems({setproducts}) {
+import React, { useState, useEffect } from "react";
+import { Box, Flex, Text, Button, Link } from "@chakra-ui/react";
+import axios from "axios";
+
+export default function DashboardItems({ setProductsFunc }) {
+    const [pendingRequests, setPendingRequests] = useState([]);
+    const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+    const getPendingRequests = async () => {
+        const result = await axios.get(
+            "http://localhost:8000/Seller/productRequest"
+        );
+        const data = result.data;
+        const count = data.length;
+        console.log("Count : ", count);
+        setPendingRequestsCount(count);
+    };
+    useEffect(() => {
+        getPendingRequests();
+    }, []);
+
     return (
+        <>
             <Box px={120} h={"80vh"}>
                 <Flex justifyContent="space-between">
                     <Box
@@ -29,11 +47,10 @@ export default function dashboardItems({setproducts}) {
                                 fontSize="sm"
                                 mt={"12vh"}
                                 me={5}
-                                onClick={() => {
-                                    setproducts(true);
-                                }}
                             >
-                                Approve Requests
+                                <Link href="/pendingRequests">
+                                    Approve Requests
+                                </Link>
                             </Button>
                         </Flex>
                     </Box>
@@ -167,5 +184,6 @@ export default function dashboardItems({setproducts}) {
                     </Box>
                 </Flex>
             </Box>
+        </>
     );
 }
