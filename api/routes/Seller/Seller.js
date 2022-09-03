@@ -34,7 +34,9 @@ router.post('/productRequest',async(req,res)=>{
 })
 
 router.get('/productRequest',async(req,res)=>{
-    
+    const ProductRequests = await productRequests.find({})
+    console.log(ProductRequests);
+    res.json(ProductRequests);
 })
 
 module.exports = router
