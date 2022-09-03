@@ -30,8 +30,9 @@ router.post("/authenticate_seller", async (req, res) => {
   const manufacturer = await Manufacturer.findOne({
     accountAddress: accountAddress,
   });
+  console.log(manufacturer);
   const contract = new ethers.Contract(
-    manufacturer.productsContractAddress,
+    manufacturer.authContractAddress,
     SELLER_AUTHENTICATION_ABI,
     signer
   );
@@ -154,6 +155,30 @@ router.post("/approve", async (req, res) => {
 
   const tx = await contract.approve(sellerAddress, products);
   res.json("Approved!");
+});
+
+router.get("/getAuthenticatedSellers", async (req, res) => {
+  const accountAddress = req.query.accountAddress;
+  const manufacturer = await Manufacturer.findOne({
+    accountAddress: accountAddress,
+  });
+
+  const signer = new ethers.providers.JsonRpcProvider(
+    "http://localhost:7545"
+  ).getSigner(accountAddress);
+  console.log(manufacturer);
+console.log(manufacturer.authContractAddress);
+  const contract = new ethers.Contract(
+    manufacturer.authContractAddress,
+    SELLER_AUTHENTICATION_ABI,
+    signer
+  );
+
+  const result = await contract.get_authenticated_sellers();
+  console.log(result);
+
+  // const authenticatedSellers = await Seller.find({authenticated:true});
+  res.json(result);
 });
 
 

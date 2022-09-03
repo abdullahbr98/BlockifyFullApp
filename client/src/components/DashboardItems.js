@@ -5,21 +5,37 @@ import axios from "axios";
 export default function DashboardItems({ setProductsFunc }) {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+    const [sellerAuthenticList, setsellerAuthenticList] = useState([]);
+    const [authenticatedSellerCount, setauthenticatedSellerCount] = useState(0);
     const getPendingRequests = async () => {
         const result = await axios.get(
             "http://localhost:8000/Seller/productRequest"
         );
+        const authenticatedSeller = await axios.get(
+            "http://localhost:8000/ManufacturerSM/getAuthenticatedSellers",
+            {
+                params: {
+                    accountAddress: JSON.parse(
+                        localStorage.getItem("UserAddress")
+                    )[0],
+                },
+            }
+        );
+        setsellerAuthenticList(authenticatedSeller.data);
+        setauthenticatedSellerCount(authenticatedSeller.data.length);
+        console.log("length : ", authenticatedSeller.data.length);
         const data = result.data;
         const count = data.length;
-        console.log("Count : ", count);
-        setPendingRequestsCount(count);
         setPendingRequests(data);
-        console.log(data);
-        localStorage.setItem('pendingRequests', JSON.stringify(data));
+        localStorage.setItem("pendingRequests", JSON.stringify(data));
+        localStorage.setItem(
+            "authenticatedSeller",
+            JSON.stringify(authenticatedSeller.data)
+        );
     };
     useEffect(() => {
         getPendingRequests();
-    }, []);
+    }, [authenticatedSellerCount]);
 
     return (
         <>
@@ -71,7 +87,7 @@ export default function DashboardItems({ setProductsFunc }) {
                         </Text>
                         <Flex justifyContent="space-between">
                             <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
-                                10
+                                {authenticatedSellerCount}
                             </Text>
                             <Button
                                 color="black"
@@ -83,7 +99,9 @@ export default function DashboardItems({ setProductsFunc }) {
                                 mt={"12vh"}
                                 me={5}
                             >
-                                View Sellers List
+                                <Link href="/AuthenticSellers">
+                                    View Sellers List
+                                </Link>
                             </Button>
                         </Flex>
                     </Box>

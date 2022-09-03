@@ -8,6 +8,7 @@ import ManufacturerHomeScreen from "./pages/ManufacturerHomeScreen";
 import SellerHomePage from "./pages/SellerHomePage"
 import ManufacturerProtectedRoutes from "./components/ManufacturerProtectedRoutes"
 import PendingRequests from "./pages/PendingRequests"
+import AuthenticSellers from "./pages/AuthenticSellers"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {
     const [owner, setowner] = useState(0);
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/manufacturer/:id" element={<ManufacturerHomeScreen />} />
                     <Route path="/seller" element={<SellerHomePage/>}/>
                     <Route path="/pendingRequests" element={<PendingRequests/>}/>
+                    <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
                 </Routes>
             </Router>
         </>
