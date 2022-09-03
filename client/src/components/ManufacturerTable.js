@@ -13,7 +13,13 @@ import {
     Stack,
     Text
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useEffect } from "react";
 export default function ManufacturerTable() {
+    const [pendingRequests,setPendingRequests] = useState([])
+    useEffect(()=>{
+        setPendingRequests(localStorage.getItem('pendingRequests'));
+    },[])
     return (
         <>
             <Text align="center" fontSize={"2xl"} color="black" my={4}>Pending Product Requests</Text>
@@ -30,11 +36,11 @@ export default function ManufacturerTable() {
                         </Tr>
                     </Thead>
                     <Tbody>
-
-                        {/* //TODO call an api here for data retreival and Map function. */}
-                        <Tr>
-                            <Td isNumeric> 0x32423423</Td>
-                            <Td isNumeric>6</Td>
+                        {pendingRequests.map((pendingRequest)=>{
+                            return (
+                                <Tr>
+                            <Td isNumeric>{pendingRequest.sellerAddress}</Td>
+                            <Td isNumeric>{pendingRequest.products}</Td>
                             <Td>
                                 <Stack direction="row" justifyContent="end">
                                     <Badge colorScheme="green" cursor="pointer">
@@ -46,6 +52,9 @@ export default function ManufacturerTable() {
                                 </Stack>
                             </Td>
                         </Tr>
+                            )
+                        })}                        {/* //TODO call an api here for data retreival and Map function. */}
+        
                     </Tbody>
                 </Table>
             </TableContainer>
