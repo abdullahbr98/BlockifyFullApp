@@ -129,38 +129,39 @@ router.post("/login", async (req, res) => {
 });
 
 // Purchase Request Route
+
 router.post("/purchaseRequest", async (req, res) => {
-    const accountAddress = req.body.accountAddress;
-    const sellerAddress = req.body.sellerAddress;
-    const purchaseRequest = new PurchaseRequest({
-        manufacturer: accountAddress,
-        seller: sellerAddress,
-        status: false,
-    });
-    await purchaseRequest.save();
-
-    res.json("Request Sent !");
-});
-
-
-router.post('/purchaseRequest', async (req,res)=>{
     const sellerAddress = req.body.sellerAddress;
     const manufacturerAddress = req.body.manufacturerAddress;
     const products = req.body.products;
 
     // Create a Purchase Request and Save in Database
-    const purchaseRequest_ = new PurchaseRequest({manufacturer:manufacturerAddress,seller:sellerAddress,status:false,products:products});
+    const purchaseRequest_ = new PurchaseRequest({
+        manufacturer: manufacturerAddress,
+        seller: sellerAddress,
+        status: false,
+        products: products,
+    });
     await purchaseRequest_.save();
 
     // Delete the Product Request from DataBase
     // Syntax Confirm !
-    await ProductRequest.deleteOne({sellerAddress:sellerAddress});
-    
+    await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
 
-    res.json('Request Sent Successfully !')
-})
+    res.json("Request Sent Successfully !");
+});
 
+router.post("/deletePurchaseRequest", async (req, res) => {
+    const sellerAddress = req.body.sellerAddress;
+    const manufacturerAddress = req.body.manufacturerAddress;
+    const products = req.body.products;
 
+    // Delete the Product Request from DataBase
+    // Syntax Confirm !
+    await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
+
+    res.json("Request Deleted Successfully !");
+});
 
 //TO DO create a GET request of fetching all authenticated sellers in the database
 

@@ -13,16 +13,51 @@ import {
     Stack,
     Text
 } from "@chakra-ui/react";
+import axios from "axios"
 import { useState } from "react";
 import { useEffect } from "react";
 export default function ManufacturerTable() {
     const [pendingRequests,setPendingRequests] = useState([])
-    const pendingRequestsHandler = (sellerAddress,products)=>{
-        console.log(sellerAddress,products);
+
+    const pendingRequestSetter = async()=>{
+        const result = await axios.get(
+            "http://localhost:8000/Seller/productRequest"
+        );
+        // localStorage.setItem("pendingRequests", JSON.stringify(result.data));
+        setPendingRequests(result.data);
+    }
+
+    const deleteRequestsHandler = async (sellerAddress,products) =>{
+        const manAddress = (JSON.parse(localStorage.getItem("UserAddress")));
+        const data = await axios.post(
+            "http://localhost:8000/manufacturer/deletePurchaseRequest", //TODO customize this to seller and buyer
+            { 
+                sellerAddress: sellerAddress,
+                manufacturerAddress: manAddress[0],
+                products: products,
+            }
+        );
+        pendingRequestSetter();
+    }
+
+    const pendingRequestsHandler = async (sellerAddress,products)=>{
+        const manAddress = (JSON.parse(localStorage.getItem("UserAddress")));
+        const data = await axios.post(
+            "http://localhost:8000/manufacturer/purchaseRequest", //TODO customize this to seller and buyer
+            { 
+                sellerAddress: sellerAddress,
+                manufacturerAddress: manAddress[0],
+                products: products,
+            }
+        );
+        pendingRequestSetter();
     }
     useEffect(()=>{
-        setPendingRequests(JSON.parse(localStorage.getItem('pendingRequests')));
+        // setPendingRequests(JSON.parse(localStorage.getItem('pendingRequests')));
+        console.log("useEffect called");
+        pendingRequestSetter();
     },[])
+    //pendingRequestSetter was called in useEffect
     return (
         <>
             <Text align="center" fontSize={"2xl"} color="black" my={4}>Pending Product Requests</Text>
@@ -49,7 +84,7 @@ export default function ManufacturerTable() {
                                     <Badge colorScheme="green" cursor="pointer" onClick={()=>{pendingRequestsHandler(pendingRequest.sellerAddress,pendingRequest.products)}}>
                                         Accept
                                     </Badge>
-                                    <Badge colorScheme="red" cursor="pointer">
+                                    <Badge colorScheme="red" cursor="pointer" onClick={()=>{deleteRequestsHandler(pendingRequest.sellerAddress,pendingRequest.products)}}>
                                         Remove
                                     </Badge>
                                 </Stack>
