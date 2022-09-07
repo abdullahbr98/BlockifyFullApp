@@ -4,10 +4,14 @@
 // Purchase Request
 
 var express = require("express");
+const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
 var ethers = require("ethers");
 var router = express.Router();
 var productRequests = require("../../models/productRequests");
+var purchaseRequest = require("../../models/purchaseRequest");
 var Seller = require("../../models/Seller");
+const auth = require("../../middleware/auth");
 
 router.post("/signup", async (req, res) => {
     const userType = req.body.userType;
@@ -51,6 +55,46 @@ router.get("/productRequest", async (req, res) => {
     const ProductRequests = await productRequests.find({});
     console.log(ProductRequests);
     res.json(ProductRequests);
+});
+
+router.get("/purchaseRequest", async (req, res) => {
+    const PurchaseRequests = await purchaseRequest.find({});
+    console.log(PurchaseRequests);
+    res.json(PurchaseRequests);
+});
+
+router.post("/login", async (req, res) => {
+    const email = req.body.email;
+    const accountAddress = req.body.accountAddress;
+
+    const result = await Seller.findOne({
+        email: email,
+        accountAddress: accountAddress,
+    });
+    console.log(result);
+    const validPassword = await bcrypt.compare(
+        req.body.password,
+        result.password
+    );
+
+    //jwt
+    const token = jwt.sign(
+        { user_id: result._id, email },
+        process.env.TOKEN_KEY,
+        {
+            expiresIn: "2h",
+        }
+    );
+    // save user token
+
+    result.token = token;
+    //jwt
+    let response = "";
+    validPassword !== null
+        ? (response = "Login Successful !")
+        : (response = "Invalid Credentials");
+
+    res.json(result);
 });
 
 module.exports = router;

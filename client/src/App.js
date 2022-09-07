@@ -37,7 +37,7 @@ function App() {
                     <Route path="/register" element={<SignUpPage />} />
                     <Route path="/login" element={<SignInPage />} />
                     <Route path="/manufacturer/:id" element={<ManufacturerHomeScreen />} />
-                    <Route path="/seller" element={<SellerHomePage/>}/>
+                    <Route path="/seller/:id" element={<SellerHomePage/>}/>
                     <Route path="/pendingRequests" element={<PendingRequests/>}/>
                     <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
                 </Routes>

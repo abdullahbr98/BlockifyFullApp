@@ -41,7 +41,9 @@ password: {
   },
   authenticatedBy:{
     type:String,
-  }
+  },
+  //jwt 
+  token: { type: String },
 });
 
 module.exports = mongoose.model("Seller", SellerSchema);

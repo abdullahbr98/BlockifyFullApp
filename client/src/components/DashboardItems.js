@@ -152,7 +152,7 @@ export default function DashboardItems({ setProductsFunc }) {
                     >
                         <Text fontSize="2xl" align="center">
                             {" "}
-                            Sellers shop location
+                            Transaction History
                         </Text>
                         <Flex justifyContent="space-between">
                             <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>

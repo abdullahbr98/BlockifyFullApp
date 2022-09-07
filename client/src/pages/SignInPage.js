@@ -31,11 +31,11 @@ function SignInPage() {
     }, []);
     const handleSignIn = async ()=>{
         try{const data = await axios.post(
-            "http://localhost:8000/Manufacturer/login", //TODO customize this to seller and buyer
+            "http://localhost:8000/userLogin", //TODO customize this to seller and buyer
             { 
                 email: email,
                 password: password,
-                accountAddress: accountAddress[0] }
+                address: accountAddress[0] }
         );
         localStorage.setItem('isLoggedIn', true);
         {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};

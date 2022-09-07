@@ -1,5 +1,6 @@
 import React from "react";
 import { FaHome, FaUserEdit } from "react-icons/fa";
+import { HiOutlineCurrencyDollar } from "react-icons/hi";
 import {
     Box,
     Flex,
@@ -52,7 +53,13 @@ export default function SellerLeftMenu(props) {
                 </Box>
                 <Box align="center" pt="0">
                     <Tooltip label="Add Products" fontSize="md">
-                        <Icon as={AddIcon} w="5" h="5" cursor="pointer" onClick={props.productReqFunc}/>
+                        <Icon
+                            as={AddIcon}
+                            w="5"
+                            h="5"
+                            cursor="pointer"
+                            onClick={props.productReqFunc}
+                        />
                     </Tooltip>
                 </Box>
                 <Box align="center" pt="0">
@@ -64,6 +71,19 @@ export default function SellerLeftMenu(props) {
                             cursor="pointer"
                             onClick={props.profileInfoFunc}
                         />
+                    </Tooltip>
+                </Box>
+                <Box align="center" pt="0">
+                    <Tooltip label="Purchase Requests" fontSize="md">
+                        <span>
+                            <Icon
+                                as={HiOutlineCurrencyDollar}
+                                w="7"
+                                h="7"
+                                cursor="pointer"
+                                onClick={props.purchaseReqFunc}
+                            />
+                        </span>
                     </Tooltip>
                 </Box>
                 <Flex>
