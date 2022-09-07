@@ -43,6 +43,7 @@ function SignUpPage() {
     const signUpFunction = async () => {
         // console.log({ user });
         //axios intercepter
+        if(userType==="Manufacturer"){
         const data = await axios.post(
             "http://localhost:8000/Manufacturer/signup",
             {
@@ -55,7 +56,23 @@ function SignUpPage() {
                 password: password, //TODO make this bycrypt function
                 accountAddress: accountAddress[0],
             }
-        );
+        );}
+        else if(userType==="Seller"){
+            const data = await axios.post(
+                "http://localhost:8000/Seller/signup",
+                {
+                    userType: userType,
+                    phone: phone,
+                    firstName: fname,
+                    lastName: lname,
+                    username: username,
+                    email: email,
+                    password: password, //TODO make this bycrypt function
+                    sellerAddress: accountAddress[0],
+                }
+            );
+
+        }
         window.location.href = "http://localhost:3000/";
     };
     return (

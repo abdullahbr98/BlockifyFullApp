@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import SellerLeftMenu from "../components/SellerLeftMenu";
+import SellerHomeItems from "../components/SellerHomeItems";
+import SellerProfileInfo from "../components/SellerProfileInfo"
+import SellerShopInfo from "../components/SellerShopInfo"
 import {
     Box,
     Flex,
@@ -16,49 +20,36 @@ import {
     Input,
     useDisclosure,
 } from "@chakra-ui/react";
-import ManufacturerTable from "../components/ManufacturerTable";
-import AuthenticSellersList from "../components/AuthenticSellersList";
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import DashboardItems from "../components/DashboardItems";
-import { ChevronRightIcon } from "@chakra-ui/icons";
 export default function SellerHomePage() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const btnRef = React.useRef();
+    const [displayHome, setdisplayHome] = useState(1);
+    const [profileInfo, setprofileInfo] = useState(0);
+    const [shopInfo, setshopInfo] = useState(0);
+    const displayHomeFunc = ()=>{
+        setdisplayHome(1);
+        setprofileInfo(0);
+        setshopInfo(0);
+    }
+    const profileInfoFunc = ()=>{
+        setdisplayHome(0);
+        setprofileInfo(1);
+        setshopInfo(0);
+    }
+    const shopInfoFunc = ()=>{
+        setdisplayHome(0);
+        setprofileInfo(0);
+        setshopInfo(1);
+    }
     return (
         <Box>
             <Box className="App" mx={100} mt={25}>
                 <Navbar guestAccess={false} heading={"Seller Home Screen"} />
             </Box>
-            <>
-                <Button ref={btnRef} color="black" bg="white" onClick={onOpen}>
-                    <ChevronRightIcon />
-                </Button>
-                <Drawer
-                    isOpen={isOpen}
-                    placement="left"
-                    onClose={onClose}
-                    finalFocusRef={btnRef}
-                >
-                    <DrawerOverlay />
-                    <DrawerContent>
-                        <DrawerCloseButton mt={2} />
-                        <DrawerHeader>Blockify</DrawerHeader>
-
-                        <DrawerBody>
-                            <Button colorScheme="teal" variant="ghost" w={"18vw"}>
-                                Button
-                            </Button>
-                        </DrawerBody>
-
-                        <DrawerFooter>
-                            {/* <Button variant="outline" mr={3} onClick={onClose}>
-                                Cancel
-                            </Button>
-                            <Button colorScheme="blue">Save</Button> */}
-                        </DrawerFooter>
-                    </DrawerContent>
-                </Drawer>
-            </>
+            <Flex>
+                <SellerLeftMenu displayHomeFunc={displayHomeFunc} profileInfoFunc={profileInfoFunc} shopInfoFunc={shopInfoFunc}/>
+                {displayHome === 1 ? (<SellerHomeItems displayHome={displayHome}/>): <Box display="none"></Box>}
+                {profileInfo === 1 ?(<SellerProfileInfo profileInfoFunc={profileInfoFunc}/>):<Box display="none"></Box> }
+                {shopInfo === 1 ?(<SellerShopInfo shopInfo={shopInfo}/>):<Box display="none"></Box> }
+            </Flex>
         </Box>
     );
 }

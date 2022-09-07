@@ -1,0 +1,77 @@
+import React from "react";
+import { FaHome, FaUserEdit } from "react-icons/fa";
+import {
+    Box,
+    Flex,
+    Text,
+    IconButton,
+    Button,
+    Stack,
+    Icon,
+    Avatar,
+    AvatarBadge,
+    AvatarGroup,
+    Tooltip,
+} from "@chakra-ui/react";
+import { SettingsIcon, AddIcon, EditIcon } from "@chakra-ui/icons";
+export default function SellerLeftMenu(props) {
+    return (
+        <>
+            <Flex
+                h="80vh"
+                w="7vw"
+                // borderColor="pink"
+                // borderWidth="1px"
+                align="center"
+                flexDirection="column"
+                justifyContent="space-between"
+            >
+                <Box align="center" pt="8">
+                    <Tooltip label="Home" fontSize="md">
+                        <span>
+                            <Icon
+                                as={FaHome}
+                                w="5"
+                                h="5"
+                                cursor="pointer"
+                                onClick={props.displayHomeFunc}
+                            />
+                        </span>
+                    </Tooltip>
+                </Box>
+                <Box align="center" pt="8">
+                    <Tooltip label="Shop Information" fontSize="md">
+                        <Icon
+                            as={SettingsIcon}
+                            w="5"
+                            h="5"
+                            cursor="pointer"
+                            onClick={props.shopInfoFunc}
+                        />
+                    </Tooltip>
+                </Box>
+                <Box align="center" pt="8">
+                    <Tooltip label="Add Products" fontSize="md">
+                        <Icon as={AddIcon} w="5" h="5" cursor="pointer" />
+                    </Tooltip>
+                </Box>
+                <Box align="center" pt="8">
+                    <Tooltip label="Account Information" fontSize="md">
+                        <Icon
+                            as={EditIcon}
+                            w="5"
+                            h="5"
+                            cursor="pointer"
+                            onClick={props.profileInfoFunc}
+                        />
+                    </Tooltip>
+                </Box>
+                <Flex>
+                    <Avatar w="8" h="8" cursor="pointer">
+                        <AvatarBadge boxSize="1em" bg="green.500" />
+                    </Avatar>
+                </Flex>
+            </Flex>
+        </>
+    );
+}

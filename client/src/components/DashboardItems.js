@@ -183,7 +183,7 @@ export default function DashboardItems({ setProductsFunc }) {
                         borderRadius={14}
                     >
                         <Text fontSize="2xl" align="center">
-                            Approved Sellers History
+                            Pending Verification Requests
                         </Text>
                         <Flex justifyContent="space-between">
                             <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
@@ -199,7 +199,7 @@ export default function DashboardItems({ setProductsFunc }) {
                                 mt={"12vh"}
                                 me={5}
                             >
-                                View History
+                                View Requests
                             </Button>
                         </Flex>
                     </Box>
