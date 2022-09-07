@@ -14,6 +14,10 @@ const purchaseRequestSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  products:{
+    type: Number,
+    required:true
+  }
 });
 
 module.exports = mongoose.model("PurchaseRequest", purchaseRequestSchema);

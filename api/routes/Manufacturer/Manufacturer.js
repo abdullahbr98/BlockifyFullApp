@@ -10,6 +10,7 @@ var router = express.Router();
 var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
 var PurchaseRequest = require("../../models/purchaseRequest");
+var ProductRequest = require("../../models/productRequests");
 const auth = require("../../middleware/auth");
 
 // Importing ABI and BYTE CODE for Contract Deployment
@@ -140,6 +141,26 @@ router.post("/purchaseRequest", async (req, res) => {
 
     res.json("Request Sent !");
 });
+
+
+router.post('/purchaseRequest', async (req,res)=>{
+    const sellerAddress = req.body.sellerAddress;
+    const manufacturerAddress = req.body.manufacturerAddress;
+    const products = req.body.products;
+
+    // Create a Purchase Request and Save in Database
+    const purchaseRequest_ = new PurchaseRequest({manufacturer:manufacturerAddress,seller:sellerAddress,status:false,products:products});
+    await purchaseRequest_.save();
+
+    // Delete the Product Request from DataBase
+    // Syntax Confirm !
+    await ProductRequest.deleteOne({sellerAddress:sellerAddress});
+    
+
+    res.json('Request Sent Successfully !')
+})
+
+
 
 //TO DO create a GET request of fetching all authenticated sellers in the database
 
