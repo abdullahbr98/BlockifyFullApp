@@ -26,7 +26,7 @@ export default function SellerLeftMenu(props) {
                 flexDirection="column"
                 justifyContent="space-between"
             >
-                <Box align="center" pt="8">
+                <Box align="center" pt="0">
                     <Tooltip label="Home" fontSize="md">
                         <span>
                             <Icon
@@ -39,7 +39,7 @@ export default function SellerLeftMenu(props) {
                         </span>
                     </Tooltip>
                 </Box>
-                <Box align="center" pt="8">
+                <Box align="center" pt="0">
                     <Tooltip label="Shop Information" fontSize="md">
                         <Icon
                             as={SettingsIcon}
@@ -50,12 +50,12 @@ export default function SellerLeftMenu(props) {
                         />
                     </Tooltip>
                 </Box>
-                <Box align="center" pt="8">
+                <Box align="center" pt="0">
                     <Tooltip label="Add Products" fontSize="md">
-                        <Icon as={AddIcon} w="5" h="5" cursor="pointer" />
+                        <Icon as={AddIcon} w="5" h="5" cursor="pointer" onClick={props.productReqFunc}/>
                     </Tooltip>
                 </Box>
-                <Box align="center" pt="8">
+                <Box align="center" pt="0">
                     <Tooltip label="Account Information" fontSize="md">
                         <Icon
                             as={EditIcon}
@@ -67,9 +67,11 @@ export default function SellerLeftMenu(props) {
                     </Tooltip>
                 </Box>
                 <Flex>
-                    <Avatar w="8" h="8" cursor="pointer">
-                        <AvatarBadge boxSize="1em" bg="green.500" />
-                    </Avatar>
+                    <Tooltip label="Seller Account" fontSize="md">
+                        <Avatar w="8" h="8" cursor="pointer">
+                            <AvatarBadge boxSize="1em" bg="green.500" />
+                        </Avatar>
+                    </Tooltip>
                 </Flex>
             </Flex>
         </>

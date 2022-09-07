@@ -23,10 +23,11 @@ export default function DashboardItems({ setProductsFunc }) {
         );
         setsellerAuthenticList(authenticatedSeller.data);
         setauthenticatedSellerCount(authenticatedSeller.data.length);
-        console.log("length : ", authenticatedSeller.data.length);
+        console.log("length of auth seller: ", authenticatedSeller.data.length);
         const data = result.data;
         const count = data.length;
         setPendingRequests(data);
+        setPendingRequestsCount(data.length);
         localStorage.setItem("pendingRequests", JSON.stringify(data));
         localStorage.setItem(
             "authenticatedSeller",

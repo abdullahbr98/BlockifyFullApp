@@ -17,6 +17,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 export default function ManufacturerTable() {
     const [pendingRequests,setPendingRequests] = useState([])
+    const foo = (p1,p2)=>{
+        console.log(p1,p2);
+    }
     useEffect(()=>{
         setPendingRequests(JSON.parse(localStorage.getItem('pendingRequests')));
     },[])
@@ -43,7 +46,7 @@ export default function ManufacturerTable() {
                             <Td isNumeric>{pendingRequest.products}</Td>
                             <Td>
                                 <Stack direction="row" justifyContent="end">
-                                    <Badge colorScheme="green" cursor="pointer">
+                                    <Badge colorScheme="green" cursor="pointer" onClick={()=>{foo(pendingRequest.sellerAddress,pendingRequest.products)}}>
                                         Accept
                                     </Badge>
                                     <Badge colorScheme="red" cursor="pointer">
