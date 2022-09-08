@@ -17,6 +17,7 @@ const {
 } = require("../../utils/Constants/ManufacturerSMConstants");
 var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
+var AuthenticationRequest = require("../../models/authenticationRequest");
 
 
 // Routes for Authenticate_Seller SM Functions
@@ -46,7 +47,7 @@ router.post("/authenticate_seller", async (req, res) => {
 
   // Updating Seller Information 
   await Seller.updateOne({accountAddress:sellerAddress}, {$set:{authenticated:true,authenticatedBy:accountAddress}})
-
+  await AuthenticationRequest.deleteOne({sellerAddress:sellerAddress});
   res.json(response);
 });
 

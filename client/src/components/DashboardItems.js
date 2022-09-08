@@ -7,6 +7,17 @@ export default function DashboardItems({ setProductsFunc }) {
     const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
     const [sellerAuthenticList, setsellerAuthenticList] = useState([]);
     const [authenticatedSellerCount, setauthenticatedSellerCount] = useState(0);
+    const [authenticationRequest, setAuthenticationRequest] = useState([]);
+    const [authenticationRequestCount, setAuthenticationRequestCount] = useState(0);
+    const authenticationReqestSetter = async () => {
+        const data = await axios.get(
+            "http://localhost:8000/manufacturer/AuthenticationRequest"
+        );
+        setAuthenticationRequest(data.data);
+        setAuthenticationRequestCount(data.data.length);
+        console.log("length of count:" , data.data.length);
+    };
+
     const getPendingRequests = async () => {
         const result = await axios.get(
             "http://localhost:8000/Seller/productRequest"
@@ -36,6 +47,7 @@ export default function DashboardItems({ setProductsFunc }) {
     };
     useEffect(() => {
         getPendingRequests();
+        authenticationReqestSetter();
     }, [authenticatedSellerCount]);
 
     return (
@@ -188,7 +200,7 @@ export default function DashboardItems({ setProductsFunc }) {
                         </Text>
                         <Flex justifyContent="space-between">
                             <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
-                                10
+                                {authenticationRequestCount}
                             </Text>
                             <Button
                                 color="black"
@@ -200,7 +212,9 @@ export default function DashboardItems({ setProductsFunc }) {
                                 mt={"12vh"}
                                 me={5}
                             >
-                                View Requests
+                                <Link href="/pendingVerificationRequests">
+                                    View Requests
+                                </Link>
                             </Button>
                         </Flex>
                     </Box>

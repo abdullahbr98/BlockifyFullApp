@@ -11,6 +11,7 @@ var router = express.Router();
 var productRequests = require("../../models/productRequests");
 var purchaseRequest = require("../../models/purchaseRequest");
 var Seller = require("../../models/Seller");
+var authenticationRequest = require("../../models/authenticationRequest");
 const auth = require("../../middleware/auth");
 
 router.post("/signup", async (req, res) => {
@@ -63,6 +64,16 @@ router.get("/purchaseRequest", async (req, res) => {
     res.json(PurchaseRequests);
 });
 
+router.get("/getIsAuthenticated", async (req, res) => {
+    const SellerAddress = req.query.sellerAddress;
+    console.log(SellerAddress);
+    const seller = await Seller.findOne({ accountAddress: SellerAddress });
+    console.log(seller);
+    const isAuthenticated = seller.authenticated;
+    console.log(isAuthenticated);
+    res.json(isAuthenticated);
+});
+
 router.post("/login", async (req, res) => {
     const email = req.body.email;
     const accountAddress = req.body.accountAddress;
@@ -95,6 +106,15 @@ router.post("/login", async (req, res) => {
         : (response = "Invalid Credentials");
 
     res.json(result);
+});
+
+router.post("/requestAuthentication", async (req, res) => {
+    const SellerAddress = req.body.sellerAddress;
+    var authRequest = new authenticationRequest({
+        sellerAddress: SellerAddress,
+    });
+    await authRequest.save();
+    res.json("Successful");
 });
 
 module.exports = router;

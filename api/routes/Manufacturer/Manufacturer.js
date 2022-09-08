@@ -11,6 +11,7 @@ var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
 var PurchaseRequest = require("../../models/purchaseRequest");
 var ProductRequest = require("../../models/productRequests");
+var authenticationRequest = require("../../models/authenticationRequest");
 const auth = require("../../middleware/auth");
 
 // Importing ABI and BYTE CODE for Contract Deployment
@@ -172,6 +173,13 @@ router.post("/deletePurchaseRequest", async (req, res) => {
 //JWT EXPERIMENTATION
 router.post("/dashboard", auth, (req, res) => {
     res.status(200).send("Welcome 🙌 ");
+});
+
+router.get("/AuthenticationRequest", async (req, res) => {
+  const request = await authenticationRequest.find({});
+  console.log(request);
+  res.json(request);
+
 });
 
 module.exports = router;

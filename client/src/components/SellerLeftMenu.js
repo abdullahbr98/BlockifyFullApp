@@ -88,7 +88,7 @@ export default function SellerLeftMenu(props) {
                 </Box>
                 <Flex>
                     <Tooltip label="Seller Account" fontSize="md">
-                        <Avatar w="8" h="8" cursor="pointer">
+                        <Avatar w="8" h="8" cursor="pointer" onClick={props.sellerAuthenticateFunc}>
                             <AvatarBadge boxSize="1em" bg="green.500" />
                         </Avatar>
                     </Tooltip>

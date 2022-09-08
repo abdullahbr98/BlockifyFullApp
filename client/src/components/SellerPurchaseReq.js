@@ -35,7 +35,7 @@ export default function SellerPurchaseReq() {
         <>
             <Flex  flexDirection="column">
                 <Text align="center" fontSize={"2xl"} color="black" my={4}>
-                    Pending Product Requests
+                    Pending Purchase Requests
                 </Text>
                 <TableContainer>
                     <Table variant="striped">
