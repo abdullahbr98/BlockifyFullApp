@@ -1,6 +1,6 @@
 import React from "react";
 import { FaHome, FaUserEdit } from "react-icons/fa";
-import { HiOutlineCurrencyDollar } from "react-icons/hi";
+import { HiOutlineCurrencyDollar, HiShoppingCart } from "react-icons/hi";
 import {
     Box,
     Flex,
@@ -42,13 +42,15 @@ export default function SellerLeftMenu(props) {
                 </Box>
                 <Box align="center" pt="0">
                     <Tooltip label="Shop Information" fontSize="md">
-                        <Icon
-                            as={SettingsIcon}
-                            w="5"
-                            h="5"
-                            cursor="pointer"
-                            onClick={props.shopInfoFunc}
-                        />
+                        <span>
+                            <Icon
+                                as={HiShoppingCart}
+                                w="5"
+                                h="5"
+                                cursor="pointer"
+                                onClick={props.shopInfoFunc}
+                            />
+                        </span>
                     </Tooltip>
                 </Box>
                 <Box align="center" pt="0">
@@ -64,13 +66,15 @@ export default function SellerLeftMenu(props) {
                 </Box>
                 <Box align="center" pt="0">
                     <Tooltip label="Account Information" fontSize="md">
+                        <span>
                         <Icon
-                            as={EditIcon}
-                            w="5"
-                            h="5"
+                            as={FaUserEdit}
+                            w="6"
+                            h="6"
                             cursor="pointer"
                             onClick={props.profileInfoFunc}
                         />
+                        </span>
                     </Tooltip>
                 </Box>
                 <Box align="center" pt="0">
@@ -88,7 +92,12 @@ export default function SellerLeftMenu(props) {
                 </Box>
                 <Flex>
                     <Tooltip label="Seller Account" fontSize="md">
-                        <Avatar w="8" h="8" cursor="pointer" onClick={props.sellerAuthenticateFunc}>
+                        <Avatar
+                            w="8"
+                            h="8"
+                            cursor="pointer"
+                            onClick={props.sellerAuthenticateFunc}
+                        >
                             <AvatarBadge boxSize="1em" bg="green.500" />
                         </Avatar>
                     </Tooltip>

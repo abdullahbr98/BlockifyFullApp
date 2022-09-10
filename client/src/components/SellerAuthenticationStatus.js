@@ -35,24 +35,25 @@ export default function SellerAuthenticationStatus() {
     }, []);
     return (
         <>
-            <Box w="90vw" align="center">
+            <Box w="90vw" align="center" pt="10vh">
                 <Text fontSize="3xl">Seller Authentication Status </Text>
-                <Flex justifyContent="center">
-                    <Text fontWeight="bold">Account Address:</Text>
+                <Flex justifyContent="center" mt="5vh">
+                    <Text fontWeight="bold" me="2vw">Account Address:</Text>
                     <Text>{accountAddress}</Text>
                 </Flex>
 
                 {/* <Flex justifyContent="center"> */}
-                <Text fontWeight="bold">Account Status:</Text>
                 {/* <Flex/> */}
                 {authenticated ? (
-                    <Flex justifyContent="center">
+                    <Flex justifyContent="center" mt="5vh">
+                        <Text fontWeight="bold" me="2vw">Account Status:</Text>
                     <Text me="5">Authenticated</Text>
                     <CheckCircleIcon color="green.300" mt="1"/>
                     </Flex>
                 ) : (
                     <Box>
                         <Flex>
+                        <Text fontWeight="bold" me="2vw">Account Status:</Text>
                             <Text>Not authenticated</Text>
                         </Flex>
                         <Button onClick={requestAutheticationHandler}>

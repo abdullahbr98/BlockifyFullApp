@@ -117,4 +117,22 @@ router.post("/requestAuthentication", async (req, res) => {
     res.json("Successful");
 });
 
+router.get("/shopInformation", async(req,res)=>{
+    const sellerAddress = req.query.sellerAddress;
+    console.log(sellerAddress);
+    var sellerInfo = await Seller.findOne({accountAddress:sellerAddress});
+    res.json(sellerInfo);
+});
+
+router.post("/updateShopInformation", async(req,res)=>{
+    const sellerAddress = req.body.sellerAddress;
+    var sellerInfo = await Seller.findOne({accountAddress:sellerAddress});
+    await sellerInfo.update({
+        shopName:req.body.shopName,
+        cordinates: req.body.cordinates,
+        shopAddress: req.body.shopAddress,
+    });
+    res.json("completed Updation");
+})
+
 module.exports = router;
