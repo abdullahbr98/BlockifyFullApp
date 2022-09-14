@@ -23,7 +23,11 @@ router.post('/create-checkout-session', async (req, res) => {
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
 
-  res.redirect(303,"http://localhost:8000/ManufacturerSM/sendProducts" );
+  axios.post('http://localhost:8000/ManufacturerSM/sendProducts',{
+    products:products,
+    price:100
+  })
+  // res.redirect(303,"http://localhost:8000/ManufacturerSM/sendProducts");
 });
 
 

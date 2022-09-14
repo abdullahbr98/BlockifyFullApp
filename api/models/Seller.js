@@ -55,6 +55,12 @@ const SellerSchema = new Schema({
     shopAddress: {
         type: String,
     },
+    balanceContractAddress:{
+        type:String,
+    },
+    productContractAddress:{
+        type:String
+    }
 });
 
 module.exports = mongoose.model("Seller", SellerSchema);
