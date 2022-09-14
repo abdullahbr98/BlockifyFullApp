@@ -6,7 +6,7 @@
 // Set Total Supply
 // Approve
 // Transfer
-
+var axios = require("axios");
 var express = require("express");
 var ethers = require("ethers");
 var router = express.Router();
@@ -14,6 +14,8 @@ const {
   SELLER_AUTHENTICATION_ABI,
   PRODUCTS_ABI,
   BALANCE_ABI,
+  BALANCE_BYTE_CODE,
+  PRODUCTS_BYTE_CODE,
 } = require("../../utils/Constants/ManufacturerSMConstants");
 var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
@@ -185,10 +187,16 @@ router.get("/getAuthenticatedSellers", async (req, res) => {
 });
 
 router.post("/sendProducts", async (req, res) => {
+
   const products = req.body.products;
   const price = req.body.price;
-  const accountAddress = req.body.accountAddress;
-  const conversion = products * price * 235;
+  console.log("price",price);
+  // const accountAddress = req.body.accountAddress; //sellers address
+  console.log("inside body:" , req.body);
+  const accountAddress = req.body.address; //sellers address
+  let conversion = products * price * 235;
+  conversion = toString(conversion);
+  console.log("apna original typeof string",typeof(conversion));
 
   const signer = new ethers.providers.JsonRpcProvider(
     "http://localhost:7545"
@@ -209,11 +217,16 @@ router.post("/sendProducts", async (req, res) => {
   const balanceContract = await BalanceContract.deploy();
   await balanceContract.deployed();
 
+  console.log("account Address le original:",accountAddress);
+
   await seller.updateOne(
     { accountAddress: accountAddress },
     { set: { balanceContractAddress: balanceContract.address } }
   );
   const manufacturerAddress = seller.authenticatedBy;
+
+  console.log(manufacturerAddress);
+  
   const manufacturer = await Manufacturer.findOne({
     accountAddress: manufacturerAddress,
   });
@@ -226,14 +239,27 @@ router.post("/sendProducts", async (req, res) => {
     signer_mnf
   );
 
+//Manufacturer ke through karna hai ------------------------------------------------------------
+await contract.setTotalSupply(100);
+console.log("after setting supply");
+
+//----------------------------------------------------------------------------------------------
+
   // Transfer of Products !
+  console.log("manufacturer ka contractAddress product wala: ",manufacturer.productsContractAddress)
+  await contract.approve(accountAddress,products);
+  console.log("pehla approve");
+  console.log("type of conversion",typeof(conversion));
   const tx1 = await contract.transfer(accountAddress, products);
 
+  // console.log("tx1:", tx1);
+
   contract = new ethers.Contract(balanceContract.address, BALANCE_ABI, signer);
-  await contract.setBalance(accountAddress, conversion);
-  
+  await contract.setBalance(accountAddress, "20");
   // Transfer of Balance !
-  const tx2 = await contract.transfer(manufacturerAddress, conversion);
+  await contract.approve(manufacturerAddress,"20");
+  const tx2 = await contract.transfer(manufacturerAddress, "20");
+  console.log(tx2);
   //--------------------------------------------------------
   // Product Contract !
   const ProductsContract = new ethers.ContractFactory(
@@ -254,13 +280,14 @@ router.post("/sendProducts", async (req, res) => {
 
   const contract_ = new ethers.Contract(
     productsContract.address,
-    PRODUCTS_ABI_ABI,
+    PRODUCTS_ABI,
     signer
   );
   
   const tx3 = await contract_.setTotalSupply(products);
-
-  res.json("sending Products");
+  console.log("about to exit api");
+  axios.get("http://localhost:3000");
+  // res.redirect(303,"http://localhost:3000");
 });
 
 router.post("/transfer", async (req, res) => {

@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const ProductDisplay = () => {
+    const [accountAddress, setAccountAddress] = useState("");
 
-    const request = async()=>{
+    const request = async () => {
+        console.log(accountAddress);
         const products = localStorage.getItem("noOfProducts");
         console.log(products);
         await axios.post(
             "http://localhost:8000/create-checkout-session", //TODO customize this to seller and buyer
-            { 
-                products:  products}
+            {
+                products: products,
+            }
         );
-    }
+    };
+    useEffect(() => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        setAccountAddress(items[0]);
+        console.log(accountAddress);
+        console.log(
+            "chonki",
+            JSON.parse(localStorage.getItem("UserAddress"))[0]
+        );
+    }, []);
 
     return (
         <section>
@@ -28,7 +40,17 @@ const ProductDisplay = () => {
                 action="http://localhost:8000/create-checkout-session"
                 method="POST"
             >
-                <input type="hidden" name="products" value={localStorage.getItem("noOfProducts")}/>
+                <input type="hidden" name="price" value={69} />
+                <input
+                    type="hidden"
+                    name="products"
+                    value={localStorage.getItem("noOfProducts")}
+                />
+                <input
+                    type="hidden"
+                    name="address"
+                    value={JSON.parse(localStorage.getItem("UserAddress"))[0]}
+                />
                 <button type="submit">Checkout</button>
             </form>
         </section>

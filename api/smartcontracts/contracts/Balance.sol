@@ -48,7 +48,7 @@ contract Balance is IERC20 {
         balances[msg.sender] = totalSupply_;
     }
 
-    function setBalance(address _address, uint balance) public {
+    function setBalance(address _address, uint256 balance) public {
         balances[_address] += balance;
     }
 
