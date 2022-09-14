@@ -14,18 +14,23 @@ import {
     Stack,
     Text,
 } from "@chakra-ui/react";
+import TestStripe from "../components/TestStripe";
 import axios from "axios";
 export default function SellerPurchaseReq() {
     const [purchaseRequests, setPurchaseRequests] = useState([]);
     const purchaseRequestSetter = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
         const result = await axios.get(
-            "http://localhost:8000/Seller/purchaseRequest"
+            "http://localhost:8000/Seller/purchaseRequest",
+            {params:{sellerAddress:items[0]}}
         );
         // localStorage.setItem("pendingRequests", JSON.stringify(result.data));
         setPurchaseRequests(result.data);
     };
-    const RequestCompleteHandler = ()=>{
+    const RequestCompleteHandler = (products,sellerId)=>{
+        localStorage.setItem('noOfProducts', products);
         console.log("i am clicked");
+        window.location.href="http://localhost:3000/stripePayment"
     }
     useEffect(() => {
         console.log("useEffect called");
@@ -40,7 +45,7 @@ export default function SellerPurchaseReq() {
                 <TableContainer>
                     <Table variant="striped">
                         <TableCaption>
-                            Manufacturer Product distribution Control Panel
+                            Seller Purcahse Request Page
                         </TableCaption>
                         <Thead >
                             <Tr>
@@ -71,7 +76,7 @@ export default function SellerPurchaseReq() {
                                                 <Badge
                                                     colorScheme="green"
                                                     cursor="pointer"
-                                                    onClick={RequestCompleteHandler}
+                                                    onClick={()=>{RequestCompleteHandler(purchaseRequest.products,purchaseRequest.seller)}}
                                                 >
                                                     Complete
                                                 </Badge>

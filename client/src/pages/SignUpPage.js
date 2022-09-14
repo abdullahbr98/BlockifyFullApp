@@ -47,7 +47,7 @@ function SignUpPage() {
         const data = await axios.post(
             "http://localhost:8000/Manufacturer/signup",
             {
-                userType: userType,
+                userType: userType, 
                 phoneNumber: phone,
                 firstName: fname,
                 lastName: lname,

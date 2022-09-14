@@ -11,6 +11,7 @@ import PendingRequests from "./pages/PendingRequests"
 import AuthenticSellers from "./pages/AuthenticSellers"
 import PendingVerificationRequests from "./components/PendingVerificationRequests"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import TestStripe from "./components/TestStripe"
 function App() {
     const [owner, setowner] = useState(0);
     const setAccountOwner = (address) => {
@@ -42,6 +43,7 @@ function App() {
                     <Route path="/pendingRequests" element={<PendingRequests/>}/>
                     <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
                     <Route path="/pendingVerificationRequests" element={<PendingVerificationRequests/>}/>
+                    <Route path="/stripePayment" element={<TestStripe/>}/>
                 </Routes>
             </Router>
         </>

@@ -14,11 +14,22 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
+    useToast,
 } from "@chakra-ui/react";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 export default function SellerProductReq() {
+    const toast = useToast();
     const [productQty, setproductQty] = useState(0);
     const [sellerAddress, setSellerAddress] = useState(0);
+    const toasterShow = () => {
+        toast({
+            title: "Products Requested.",
+            description: "We've Requested you products for you.",
+            status: "success",
+            duration: 7000,
+            isClosable: true,
+        });
+    };
     const reqProductsHandler = async () => {
         const data = await axios.post(
             "http://localhost:8000/seller/productRequest", //TODO customize this to seller and buyer
@@ -27,6 +38,7 @@ export default function SellerProductReq() {
                 products: productQty,
             }
         );
+        toasterShow();
     };
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));

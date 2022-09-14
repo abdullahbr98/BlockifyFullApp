@@ -59,7 +59,8 @@ router.get("/productRequest", async (req, res) => {
 });
 
 router.get("/purchaseRequest", async (req, res) => {
-    const PurchaseRequests = await purchaseRequest.find({});
+    const seller = req.query.sellerAddress;
+    const PurchaseRequests = await purchaseRequest.find({seller:seller});
     console.log(PurchaseRequests);
     res.json(PurchaseRequests);
 });

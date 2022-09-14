@@ -183,6 +183,11 @@ console.log(manufacturer.authContractAddress);
 });
 
 
+router.get("/sendProducts", async(req,res)=>{
+  res.json("sending Products");
+});
+
+
 router.post("/transfer", async (req, res) => {
   const accountAddress = req.body.accountAddress;
   const sellerAddress = req.body.sellerAddress;
