@@ -26,7 +26,7 @@ import {
     ChevronRightIcon,
 } from "@chakra-ui/icons";
 
-export default function Navbar({ guestAccess, heading, manufacturerAccess }) {
+export default function MetamaskNavbar({ guestAccess, heading,wrapper }) {
     const { isOpen, onToggle } = useDisclosure();
     const [accountAddress, setaccountAddress] = useState("");
     useEffect(() => {
@@ -102,74 +102,26 @@ export default function Navbar({ guestAccess, heading, manufacturerAccess }) {
                         </Flex>
                     )}
                 </Flex>
-                <Text
-                    fontWeight="bold"
-                    fontSize="12px"
-                    mr={2}
-                    p={2}
-                    borderColor="blue.100"
-                    borderWidth="1px"
-                    borderRadius="10px"
-                    bg="blue.100"
+                <Stack
+                    flex={{ base: 1, md: 0 }}
+                    justify={"flex-end"}
+                    direction={"row"}
+                    spacing={2}
                 >
-                    userAddress: {accountAddress}
-                </Text>
-
-                {guestAccess ? (
-                    <Stack
-                        flex={{ base: 1, md: 0 }}
-                        justify={"flex-end"}
-                        direction={"row"}
-                        spacing={2}
+                    <Button
+                        display={{ base: "none", md: "inline-flex" }}
+                        fontSize={"sm"}
+                        fontWeight={600}
+                        bg="#2F3C98"
+                        color="white"
+                        _hover={{
+                            bg: "blue.600",
+                        }}
+                        onClick={wrapper}
                     >
-                        <Button
-                            display={{ base: "none", md: "inline-flex" }}
-                            fontSize={"sm"}
-                            fontWeight={600}
-                            bg="blue.500"
-                            color="white"
-                            _hover={{
-                                bg: "pink.300",
-                            }}
-                        >
-                            <a href="/register"> Sign Up</a>
-                        </Button>
-                        <Button
-                            display={{ base: "none", md: "inline-flex" }}
-                            fontSize={"sm"}
-                            fontWeight={600}
-                            variant="outline"
-                            color="green.400"
-                            borderColor="green.400"
-                            _hover={{
-                                bg: "green.100",
-                            }}
-                        >
-                            <a href="/login"> Log In</a>
-                        </Button>
-                    </Stack>
-                ) : (
-                    <Stack
-                        flex={{ base: 1, md: 0 }}
-                        justify={"flex-end"}
-                        direction={"row"}
-                        spacing={2}
-                    >
-                        <Button
-                            display={{ base: "none", md: "inline-flex" }}
-                            fontSize={"sm"}
-                            fontWeight={600}
-                            variant="outline"
-                            color="red.400"
-                            borderColor="red.400"
-                            _hover={{
-                                bg: "red.100",
-                            }}
-                        >
-                            <a href="/"> Log Out</a>
-                        </Button>
-                    </Stack>
-                )}
+                        Connect Wallet{" "}
+                    </Button>
+                </Stack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
@@ -355,21 +307,6 @@ interface NavItem {
 }
 
 const NAV_ITEMS: Array<NavItem> = [
-    {
-        label: "Home",
-        children: [
-            {
-                label: "Explore Design Work",
-                subLabel: "Trending Design to inspire you",
-                href: "#",
-            },
-            {
-                label: "New & Noteworthy",
-                subLabel: "Up-and-coming Designers",
-                href: "#",
-            },
-        ],
-    },
     {
         label: "About Us",
         children: [

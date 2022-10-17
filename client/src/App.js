@@ -10,6 +10,8 @@ import ManufacturerProtectedRoutes from "./components/ManufacturerProtectedRoute
 import PendingRequests from "./pages/PendingRequests"
 import AuthenticSellers from "./pages/AuthenticSellers"
 import PendingVerificationRequests from "./components/PendingVerificationRequests"
+import ShipmentPage from "./pages/ShipmentPage"
+import BuyerHomepage from "./pages/BuyerHomepage"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestStripe from "./components/TestStripe"
 function App() {
@@ -44,6 +46,8 @@ function App() {
                     <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
                     <Route path="/pendingVerificationRequests" element={<PendingVerificationRequests/>}/>
                     <Route path="/stripePayment" element={<TestStripe/>}/>
+                    <Route path="/shipment" element={<ShipmentPage/>}/>
+                    <Route path="/buyer" element={<BuyerHomepage />} />
                 </Routes>
             </Router>
         </>

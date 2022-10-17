@@ -30,7 +30,7 @@ import {
 export default function Faqs() {
     return (
         <>
-            <Box mb={5} mt={8}>
+            <Box mb={5} mt={8} align="center">
                 <Text fontSize={"3xl"} fontWeight="semiBold">Frequently Asked Questions</Text>
             </Box>
             <Accordion allowMultiple mx="200" my={8}>
