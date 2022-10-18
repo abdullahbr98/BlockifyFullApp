@@ -75,7 +75,7 @@ export default function ManufacturerHomeScreen() {
                     </SimpleGrid>
                 </Box>
             </Box>
-            {/* <DashboardItems setProductsFunc={setProductsFunc} /> */}
+            <DashboardItems setProductsFunc={setProductsFunc} />
         </Box>
     );
 }
