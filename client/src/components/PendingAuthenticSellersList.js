@@ -43,12 +43,12 @@ export default function PendingAuthenticSellersList() {
     return (
         <>
             <Text align="center" fontSize={"2xl"} color="black" my={4}>
-                Pending Product Requests
+                Pending Verification Requests
             </Text>
             <TableContainer>
                 <Table variant="striped">
                     <TableCaption>
-                        Manufacturer Product distribution Control Panel
+                        Seller Pending Authentication List
                     </TableCaption>
                     <Thead>
                         <Tr>

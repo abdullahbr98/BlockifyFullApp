@@ -64,7 +64,7 @@ export default function SellerLeftMenu(props) {
                         />
                     </Tooltip>
                 </Box>
-                <Box align="center" pt="0">
+                {/* <Box align="center" pt="0">
                     <Tooltip label="Account Information" fontSize="md">
                         <span>
                         <Icon
@@ -76,7 +76,7 @@ export default function SellerLeftMenu(props) {
                         />
                         </span>
                     </Tooltip>
-                </Box>
+                </Box> */}
                 <Box align="center" pt="0">
                     <Tooltip label="Purchase Requests" fontSize="md">
                         <span>

@@ -2,7 +2,8 @@
 // Sign Up
 // Login
 // Purchase Request
-
+var path = require("path");
+var multer = require("multer");
 var express = require("express");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -135,5 +136,23 @@ router.post("/updateShopInformation", async(req,res)=>{
     });
     res.json("completed Updation");
 })
+
+const storage = multer.diskStorage({
+    destination: (req,file,cb) =>{
+        cb(null,"./files")
+    },
+    filename: (req, file,cb)=>{
+        console.log(file);
+        cb(null,Date.now()+path.extname(file.originalname));
+    },
+})
+
+const upload = multer({ dest: "./files/" })
+
+router.post("/upload",upload.single('file'),(req,res)=>{
+    res.send("success");
+})
+
+
 
 module.exports = router;

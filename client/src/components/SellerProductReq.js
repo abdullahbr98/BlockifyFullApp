@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InputComponent from "../components/InputComponent";
+import productItems from "../images/productItems.png"
+import { GiCardboardBoxClosed } from "react-icons/gi";
 import {
     Box,
+    Icon,
     Text,
     Image,
     Flex,
@@ -52,7 +55,7 @@ export default function SellerProductReq() {
         console.log(productQty);
     };
     return (
-        <Box w="90vw">
+        <Box w="90vw" align="center">
             <Flex justifyContent="center">
                 <Text fontSize="3xl" me="5">
                     Request Products From Manufacturer
@@ -66,29 +69,44 @@ export default function SellerProductReq() {
                     <QuestionOutlineIcon mt="4" cursor="pointer" />
                 </Tooltip>
             </Flex>
-            <Flex justifyContent="center" mt="20vh">
-                <Box pt="2" me="5">
+            <Box borderWidth="1px" mt="4" w="50%" align="center"  boxShadow='lg' p='6' rounded='md' bg='blackAlpha.50'>
+            <Box>
+                <Image h="150px" w="150px" src={productItems}/>
+            </Box>
+            <Flex justifyContent="center" h="10vh">
+                <Box pt="2">
                     {" "}
-                    <Text fontSize="lg">Number of products</Text>
+                    <Text fontSize="lg" fontWeight="bold">Number of products : </Text>
                 </Box>
                 <Box>
-                    <input
+                    <Input
                         type="text"
                         placeholder="No of Products"
+                        w="80%"
                         onChange={requestHandler}
+                        bg="white"
+                        borderColor="black"
+                        borderWidth="1px"
                     />
                 </Box>
             </Flex>
-            <Flex justifyContent="center" mt="5">
+            <Flex justifyContent="center" mt="3">
                 <Button
-                    bg="blue.300"
+                    bg="blue.500"
+                    variant="outline"
                     color="white"
-                    borderRadius={"17"}
+                    borderRadius={"8"}
                     onClick={reqProductsHandler}
+                    px="5"
+                    boxShadow="sm"
+                    fontSize="sm"
+                    _hover={{"backgroundColor":'black'}}
                 >
-                    Confirm Request{" "}
+                    Send Request
                 </Button>
             </Flex>
+            </Box>
+
         </Box>
     );
 }
