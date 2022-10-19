@@ -195,7 +195,7 @@ const storage = multer.diskStorage({
     },
 })
 
-const upload = multer({ storage})
+const upload = multer({dest:'files/'});
 
 // router.post("/upload",upload.single('file'),(req,res)=>{
 //     res.send("success");
@@ -231,9 +231,8 @@ router.post("/addProduct",upload.single('file'),async (req, res) => {
         price,
     } = req.body;
 
-    console.log(req.body.data)
-    const image = req.body.image;
-    fs.writeFileSync('./files/image',image);
+    const image = req.files;
+    fs.writeFileSync('./files/image.jpeg',image);
 
     console.log(image);
     const product = new Product({

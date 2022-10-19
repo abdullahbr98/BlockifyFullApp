@@ -10,12 +10,17 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
+import GoogleMaps from "../components/GoogleMaps"
 export default function SellerShopInfo({ shopInfo }) {
     const toast = useToast();
     const [editButton, seteditButton] = useState(0);
     const [cordinates, setcordinates] = useState("");
     const [shopAddress, setshopAddress] = useState("");
     const [shopName, setshopName] = useState("");
+
+    const setCordinatesFromMap = (value)=>{
+        setcordinates(value);
+    }
 
     const toastIcon = () =>
         toast({
@@ -68,9 +73,10 @@ export default function SellerShopInfo({ shopInfo }) {
     }, []);
 
     return (
-        <>
+        <Flex ms="10">
+            <Box borderWidth="1px" h="60vh" borderWidth="1px" boxShadow='xl' rounded='md' bg='white' mx="5" bg="blackAlpha.30">
             {shopInfo ? (
-                <Box align="center" w="90vw"  pt="10vh">
+                <Box align="center" w="40vw"  pt="8vh">
                     <Flex justifyContent="center">
                         <Text fontSize="2xl">Shop Information</Text>
                         <EditIcon
@@ -85,11 +91,12 @@ export default function SellerShopInfo({ shopInfo }) {
                     </Flex>
                     <Box mt="10vh" align="center">
                         <Flex justifyContent="center">
-                            <Text my="4">Shop Name</Text>
+                            <Text my="4" fontWeight="bold">Shop Name :</Text>
                             <Box pt="2">
                                 {editButton ? (
                                     <Input
-                                        placeholder="Shop Name"
+                                        placeholder={shopName}
+                                        value={shopName}
                                         size="md"
                                         w="20vw"
                                         ms="7vw"
@@ -105,11 +112,13 @@ export default function SellerShopInfo({ shopInfo }) {
                             </Box>
                         </Flex>
                         <Flex justifyContent="center">
-                            <Text my="4">Cordinates in Lg Lt</Text>
+                            <Text my="4" fontWeight="bold">Cordinates in Lg Lt :</Text>
                             <Box pt="2">
                                 {editButton ? (
                                     <Input
                                         placeholder="Cordinates of Shop"
+                                        placeholder={cordinates}
+                                        value={cordinates}
                                         size="md"
                                         w="20vw"
                                         ms="4vw"
@@ -125,11 +134,12 @@ export default function SellerShopInfo({ shopInfo }) {
                             </Box>
                         </Flex>
                         <Flex justifyContent="center">
-                            <Text my="4">Shop Address Full</Text>
+                            <Text my="4" fontWeight="bold">Shop Address Full :</Text>
                             <Box pt="2">
                                 {editButton ? (
                                     <Input
-                                        placeholder="Shop Address"
+                                        placeholder={shopAddress}
+                                        value={shopAddress}
                                         size="md"
                                         w="20vw"
                                         ms="4vw"
@@ -160,6 +170,10 @@ export default function SellerShopInfo({ shopInfo }) {
             ) : (
                 <Box display="none"></Box>
             )}
-        </>
+            </Box>
+            <Box>
+            <GoogleMaps/>
+            </Box>
+        </Flex>
     );
 }

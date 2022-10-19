@@ -1,9 +1,12 @@
 var createError = require("http-errors");
 var express = require("express");
+var multer = require("multer");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
+
+
 const mongoose = require("mongoose");
 mongoose
     .connect(process.env.MONGODB_KEY)

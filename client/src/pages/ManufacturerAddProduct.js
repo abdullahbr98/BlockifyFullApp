@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import ProductGrid from "../components/ProductGrid";
-import {useRef} from 'react'
+import { useRef,useState } from "react";
 import {
     Box,
     Flex,
@@ -52,8 +52,16 @@ const schema = yup.object().shape({
         .required("Description should be required please"),
     price: yup.string().required("Description should be required please"),
 });
+
+
+
 export default function ManufacturerAddProduct() {
     const image = useRef();
+    // const [image, setImage] = useState();
+    // const OnUpload = (e) => {
+    //     let file = e.target.files[0];
+    //     setImage(file);
+    // };
     const {
         register,
         handleSubmit,
@@ -64,15 +72,22 @@ export default function ManufacturerAddProduct() {
 
     const submitForm = async (data) => {
         var formData = new FormData();
-        const img = image.current.value;
+        const img = image.current;
         console.log({ errors });
         console.log("sdfsdf");
-        console.log('Image=>',img);
-        Object.keys(data).map((key,val)=>{
-            formData.append(key,val);
-        })
-        formData.append('image',img);
-        await axios.post("http://localhost:8000/Manufacturer/addProduct",  formData);
+        // console.log("Image=>", img);
+        Object.keys(data).map((key, val) => {
+            formData.append(key, val);
+        });
+        formData.append("image", img);
+        await axios.post(
+            "http://localhost:8000/Manufacturer/addProduct", formData,
+            {
+                headers : {
+                    'Content-Type' : 'multipart/form-data'
+                }
+            }
+        );
         console.log(data);
     };
     return (
@@ -102,9 +117,15 @@ export default function ManufacturerAddProduct() {
                             Add A Product In Inventory
                         </Text>
                         <Box align="center">
-                            <form onSubmit={handleSubmit(submitForm)} encType="multipart/form-data">
+                            <form
+                                onSubmit={handleSubmit(submitForm)}
+                            >
                                 <Flex w="50%" direction="column">
-                                    <Input ref={image} type="file" name="file"/>
+                                    <Input
+                                        ref={image}
+                                        type="file"
+                                        name="file"
+                                    />
                                     {[
                                         "description",
                                         "productName",
