@@ -12,6 +12,8 @@ import AuthenticSellers from "./pages/AuthenticSellers"
 import PendingVerificationRequests from "./components/PendingVerificationRequests"
 import ShipmentPage from "./pages/ShipmentPage"
 import BuyerHomepage from "./pages/BuyerHomepage"
+import ManufacturerProductPage from "./pages/ManufacturerProductPage"
+import ManufacturerAddProduct from "./pages/ManufacturerAddProduct"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestStripe from "./components/TestStripe"
 function App() {
@@ -48,6 +50,8 @@ function App() {
                     <Route path="/stripePayment" element={<TestStripe/>}/>
                     <Route path="/shipment" element={<ShipmentPage/>}/>
                     <Route path="/buyer" element={<BuyerHomepage />} />
+                    <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
+                    <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
                 </Routes>
             </Router>
         </>

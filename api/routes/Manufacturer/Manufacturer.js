@@ -9,10 +9,13 @@ var ethers = require("ethers");
 var router = express.Router();
 var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
+var Product = require("../../models/Product");
 var PurchaseRequest = require("../../models/purchaseRequest");
 var ProductRequest = require("../../models/productRequests");
 var authenticationRequest = require("../../models/authenticationRequest");
 const auth = require("../../middleware/auth");
+var path = require("path");
+var multer = require("multer");
 
 // Importing ABI and BYTE CODE for Contract Deployment
 const {
@@ -176,10 +179,113 @@ router.post("/dashboard", auth, (req, res) => {
 });
 
 router.get("/AuthenticationRequest", async (req, res) => {
-  const request = await authenticationRequest.find({});
-  console.log(request);
-  res.json(request);
+    const request = await authenticationRequest.find({});
+    console.log(request);
+    res.json(request);
+});
 
+
+
+
+const storage = multer.diskStorage({
+    destination:__dirname + "/files",
+    filename: (req, file,cb)=>{
+        console.log(file);
+        cb(null,Date.now()+path.extname(file.originalname));
+    },
+})
+
+const upload = multer({ storage})
+
+// router.post("/upload",upload.single('file'),(req,res)=>{
+//     res.send("success");
+// })
+
+
+var fs = require('fs')
+
+
+router.post("/addProduct",upload.single('file'),async (req, res) => {
+    const {
+        description,
+        productName,
+        Brand,
+        modelNo,
+        color,
+        height,
+        width,
+        displayType,
+        Resolution,
+        HDR,
+        refreshRate,
+        smartCapable,
+        featuredStreamingServices,
+        screenMirroring,
+        hdmiInputs,
+        usbInputs,
+        networkCompatibility,
+        speakers,
+        speakerType,
+        Warranty,
+        WarrantyTime,
+        price,
+    } = req.body;
+
+    console.log(req.body.data)
+    const image = req.body.image;
+    fs.writeFileSync('./files/image',image);
+
+    console.log(image);
+    const product = new Product({
+        description,
+        productName,
+        Brand,
+        modelNo,
+        color,
+        height,
+        width,
+        displayType,
+        Resolution,
+        HDR,
+        refreshRate,
+        smartCapable,
+        featuredStreamingServices,
+        screenMirroring,
+        hdmiInputs,
+        usbInputs,
+        networkCompatibility,
+        speakers,
+        speakerType,
+        Warranty,
+        WarrantyTime,
+        price,
+        image,
+    });
+
+    await product.save();
+    console.log(product);
+    res.json("working");
+});
+
+router.get("/getProductByName", async (req, res) => {
+    const productName = req.productName;
+
+    const result = await Product.findOne({
+        productName: productName,
+    });
+    consolelog(result);
+    res.json(result);
+});
+
+router.post("/deleteProduct", async (req, res) => {
+    const productName = req.body.productName;
+
+    await Product.deleteOne({
+        productName: productName,
+    });
+
+    console.log("done");
+    res.json("Deleted");
 });
 
 module.exports = router;

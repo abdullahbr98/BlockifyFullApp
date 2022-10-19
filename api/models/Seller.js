@@ -60,6 +60,9 @@ const SellerSchema = new Schema({
     },
     productContractAddress:{
         type:String
+    },
+    documents : {
+        type : Buffer
     }
 });
 

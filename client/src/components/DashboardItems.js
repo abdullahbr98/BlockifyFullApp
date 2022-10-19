@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Link, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Link, Image, SimpleGrid } from "@chakra-ui/react";
+import Inventory from "../images/Inventory.png"
+import verification from "../images/verification.png"
 import axios from "axios";
 import productRequests from "../images/productRequest.png";
 import authenticatedSeller from "../images/authenticatedSeller.png";
@@ -55,17 +57,18 @@ export default function DashboardItems({ setProductsFunc }) {
     return (
         <>
             <Box px={120} h={"80vh"} mt={4}>
-                <Flex>
+                <SimpleGrid columns={2} spacing={5}>
                     <Box
                         color="white"
                         bg="white"
                         p={4}
                         me={4}
                         boxShadow="md"
-                        _hover={{ backgroundColor: "gray.100" }}
+                        rounded="md"
+                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
                         cursor="pointer"
                     >
-                        <Flex>
+                        <Flex justifyContent="space-between">
                             <Box>
                                 <Text
                                     fontSize="lg"
@@ -119,10 +122,11 @@ export default function DashboardItems({ setProductsFunc }) {
                         p={4}
                         me={4}
                         boxShadow="md"
-                        _hover={{ backgroundColor: "gray.100" }}
+                        rounded="md"
+                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
                         cursor="pointer"
                     >
-                        <Flex >
+                        <Flex justifyContent="space-between">
                         <Flex direction="column">
                             <Text
                                 fontSize="lg"
@@ -163,22 +167,40 @@ export default function DashboardItems({ setProductsFunc }) {
                             </Button>
                         </Flex>
                     </Box>
-                    {/* 
+                    
+
                     <Box
-                        opacity="0.8"
                         color="white"
-                        bg="blue.400"
-                        w={"20vw"}
-                        pt={3}
-                        borderRadius={14}
+                        bg="white"
+                        p={4}
+                        me={4}
+                        boxShadow="md"
+                        rounded="md"
+                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        cursor="pointer"
                     >
-                        <Text fontSize="2xl" align="center">
-                            Products in inventory
-                        </Text>
                         <Flex justifyContent="space-between">
-                            <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
-                                10
+                        <Flex direction="column">
+                            <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="gray.500"
+                            >
+                                Products in Inventory
                             </Text>
+                            <Text
+                                fontSize="3xl"
+                                fontWeight="bold"
+                                color="black"
+                            >
+                                10 items
+                            </Text>
+                        </Flex>
+                        <Box>
+                        <Image src={Inventory} h="80px" w="80px" />
+                        </Box>
+                        </Flex>
+                        <Flex align="left">
                             <Button
                                 color="black"
                                 borderColor="black"
@@ -186,29 +208,53 @@ export default function DashboardItems({ setProductsFunc }) {
                                 borderRadius={18}
                                 variant="outline"
                                 fontSize="sm"
-                                mt={"12vh"}
-                                me={5}
+                                mt={"5vh"}
+                                _hover={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                }}
                             >
-                                View Products
+                                <Link href="/ManufacturerProductPage">
+                                    View Products
+                                </Link>
                             </Button>
                         </Flex>
                     </Box>
-                    
+
+
+
                     <Box
-                        opacity="0.8"
                         color="white"
-                        bg="black"
-                        w={"25vw"}
-                        pt={3}
-                        borderRadius={14}
+                        bg="white"
+                        p={4}
+                        me={4}
+                        boxShadow="md"
+                        rounded="md"
+                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        cursor="pointer"
                     >
-                        <Text fontSize="2xl" align="center">
-                            Pending Verification Requests
-                        </Text>
                         <Flex justifyContent="space-between">
-                            <Text fontSize="6xl" mt={"6vh"} ms={"5vw"}>
-                                {authenticationRequestCount}
+                        <Flex direction="column">
+                            <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                color="gray.500"
+                            >
+                                Pending Verification Requests
                             </Text>
+                            <Text
+                                fontSize="3xl"
+                                fontWeight="bold"
+                                color="black"
+                            >
+                                {authenticationRequestCount} Requests
+                            </Text>
+                        </Flex>
+                        <Box>
+                        <Image src={verification} h="80px" w="80px" />
+                        </Box>
+                        </Flex>
+                        <Flex align="left">
                             <Button
                                 color="black"
                                 borderColor="black"
@@ -216,16 +262,19 @@ export default function DashboardItems({ setProductsFunc }) {
                                 borderRadius={18}
                                 variant="outline"
                                 fontSize="sm"
-                                mt={"12vh"}
-                                me={5}
+                                mt={"5vh"}
+                                _hover={{
+                                    backgroundColor: "black",
+                                    color: "white",
+                                }}
                             >
                                 <Link href="/pendingVerificationRequests">
                                     View Requests
                                 </Link>
                             </Button>
                         </Flex>
-                    </Box> */}
-                </Flex>
+                    </Box>
+                </SimpleGrid>
                 <Flex></Flex>
             </Box>
         </>
