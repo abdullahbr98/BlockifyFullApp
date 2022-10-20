@@ -139,6 +139,7 @@ router.post("/purchaseRequest", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const manufacturerAddress = req.body.manufacturerAddress;
     const products = req.body.products;
+    //const productModelNo = req.body.productModelNo;
 
     // Create a Purchase Request and Save in Database
     const purchaseRequest_ = new PurchaseRequest({
@@ -184,28 +185,84 @@ router.get("/AuthenticationRequest", async (req, res) => {
     res.json(request);
 });
 
-
-
-
 const storage = multer.diskStorage({
-    destination:__dirname + "/files",
-    filename: (req, file,cb)=>{
+    destination: __dirname + "/files",
+    filename: (req, file, cb) => {
         console.log(file);
-        cb(null,Date.now()+path.extname(file.originalname));
+        cb(null, Date.now() + path.extname(file.originalname));
     },
-})
+});
 
-const upload = multer({dest:'files/'});
+const upload = multer({ dest: "files/" });
 
 // router.post("/upload",upload.single('file'),(req,res)=>{
 //     res.send("success");
 // })
 
+var fs = require("fs");
 
-var fs = require('fs')
+// router.post("/addProduct",upload.single('file'),async (req, res) => {
+//     const {
+//         description,
+//         productName,
+//         Brand,
+//         modelNo,
+//         color,
+//         height,
+//         width,
+//         displayType,
+//         Resolution,
+//         HDR,
+//         refreshRate,
+//         smartCapable,
+//         featuredStreamingServices,
+//         screenMirroring,
+//         hdmiInputs,
+//         usbInputs,
+//         networkCompatibility,
+//         speakers,
+//         speakerType,
+//         Warranty,
+//         WarrantyTime,
+//         price,
+//     } = req.body;
 
+//     const image = req.files;
+//     fs.writeFileSync('./files/image.jpeg',image);
 
-router.post("/addProduct",upload.single('file'),async (req, res) => {
+//     console.log(image);
+//     const product = new Product({
+//         description,
+//         productName,
+//         Brand,
+//         modelNo,
+//         color,
+//         height,
+//         width,
+//         displayType,
+//         Resolution,
+//         HDR,
+//         refreshRate,
+//         smartCapable,
+//         featuredStreamingServices,
+//         screenMirroring,
+//         hdmiInputs,
+//         usbInputs,
+//         networkCompatibility,
+//         speakers,
+//         speakerType,
+//         Warranty,
+//         WarrantyTime,
+//         price,
+//         image,
+//     });
+
+//     await product.save();
+//     console.log(product);
+//     res.json("working");
+// });
+
+router.post("/addProduct", async (req, res) => {
     const {
         description,
         productName,
@@ -229,12 +286,9 @@ router.post("/addProduct",upload.single('file'),async (req, res) => {
         Warranty,
         WarrantyTime,
         price,
+        manufacturerAddress,
     } = req.body;
 
-    const image = req.files;
-    fs.writeFileSync('./files/image.jpeg',image);
-
-    console.log(image);
     const product = new Product({
         description,
         productName,
@@ -258,11 +312,20 @@ router.post("/addProduct",upload.single('file'),async (req, res) => {
         Warranty,
         WarrantyTime,
         price,
-        image,
     });
 
     await product.save();
-    console.log(product);
+    
+    const filter = { accountAddress: manufacturerAddress };
+    console.log("filter", filter);
+
+    console.log("Check", typeof manufacturerAddress );
+    
+
+    const result = await Manufacturer.updateOne(
+        {accountAddress: "0x3bb4541adcded69829d80150912b9dfa7428456d"},{$push:{productModelNo:modelNo}}
+    );
+    console.log("result:", result);
     res.json("working");
 });
 

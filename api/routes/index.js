@@ -5,7 +5,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 var Manufacturer = require("../models/Manufacturer");
 var Seller = require("../models/Seller");
 
-const YOUR_DOMAIN = "http://localhost:8000";
+const YOUR_DOMAIN = "http://localhost:3000";
 
 router.post("/create-checkout-session", async (req, res) => {
     const products = req.body.products;
@@ -20,7 +20,7 @@ router.post("/create-checkout-session", async (req, res) => {
             },
         ],
         mode: "payment",
-        success_url: `${YOUR_DOMAIN + "/stripeIntermediate"}?success=true&products=${products}&price=${process.env.PRICE_ID}&address=${address}`,
+        success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${process.env.PRICE_ID}/${address}`,
         cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
 
@@ -37,6 +37,7 @@ router.get("/stripeIntermediate", async (req, res) => {
         price: price,
         address: address,
     });
+    // console.log("reached in intermediate");
 });
 
 /* GET home page. */

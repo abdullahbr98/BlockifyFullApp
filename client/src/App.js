@@ -4,6 +4,7 @@ import { useState,useEffect } from "react";
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
 import MetamaskConnect from "./pages/MetamaskConnect";
+import PaymentSuccessfull from "./components/PaymentSuccessfull";
 import ManufacturerHomeScreen from "./pages/ManufacturerHomeScreen";
 import SellerHomePage from "./pages/SellerHomePage"
 import ManufacturerProtectedRoutes from "./components/ManufacturerProtectedRoutes"
@@ -52,6 +53,8 @@ function App() {
                     <Route path="/buyer" element={<BuyerHomepage />} />
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
+                    <Route path="/paymentSuccessfull/:success/:products/:price/:address" element={<PaymentSuccessfull />} />
+                    {/* TO DO AHMED ZIA product name add also */}
                 </Routes>
             </Router>
         </>

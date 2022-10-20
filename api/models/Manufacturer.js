@@ -42,8 +42,13 @@ const ManufacturerSchema = new Schema({
     productsContractAddress: {
         type: String,
     },
+    productModelNo: {
+        type : [String]
+    },
     //jwt 
     token: { type: String },
+
+
 });
 
 module.exports = mongoose.model("Manufacturer", ManufacturerSchema);

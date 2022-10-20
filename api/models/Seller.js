@@ -63,6 +63,10 @@ const SellerSchema = new Schema({
     },
     documents : {
         type : Buffer
+    },
+    // From Product schema
+    productModelNo : {
+        type : [String]
     }
 });
 

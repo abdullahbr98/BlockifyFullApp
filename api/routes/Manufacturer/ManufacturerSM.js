@@ -285,9 +285,10 @@ console.log("after setting supply");
   );
   
   const tx3 = await contract_.setTotalSupply(products);
-  console.log("about to exit api");
-  axios.get("http://localhost:3000");
+  console.log(tx3);
+  // axios.get("http://localhost:3000");
   // res.redirect(303,"http://localhost:3000");
+  // res.redirect(307,"http://localhost:3000/Seller/seller");
 });
 
 router.post("/transfer", async (req, res) => {

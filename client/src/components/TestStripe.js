@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
+import lcd from "../images/lcd-image.jpg";
 const ProductDisplay = () => {
     const [accountAddress, setAccountAddress] = useState("");
 
@@ -26,16 +28,21 @@ const ProductDisplay = () => {
 
     return (
         <section>
-            <div className="product">
-                <img
-                    src="https://i.imgur.com/EHyR2nP.png"
-                    alt="The cover of Stubborn Attachments"
+            <Box align="center" mt="5vh" p="4">
+            <Box borderWidth="1px" w="30%" p="4" borderRadius={8} bg="alphaBlack.50" boxShadow="lg">
+            <Box className="product" w="100%" h="100%" align="center" mt="5">
+                <Image
+                    src={lcd}
+                    w="30vw"
+                    alt="LCD Image"
                 />
                 <div className="description">
-                    <h3>Stubborn Attachments</h3>
-                    <h5>$20.00</h5>
+                    <Flex justifyContent="center" my="4">
+                        <Text fontWeight="bold" fontSize="md" me="4">Samsung LCD</Text>
+                        <Text fontWeight="bold" fontSize="md">$500.00</Text>
+                    </Flex>
                 </div>
-            </div>
+            </Box>
             <form
                 action="http://localhost:8000/create-checkout-session"
                 method="POST"
@@ -51,8 +58,12 @@ const ProductDisplay = () => {
                     name="address"
                     value={JSON.parse(localStorage.getItem("UserAddress"))[0]}
                 />
-                <button type="submit">Checkout</button>
+                <Box align="center">
+                    <Button type="submit" color="black" bg="green.200" _hover={{"backgroundColor":"black", "color":"white"}}>Proceed To Checkout</Button>
+                </Box>
             </form>
+            </Box>
+            </Box>
         </section>
     );
 };
