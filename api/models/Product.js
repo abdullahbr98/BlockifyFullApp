@@ -16,6 +16,7 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
+  //TO DO : add check for uinique
   modelNo: {
     type: String,
     required: true,

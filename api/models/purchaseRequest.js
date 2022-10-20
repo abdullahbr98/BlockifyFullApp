@@ -17,6 +17,9 @@ const purchaseRequestSchema = new Schema({
   products:{
     type: Number,
     required:true
+  },
+  productModelNo:{
+    type : String
   }
 });
 

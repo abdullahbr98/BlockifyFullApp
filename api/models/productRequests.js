@@ -10,6 +10,9 @@ const productRequestsSchema = new Schema({
     type: Number,
     required: true,
   },
+  productModelNo: {
+    type : String
+  }
 });
 
 module.exports = mongoose.model("productRequests", productRequestsSchema);

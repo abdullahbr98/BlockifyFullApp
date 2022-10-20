@@ -43,10 +43,12 @@ router.post("/signup", async (req, res) => {
 router.post("/productRequest", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const products = req.body.products;
+    //const productModelNo = req.body.productModelNo;
 
     const productRequest = new productRequests({
         sellerAddress: sellerAddress,
         products: products,
+        //productModelNo : productModelNo,
     });
     await productRequest.save();
 
@@ -64,6 +66,18 @@ router.get("/purchaseRequest", async (req, res) => {
     const PurchaseRequests = await purchaseRequest.find({seller:seller});
     console.log(PurchaseRequests);
     res.json(PurchaseRequests);
+});
+
+
+router.post("/deletePurchaseRequest", async(req, res) => {
+    const seller = req.body.sellerAddress;
+    const products = req.body.products;
+    await purchaseRequest.deleteOne({
+        seller : seller,
+        products : products
+    });
+    res.json("Deleted");
+
 });
 
 router.get("/getIsAuthenticated", async (req, res) => {
