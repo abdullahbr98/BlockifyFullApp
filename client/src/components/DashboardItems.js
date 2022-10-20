@@ -56,7 +56,7 @@ export default function DashboardItems({ setProductsFunc }) {
     }, [authenticatedSellerCount]);
     return (
         <>
-            <Box px={120} h={"80vh"} mt={4}>
+            <Box px={100} h={"80vh"} mt={4}>
                 <SimpleGrid columns={2} spacing={5}>
                     <Box
                         color="white"
