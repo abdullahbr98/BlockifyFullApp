@@ -4,12 +4,16 @@ import { useParams } from "react-router-dom";
 import PaymentSuccess from "../images/success.png";
 import { Box, Flex, Text, Button, Icon, Link, Image } from "@chakra-ui/react";
 export default function PaymentSuccessfull() {
-    const { success, products, price, address } = useParams();
+    const modelNoOriginal = localStorage.getItem("modelNo");
+    console.log("modelNoOriginal:",modelNoOriginal);
+    const { success, products, price, address,productModelNo } = useParams();
+    console.log("productModel",productModelNo);
     const handleButton = async () => {
         axios.post("http://localhost:8000/ManufacturerSM/sendProducts", {
             products: products,
             price: price,
             address: address,
+            productModelNo:modelNoOriginal,
         });
         axios.post("http://localhost:8000/Seller/deletePurchaseRequest", {
             sellerAddress: address,

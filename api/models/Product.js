@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
+
+  productNo:{
+    type : Number
+  },
+
     //description
   description: {
     type: String,

@@ -53,7 +53,7 @@ function App() {
                     <Route path="/buyer" element={<BuyerHomepage />} />
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
-                    <Route path="/paymentSuccessfull/:success/:products/:price/:address" element={<PaymentSuccessfull />} />
+                    <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
                     {/* TO DO AHMED ZIA product name add also */}
                 </Routes>
             </Router>

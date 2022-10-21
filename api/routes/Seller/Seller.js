@@ -43,12 +43,12 @@ router.post("/signup", async (req, res) => {
 router.post("/productRequest", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const products = req.body.products;
-    //const productModelNo = req.body.productModelNo;
+    const productModelNo = req.body.productModelNo;
 
     const productRequest = new productRequests({
         sellerAddress: sellerAddress,
         products: products,
-        //productModelNo : productModelNo,
+        productModelNo : productModelNo,
     });
     await productRequest.save();
 

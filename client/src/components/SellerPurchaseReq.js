@@ -27,7 +27,8 @@ export default function SellerPurchaseReq() {
         // localStorage.setItem("pendingRequests", JSON.stringify(result.data));
         setPurchaseRequests(result.data);
     };
-    const RequestCompleteHandler = (products,sellerId)=>{
+    const RequestCompleteHandler = (modelNo,products,sellerId)=>{
+        localStorage.setItem('modelNo', modelNo);
         localStorage.setItem('noOfProducts', products);
         console.log("i am clicked");
         window.location.href="http://localhost:3000/stripePayment"
@@ -49,6 +50,7 @@ export default function SellerPurchaseReq() {
                         </TableCaption>
                         <Thead >
                             <Tr>
+                                <Th isNumeric>Model No </Th>
                                 <Th isNumeric>User Address </Th>
                                 <Th isNumeric>Manufacturer Address </Th>
                                 <Th isNumeric>Product Requested</Th>
@@ -59,6 +61,9 @@ export default function SellerPurchaseReq() {
                             {purchaseRequests?.map((purchaseRequest) => {
                                 return (
                                     <Tr>
+                                        <Td isNumeric>
+                                            {purchaseRequest.productModelNo}
+                                        </Td>
                                         <Td isNumeric>
                                             {purchaseRequest.seller}
                                         </Td>
@@ -76,7 +81,7 @@ export default function SellerPurchaseReq() {
                                                 <Badge
                                                     colorScheme="green"
                                                     cursor="pointer"
-                                                    onClick={()=>{RequestCompleteHandler(purchaseRequest.products,purchaseRequest.seller)}}
+                                                    onClick={()=>{RequestCompleteHandler(purchaseRequest.productModelNo,purchaseRequest.products,purchaseRequest.seller)}}
                                                 >
                                                     Complete
                                                 </Badge>

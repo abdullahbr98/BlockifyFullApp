@@ -10,7 +10,8 @@ const YOUR_DOMAIN = "http://localhost:3000";
 router.post("/create-checkout-session", async (req, res) => {
     const products = req.body.products;
     const address = req.body.address;
-    console.log(products);
+    const productModelNo = req.body.productModelNo;
+    console.log("Product Model No", productModelNo);
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {
@@ -20,7 +21,7 @@ router.post("/create-checkout-session", async (req, res) => {
             },
         ],
         mode: "payment",
-        success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${process.env.PRICE_ID}/${address}`,
+        success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${process.env.PRICE_ID}/${address}/${productModelNo}`,
         cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
 
