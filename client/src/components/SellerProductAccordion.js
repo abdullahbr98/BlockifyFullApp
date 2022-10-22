@@ -33,6 +33,9 @@ export default function SellerProductAccordion(props) {
                 <Text fontSize="xl" py="1" px="2">
                     {props.productName}
                 </Text>
+                <Flex px="2" fontSize="sm">
+                    <Text fontWeight="bold"  me="2" mb="2">Model No: </Text>{props.modelNo}
+                </Flex>
                 <Text px="2" fontSize="sm">
                     {props.description}
                 </Text>

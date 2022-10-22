@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import ProductGrid from "../components/ProductGrid";
+import SellerProductAccordion from "../components/SellerProductAccordion"
+import axios from "axios"
 import { Box, Flex, Text, Button, SimpleGrid, Icon } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { IoIosAddCircle } from "react-icons/io";
@@ -31,7 +33,22 @@ const array = [
         price: "800$",
     },
 ];
+
+
 export default function ManufacturerProductPage() {
+    const [productList, setproductList] = useState([]);
+    const productListFunction = async () => {
+        const listOfProducts = await axios.get(
+            "http://localhost:8000/Product/getAllProducts",
+            {}
+        );
+        setproductList(listOfProducts.data);
+        console.log("productlist:", listOfProducts);
+    };
+
+    useEffect(() => {
+        productListFunction();
+    }, []);
     return (
         <>
             <Box>
@@ -59,7 +76,15 @@ export default function ManufacturerProductPage() {
                             ms="4"
                             justifyContent="space-between"
                         >
-                            <ProductGrid array={array} />
+                            {productList?.map((productList) => {
+                        return(
+                            <SellerProductAccordion
+                            productName={productList.productName}
+                            description={productList.description}
+                            price={productList.price}
+                            modelNo={productList.modelNo}
+                        />
+                        );})}
                             <Flex
                                 bg="gray.100"
                                 w="auto"
@@ -77,7 +102,8 @@ export default function ManufacturerProductPage() {
                                 direction="column"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    window.location.href = '/ManufacturerAddProduct';
+                                    window.location.href =
+                                        "/ManufacturerAddProduct";
                                 }}
                             >
                                 <Icon

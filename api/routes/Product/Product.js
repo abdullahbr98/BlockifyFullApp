@@ -24,4 +24,11 @@ router.get("/getProductByModelNo", async (req, res) => {
     res.json(result);
 });
 
+router.get("/getAllProducts", async(req, res) => {
+    const result =  await Product.find();
+    res.json(result);
+});
+
+
+
 module.exports = router;

@@ -8,6 +8,7 @@ import authenticatedSeller from "../images/authenticatedSeller.png";
 
 export default function DashboardItems({ setProductsFunc }) {
     const [pendingRequests, setPendingRequests] = useState([]);
+    const [productListLength, setproductListLength] = useState(0);
     const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
     const [sellerAuthenticList, setsellerAuthenticList] = useState([]);
     const [authenticatedSellerCount, setauthenticatedSellerCount] = useState(0);
@@ -22,6 +23,15 @@ export default function DashboardItems({ setProductsFunc }) {
         setAuthenticationRequestCount(data.data.length);
         console.log("length of count:", data.data.length);
     };
+
+    const productListFunction = async () => {
+        const listOfProducts = await axios.get(
+            "http://localhost:8000/Product/getAllProducts",
+            {}
+        );
+        setproductListLength(listOfProducts.data.length);
+    };
+
 
     const getPendingRequests = async () => {
         const result = await axios.get(
@@ -53,6 +63,7 @@ export default function DashboardItems({ setProductsFunc }) {
     useEffect(() => {
         getPendingRequests();
         authenticationReqestSetter();
+        productListFunction();
     }, [authenticatedSellerCount]);
     return (
         <>
@@ -193,7 +204,7 @@ export default function DashboardItems({ setProductsFunc }) {
                                 fontWeight="bold"
                                 color="black"
                             >
-                                10 items
+                                {productListLength} items
                             </Text>
                         </Flex>
                         <Box>

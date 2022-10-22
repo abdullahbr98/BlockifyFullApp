@@ -40,7 +40,7 @@ export default function ManufacturerTable() {
         pendingRequestSetter();
     }
 
-    const pendingRequestsHandler = async (sellerAddress,products)=>{
+    const pendingRequestsHandler = async (modelNo,sellerAddress,products)=>{
         const manAddress = (JSON.parse(localStorage.getItem("UserAddress")));
         const data = await axios.post(
             "http://localhost:8000/manufacturer/purchaseRequest", //TODO customize this to seller and buyer
@@ -48,6 +48,7 @@ export default function ManufacturerTable() {
                 sellerAddress: sellerAddress,
                 manufacturerAddress: manAddress[0],
                 products: products,
+                productModelNo:modelNo
             }
         );
         pendingRequestSetter();
@@ -68,6 +69,7 @@ export default function ManufacturerTable() {
                     </TableCaption>
                     <Thead>
                         <Tr>
+                            <Th isNumeric>Model</Th>
                             <Th isNumeric>User Address </Th>
                             <Th isNumeric>Product Requested</Th>
                             <Th isNumeric>Approve or deny</Th>
@@ -77,14 +79,15 @@ export default function ManufacturerTable() {
                         {pendingRequests?.map((pendingRequest)=>{
                             return (
                                 <Tr>
+                            <Td isNumeric>{pendingRequest.productModelNo}</Td>
                             <Td isNumeric>{pendingRequest.sellerAddress}</Td>
                             <Td isNumeric>{pendingRequest.products}</Td>
                             <Td>
                                 <Stack direction="row" justifyContent="end">
-                                    <Badge colorScheme="green" cursor="pointer" onClick={()=>{pendingRequestsHandler(pendingRequest.sellerAddress,pendingRequest.products)}}>
+                                    <Badge colorScheme="green" cursor="pointer" onClick={()=>{pendingRequestsHandler(pendingRequest.productModelNo,pendingRequest.sellerAddress,pendingRequest.products)}}>
                                         Accept
                                     </Badge>
-                                    <Badge colorScheme="red" cursor="pointer" onClick={()=>{deleteRequestsHandler(pendingRequest.sellerAddress,pendingRequest.products)}}>
+                                    <Badge colorScheme="red" cursor="pointer" onClick={()=>{deleteRequestsHandler(pendingRequest.productModelNo,pendingRequest.sellerAddress,pendingRequest.products)}}>
                                         Remove
                                     </Badge>
                                 </Stack>

@@ -39,16 +39,16 @@ router.post("/signup", async (req, res) => {
 
     res.json("Sign Up Successful !");
 });
-
+    
 router.post("/productRequest", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const products = req.body.products;
-    //const productModelNo = req.body.productModelNo;
+    const productModelNo = req.body.productModelNo;
 
     const productRequest = new productRequests({
         sellerAddress: sellerAddress,
         products: products,
-        //productModelNo : productModelNo,
+        productModelNo : productModelNo,
     });
     await productRequest.save();
 
@@ -166,6 +166,15 @@ const upload = multer({ dest: "./files/" })
 router.post("/upload",upload.single('file'),(req,res)=>{
     res.send("success");
 })
+
+// router.post("/getSellerProducts", async(req, res) => {
+//     const address = req.body.sellerAddress;
+
+//     const result = await Seller.findOne({accountAddress:address});
+
+//     console.log(address);
+//     res.json(result.productModelNo);
+// })
 
 
 

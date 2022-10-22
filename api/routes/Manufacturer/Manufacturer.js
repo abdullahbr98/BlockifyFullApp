@@ -25,6 +25,13 @@ const {
     PRODUCTS_BYTE_CODE,
 } = require("../../utils/Constants/ManufacturerSMConstants");
 
+
+router.post("/getManufacturerInfo",async(req,res)=>{
+    const accountAddress = req.body.userAddress;
+    const data = await Manufacturer.findOne({accountAddress:accountAddress});
+    res.send(data);
+})
+
 // Manufacturer Sign Up Route
 router.post("/signup", async (req, res) => {
     //generating salt
@@ -139,7 +146,7 @@ router.post("/purchaseRequest", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const manufacturerAddress = req.body.manufacturerAddress;
     const products = req.body.products;
-    //const productModelNo = req.body.productModelNo;
+    const productModelNo = req.body.productModelNo;
 
     // Create a Purchase Request and Save in Database
     const purchaseRequest_ = new PurchaseRequest({
@@ -147,12 +154,13 @@ router.post("/purchaseRequest", async (req, res) => {
         seller: sellerAddress,
         status: false,
         products: products,
+        productModelNo: productModelNo,
     });
     await purchaseRequest_.save();
 
     // Delete the Product Request from DataBase
     // Syntax Confirm !
-    await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
+    await ProductRequest.deleteOne({ sellerAddress: sellerAddress, productModelNo:productModelNo, products:products});
 
     res.json("Request Sent Successfully !");
 });
@@ -264,6 +272,7 @@ var fs = require("fs");
 
 router.post("/addProduct", async (req, res) => {
     const {
+        productNo,
         description,
         productName,
         Brand,
@@ -290,6 +299,7 @@ router.post("/addProduct", async (req, res) => {
     } = req.body;
 
     const product = new Product({
+        productNo,
         description,
         productName,
         Brand,
@@ -323,7 +333,7 @@ router.post("/addProduct", async (req, res) => {
     
 
     const result = await Manufacturer.updateOne(
-        {accountAddress: "0x3bb4541adcded69829d80150912b9dfa7428456d"},{$push:{productModelNo:modelNo}}
+        {accountAddress: manufacturerAddress},{$push:{productModelNo:modelNo}}
     );
     console.log("result:", result);
     res.json("working");

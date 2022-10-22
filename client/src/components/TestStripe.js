@@ -8,12 +8,16 @@ const ProductDisplay = () => {
     const request = async () => {
         console.log(accountAddress);
         const products = localStorage.getItem("noOfProducts");
+        const modelNo = localStorage.getItem("modelNo");
         console.log(products);
         await axios.post(
             "http://localhost:8000/create-checkout-session", //TODO customize this to seller and buyer
             {
                 products: products,
+                productModelNo:modelNo,
             }
+
+
         );
     };
     useEffect(() => {
