@@ -68,7 +68,7 @@ export default function SellerAuthenticationStatus() {
                     </Box>
                 ) : (
                     <Box>
-                        <Flex>
+                        <Flex justifyContent="center" >
                             <Text fontWeight="bold" me="2vw">
                                 Account Status:
                             </Text>

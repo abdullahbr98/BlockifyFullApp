@@ -25,6 +25,13 @@ const {
     PRODUCTS_BYTE_CODE,
 } = require("../../utils/Constants/ManufacturerSMConstants");
 
+
+router.post("/getManufacturerInfo",async(req,res)=>{
+    const accountAddress = req.body.userAddress;
+    const data = await Manufacturer.findOne({accountAddress:accountAddress});
+    res.send(data);
+})
+
 // Manufacturer Sign Up Route
 router.post("/signup", async (req, res) => {
     //generating salt

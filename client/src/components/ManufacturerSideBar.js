@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from "axios";
 import SideBarItem from "../components/SideBarItem"
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaUsers } from "react-icons/fa";
@@ -27,7 +28,24 @@ import { HiHome } from "react-icons/hi";
 import { ArrowRightIcon } from "@chakra-ui/icons";
 export default function ManufacturerSideBar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [manufacturerUsername, setmanufacturerUsername] = useState("");
+    const [manufacturerEmail, setmanufacturerEmail] = useState("");
     const [placement, setPlacement] = React.useState("right");
+
+    const manufacturerData = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        const dataOfManufacturer = await axios.post(
+            "http://localhost:8000/Manufacturer/getManufacturerInfo",
+            {userAddress:items}
+        );
+        setmanufacturerUsername(dataOfManufacturer.data.username);
+        setmanufacturerEmail(dataOfManufacturer.data.email);
+    };
+
+    useEffect(() => {
+        manufacturerData();
+    }, [])
+    
     return (
         <>
             <Box w="7vw">
@@ -44,10 +62,10 @@ export default function ManufacturerSideBar() {
                     <DrawerOverlay />
                     <DrawerContent>
                         <DrawerHeader borderBottomWidth="1px">
-                            Username Here <br />
+                            {manufacturerUsername} <br />
                             <Text fontSize="sm" color="gray">
                                 {" "}
-                                emailhere@gmail.com
+                                {manufacturerEmail}
                             </Text>
                         </DrawerHeader>
                         <DrawerBody>
