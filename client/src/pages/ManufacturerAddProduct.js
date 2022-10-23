@@ -112,6 +112,8 @@ export default function ManufacturerAddProduct() {
                             <FormControl onSubmit={submitForm}>
                                 <Box>
                                     <Flex w="50%" direction="column">
+                                        {/*have to do file uploading task soon  */}
+                                        <Input type="file"/>
                                         <FormLabel>Description </FormLabel>
                                         <Input
                                             placeholder="Enter Description"
