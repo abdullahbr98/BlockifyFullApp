@@ -44,7 +44,11 @@ export default function ManufacturerAddProduct() {
     const [warranty, setwarranty] = useState("");
     const [warrantyTime, setwarrantyTime] = useState("");
     const [price, setprice] = useState("");
+    const [fileName, setfileName] = useState("");
     const toast = useToast();
+    const fileUploadFunction = ()=>{
+        console.log("it works");
+    }
     const submitForm = async (data) => {
         const manAddress = JSON.parse(localStorage.getItem("UserAddress"));
         await axios.post("http://localhost:8000/Manufacturer/addProduct", {
@@ -109,11 +113,15 @@ export default function ManufacturerAddProduct() {
                             Add A Product In Inventory
                         </Text>
                         <Box align="center">
-                            <FormControl onSubmit={submitForm}>
                                 <Box>
                                     <Flex w="50%" direction="column">
                                         {/*have to do file uploading task soon  */}
-                                        <Input type="file"/>
+                                        <form method="POST" action="http://localhost:8000/Manufacturer/upload" encType="multipart/form-data">
+                                        <Input type="file" name="image"/>
+                                        <Button type="submit">
+                                            upload file
+                                        </Button>
+                                        </form>
                                         <FormLabel>Description </FormLabel>
                                         <Input
                                             placeholder="Enter Description"
@@ -506,7 +514,6 @@ export default function ManufacturerAddProduct() {
                                         </Box>
                                     </Flex>
                                 </Box>
-                            </FormControl>
                         </Box>
                     </Flex>
                 </Flex>
