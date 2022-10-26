@@ -21,6 +21,7 @@ export default function DashboardItems({ setProductsFunc }) {
         );
         setAuthenticationRequest(data.data);
         setAuthenticationRequestCount(data.data.length);
+        localStorage.setItem("authenticationRequestList", JSON.stringify(data.data));
         console.log("length of count:", data.data.length);
     };
 
@@ -48,6 +49,7 @@ export default function DashboardItems({ setProductsFunc }) {
             }
         );
         setsellerAuthenticList(authenticatedSeller.data);
+        localStorage.setItem("authenticSellerListData", JSON.stringify(authenticatedSeller.data));
         setauthenticatedSellerCount(authenticatedSeller.data.length);
         console.log("length of auth seller: ", authenticatedSeller.data.length);
         const data = result.data;

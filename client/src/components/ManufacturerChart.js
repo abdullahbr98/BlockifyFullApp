@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-
+import axios from "axios";
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const pendingRequests = JSON.parse(localStorage.getItem("pendingRequests"));
+const authenticationRequestList = JSON.parse(
+    localStorage.getItem("authenticationRequestList")
+);
+const authenticSellerList = JSON.parse(localStorage.getItem("authenticSellerListData"));
+export default function ManufacturerChart() {
+    return <Doughnut data={data} />;
+}
 
 export const data = {
     labels: [
@@ -10,35 +19,10 @@ export const data = {
         "Authentic Sellers",
         "Pending Authentication Requests",
     ],
-    //, "Yellow", "Green", "Purple", "Orange"
-    // datasets: [
-    //     {
-    //         label: "# of Votes",
-    //         data: [2, 3, 1],
-    //         backgroundColor: [
-    //             "rgba(255, 99, 132, 0.2)",
-    //             "rgba(54, 162, 235, 0.2)",
-    //             // "rgba(255, 206, 86, 0.2)",
-    //             // "rgba(75, 192, 192, 0.2)",
-    //             // "rgba(153, 102, 255, 0.2)",
-    //             // "rgba(255, 159, 64, 0.2)",
-    //         ],
-    //         borderColor: [
-    //             "rgba(255, 99, 132, 1)",
-    //             "rgba(54, 162, 235, 1)",
-    //             "rgba(255, 159, 64, 1)",
-    //             // "rgba(153, 102, 255, 1)",
-    //             // "rgba(255, 206, 86, 1)",
-    //             // "rgba(75, 192, 192, 1)",
-
-    //         ],
-    //         borderWidth: 1,
-    //     },
-    // ],
     datasets: [
         {
             label: "My First Dataset",
-            data: [2, 3, 1],
+            data: [pendingRequests.length, authenticSellerList.length, authenticationRequestList.length],
             backgroundColor: [
                 "rgb(255, 99, 132)",
                 "rgb(153, 102, 255)",
@@ -46,11 +30,6 @@ export const data = {
             ],
             hoverOffset: 4,
             hoverBorderWidth: 2,
-            hoverBorderColor: "rgba(0,0,0, 0.5)",
         },
     ],
 };
-
-export default function ManufacturerChart() {
-    return <Doughnut data={data} />;
-}
