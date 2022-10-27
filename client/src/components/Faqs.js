@@ -108,7 +108,7 @@ export default function Faqs() {
                 </AccordionItem>
             </Accordion>
             <Box mb={5} mx="300" my={8}>
-                <Text fontSize={"3xl"} fontWeight="semiBold" mb={4}>Still Have Questions?</Text>
+                <Text fontSize={"3xl"} fontWeight="semiBold" mb={4} align="center">Still Have Questions?</Text>
                 <Text fontSize={"md"} color="blackAlpha.600"> if you cannot find answer to your Questions in our FAQ, you can always contact us, We will answer to you shortly!
                 </Text>
             </Box>
