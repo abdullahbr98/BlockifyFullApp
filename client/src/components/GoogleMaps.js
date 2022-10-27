@@ -24,6 +24,7 @@ class GoogleMaps extends Component {
                         this.loadMap(map, maps)
                     }
                     onDragEnd={(map) => console.log(map)}
+                    yesIWantToUseGoogleMapApiInternals={true}
                 />
             </div>
         );
