@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
     TableContainer,
     Table,
@@ -14,11 +15,32 @@ import {
     Text,
     Box,
 } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 export default function AuthenticSellerTable() {
     const [authenticSellers, setauthenticSellers] = useState([]);
+    const toast = useToast();
+    const removeSellerHandler = async (sellerAddress) => {
+        console.log("clicked in remove:", sellerAddress);
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        console.log("manAddress:", items[0]);
+        const data = await axios.post(
+            "http://localhost:8000/ManufacturerSM/remove_seller",
+            {
+                sellerAddress: sellerAddress,
+                accountAddress: items[0],
+            }
+        );
+        toast({
+            title: "Seller Removed.",
+            description: "We've removed the seller for you.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+    };
     useEffect(() => {
         setauthenticSellers(
-            JSON.parse(localStorage.getItem("authenticatedSeller")),
+            JSON.parse(localStorage.getItem("authenticatedSeller"))
         );
     }, []);
     console.log(authenticSellers);
@@ -49,6 +71,11 @@ export default function AuthenticSellerTable() {
                                             <Badge
                                                 colorScheme="red"
                                                 cursor="pointer"
+                                                onClick={() => {
+                                                    removeSellerHandler(
+                                                        authenticSellers
+                                                    );
+                                                }}
                                             >
                                                 Remove
                                             </Badge>

@@ -31,7 +31,7 @@ export default function SellerHomeItems({ displayHome }) {
                         <QuestionOutlineIcon mt="4" cursor="pointer" />
                     </Flex>
                     {/* TODO map function here to load products seller owns */}
-                    <Flex justifyContent="space-evenly" mx="5" mt="4">
+                    {/* <Flex justifyContent="space-evenly" mx="5" mt="4">
                         <SellerProductAccordion
                             productName="LG LED 40' "
                             description="Ultra wide display with high refresh rate upto 120Hz"
@@ -40,7 +40,7 @@ export default function SellerHomeItems({ displayHome }) {
                             productName="LG LED 30' "
                             description="IPS Panel with 144Hz, 1080x720 "
                         />
-                    </Flex>
+                    </Flex> */}
 
                     <Flex justifyContent="center" my="5vh">
                         <Text fontSize="3xl" me="5">
