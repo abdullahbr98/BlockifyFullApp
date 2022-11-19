@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
 import {
     TableContainer,
     Table,
@@ -17,25 +18,32 @@ import {
 } from "@chakra-ui/react";
 export default function PendingAuthenticSellersList() {
     const [authenticationRequest, setAuthenticationRequest] = useState([]);
-
-    const authenticationReqestHandler = async(sellerAddress) =>{
+    const toast = useToast();
+    const authenticationReqestHandler = async (sellerAddress) => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         const data = await axios.post(
             "http://localhost:8000/ManufacturerSM/authenticate_seller",
             {
                 sellerAddress: sellerAddress,
-                accountAddress: items[0]
+                accountAddress: items[0],
             }
         );
+        toast({
+            title: "Seller Authenticated.",
+            description: "Seller Successfully Authenticated.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
         authenticationReqestSetter();
-    }
+    };
 
-    const authenticationReqestSetter = async ()=>{
+    const authenticationReqestSetter = async () => {
         const data = await axios.get(
-            "http://localhost:8000/manufacturer/AuthenticationRequest",
+            "http://localhost:8000/manufacturer/AuthenticationRequest"
         );
         setAuthenticationRequest(data.data);
-    }
+    };
     useEffect(() => {
         authenticationReqestSetter();
     }, []);
@@ -73,7 +81,7 @@ export default function PendingAuthenticSellersList() {
                                                 cursor="pointer"
                                                 onClick={() => {
                                                     authenticationReqestHandler(
-                                                        authenticationRequest.sellerAddress,
+                                                        authenticationRequest.sellerAddress
                                                     );
                                                 }}
                                             >

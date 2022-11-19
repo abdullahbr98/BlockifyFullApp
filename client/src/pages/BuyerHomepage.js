@@ -1,4 +1,5 @@
 import React from "react";
+import BuyerCard from "../components/BuyerproductCard"
 import { Box, Flex } from "@chakra-ui/react";
 import ImageSlider from "../components/ImageSlider";
 import Navbar from "../components/Navbar";
@@ -48,14 +49,7 @@ export default function BuyerHomepage() {
     return (
         <>
             <BuyerNavbar />
-            <Flex ms="4" justifyContent="space-between">
-                {array.map(productList)}
-            </Flex>
-            <Box align="center" height="50%">
-                <Box p={4} color="white" width="50%" align="center">
-                    <ImageSlider slides={SlideData} />
-                </Box>
-            </Box>
+            <BuyerCard/>
         </>
     );
 }

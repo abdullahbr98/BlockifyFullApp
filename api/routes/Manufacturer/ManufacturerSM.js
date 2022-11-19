@@ -60,18 +60,23 @@ router.post("/authenticate_seller", async (req, res) => {
 router.post("/remove_seller", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const accountAddress = req.body.accountAddress;
+    console.log("in api sellerAdd:",sellerAddress);
+    console.log("in api accAdd:",accountAddress);
     const signer = new ethers.providers.JsonRpcProvider(
         "http://localhost:7545"
     ).getSigner(accountAddress);
     const manufacturer = await Manufacturer.findOne({
         accountAddress: accountAddress,
     });
+    console.log("manObj:",manufacturer);
+    console.log("in api manAddress New:",manufacturer.authContractAddress);
     const contract = new ethers.Contract(
-        manufacturer.contractAddress,
+        manufacturer.authContractAddress,
         SELLER_AUTHENTICATION_ABI,
         signer
     );
 
+    console.log("in api contract:",contract.address);
     let response = "";
     try {
         const tx = await contract.remove_seller(sellerAddress);
@@ -79,6 +84,24 @@ router.post("/remove_seller", async (req, res) => {
     } catch (error) {
         response = "Seller already Unverified !";
     }
+
+    console.log("sellerAddress Before Finding:",sellerAddress );
+
+    sellerAddressLower = sellerAddress.toLowerCase();
+
+    const seller = await Seller.findOne({
+        accountAddress: sellerAddressLower,
+    });
+
+
+    console.log("seller Values:", seller);
+
+    seller.authenticated = false;
+    seller.authenticatedBy = "";
+
+    await seller.save();
+
+    console.log("updated!");
 
     res.json(response);
 });

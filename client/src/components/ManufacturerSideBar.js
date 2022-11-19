@@ -73,7 +73,7 @@ export default function ManufacturerSideBar() {
                         <SideBarItem title={"Products Inventory"} logo={AiOutlineShoppingCart} link="ManufacturerProductPage"/>
                         <SideBarItem title={"Verification"} logo={GoVerified} link="pendingVerificationRequests"/>
                         <SideBarItem title={"Sellers"} logo={FaUsers} link="AuthenticSellers"/>
-                        <SideBarItem title={"User Profile"} logo={MdManageAccounts}/>
+                        {/* <SideBarItem title={"User Profile"} logo={MdManageAccounts}/> */}
                         <SideBarItem title={"Transactions"} logo={AiOutlineTransaction}/>
                         </DrawerBody>
                     </DrawerContent>
