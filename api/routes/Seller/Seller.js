@@ -124,6 +124,8 @@ router.post("/login", async (req, res) => {
     res.json(result);
 });
 
+
+// What exactly is this API supposed to accomplish !
 router.post("/requestAuthentication", async (req, res) => {
     const SellerAddress = req.body.sellerAddress;
     var authRequest = new authenticationRequest({

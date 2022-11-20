@@ -1,3 +1,4 @@
+// Description : Defines Routes and Entry Point for the Application
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import { useState,useEffect } from "react";
@@ -17,6 +18,9 @@ import ManufacturerProductPage from "./pages/ManufacturerProductPage"
 import ManufacturerAddProduct from "./pages/ManufacturerAddProduct"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestStripe from "./components/TestStripe"
+import SingleProductPage from "./components/SingleProductPage"
+// import BuyerCart from "./components/BuyerCart"
+
 function App() {
     const [owner, setowner] = useState(0);
     const setAccountOwner = (address) => {
@@ -54,6 +58,9 @@ function App() {
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
                     <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
+                    <Route path="/product" element={<SingleProductPage />} />
+                    {/* <Route path="/cart" element={<BuyerCart />} /> */}
+
                     {/* TO DO AHMED ZIA product name add also */}
                 </Routes>
             </Router>

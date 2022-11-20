@@ -5,7 +5,9 @@ import ImageSlider from "../components/ImageSlider";
 import Navbar from "../components/Navbar";
 import BuyerNavbar from "../components/BuyerNavbar";
 import SlideData from "../components/SlideData";
+import BuyerProductSection from "../components/BuyerProductSection"
 import SellerProductAccordion from "../components/SellerProductAccordion";
+import BuyerFooter from "../components/BuyerFooter"
 
 const array = [
     {
@@ -49,7 +51,8 @@ export default function BuyerHomepage() {
     return (
         <>
             <BuyerNavbar />
-            <BuyerCard/>
+            <BuyerProductSection/>
+            <BuyerFooter/>
         </>
     );
 }

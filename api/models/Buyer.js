@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const bcrypt = require('bcrypt')
 const { Schema } = mongoose;
+const bcrypt  = require("bcrypt");
 
-const ManufacturerSchema = new Schema({
+const BuyerSchema = new Schema({
     userType: {
         type: String,
     },
@@ -36,21 +36,10 @@ const ManufacturerSchema = new Schema({
     accountAddress: {
         type: String,
         required: true,
-    },
-    authContractAddress: {
-        type: String,
-    },
-    productsContractAddress: {
-        type: String,
-    },
-    productModelNo: {
-        type : [String]
-    },
-    //jwt 
-    token: { type: String },
-});
+    }
+})
 
-ManufacturerSchema.pre('save', async function (next) {
+BuyerSchema.pre('save', async function (next) {
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(this.password,salt);
@@ -61,7 +50,7 @@ ManufacturerSchema.pre('save', async function (next) {
     }
 })
 
-ManufacturerSchema.methods.isValidPassword = async function (password) {
+BuyerSchema.methods.isValidPassword = async function (password) {
     try {
         return await bcrypt.compare(password,this.password);
     } catch (error) {
@@ -69,4 +58,6 @@ ManufacturerSchema.methods.isValidPassword = async function (password) {
     }
 }
 
-module.exports = mongoose.model("Manufacturer", ManufacturerSchema);
+
+
+module.exports = mongoose.model("Buyer", BuyerSchema);

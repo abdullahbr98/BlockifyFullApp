@@ -1,3 +1,4 @@
+// Description : Displays a table that consists of a List of Authenticated Sellers !
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
