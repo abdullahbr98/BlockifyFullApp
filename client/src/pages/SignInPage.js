@@ -39,7 +39,6 @@ function SignInPage() {
         );
         localStorage.setItem('isLoggedIn', true);
         {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};
-        // console.log(data.data.userType);
     }
         catch(err){
             seterror(true);

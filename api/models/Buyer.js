@@ -19,7 +19,7 @@ const BuyerSchema = new Schema({
         type: String,
         required: true,
     },
-    userName: {
+    username: {
         type: String,
         required: true,
         unique: true,

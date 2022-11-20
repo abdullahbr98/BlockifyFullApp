@@ -6,6 +6,7 @@ var Manufacturer = require("../models/Manufacturer");
 var PurchaseRequest = require("../models/purchaseRequest");
 var Product = require("../models/Product");
 var ProductRequest = require("../models/productRequests");
+var authenticationRequest = require("../models/authenticationRequest");
 
 const {signAccessToken} = require('../helpers/jwt.helper'); 
 const createError = require("http-errors");
@@ -18,7 +19,7 @@ const signup = async (req, res) => {
     phoneNumber,
     firstName,
     lastName,
-    userName,
+    username,
     email,
     password,
     accountAddress,
@@ -42,7 +43,7 @@ const signup = async (req, res) => {
     phoneNumber,
     firstName,
     lastName,
-    userName,
+    username,
     email,
     password,
     accountAddress,
@@ -69,8 +70,14 @@ const login = async (req,res) => {
  const isMatch = await manufacturer.isValidPassword(password);
  if(!isMatch) throw createError.Unauthorized("Invalid Username or Password");
  const accessToken = await signAccessToken(manufacturer.accountAddress);
+ console.log("Type : ", manufacturer.userType)
+ console.log("Name : ", manufacturer.username);
  // return response
- res.send({accessToken}) 
+ res.json({
+    token:accessToken,
+    userType:manufacturer.userType,
+    username:manufacturer.username
+ }) 
 };
 
 // create a purchase request
@@ -192,4 +199,9 @@ const getManufacturerInfo = async(req,res)=>{
     res.send(data);
 }
 
-module.exports = {signup,login,addProduct,deleteProduct,getProductByName,createPurchaseRequest,deletePurchaseRequest,getManufacturerInfo};
+const getAuthenticationRequest = async(req,res)=>{
+  const request = await authenticationRequest.find({});
+  res.json(request);
+}
+
+module.exports = {signup,login,addProduct,deleteProduct,getProductByName,createPurchaseRequest,deletePurchaseRequest,getManufacturerInfo,getAuthenticationRequest};

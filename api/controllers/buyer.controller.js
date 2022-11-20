@@ -11,7 +11,7 @@ const signup = async (req, res) => {
     phoneNumber,
     firstName,
     lastName,
-    userName,
+    username,
     email,
     password,
     accountAddress,
@@ -23,7 +23,7 @@ const signup = async (req, res) => {
     phoneNumber,
     firstName,
     lastName,
-    userName,
+    username,
     email,
     password,
     accountAddress,
@@ -49,7 +49,11 @@ const login = async (req,res) => {
    if(!isMatch) throw createError.Unauthorized("Invalid Username or Password");
    const accessToken = await signAccessToken(buyer.accountAddress);
    // return response
-   res.send({accessToken}) 
+   res.json({
+    token:accessToken,
+    userType:buyer.userType,
+    username:buyer.username
+ })
   };
 
 module.exports = {signup,login}
