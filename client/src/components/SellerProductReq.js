@@ -58,6 +58,7 @@ export default function SellerProductReq() {
     const [productQty, setproductQty] = useState(0);
     const [modelNo, setmodelNo] = useState("");
     const [sellerAddress, setSellerAddress] = useState(0);
+    const [isAuthenticated,setIsAuthenticated] = useState(false);
     const toasterShow = () => {
         toast({
             title: "Products Requested.",
@@ -88,12 +89,21 @@ export default function SellerProductReq() {
         console.log("productlist:", listOfProducts);
     };
 
+    const getAuthenticationStatus = async () =>{
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        const result = axios.get("http://localhost:8000/Seller/getAuthenticationStatus",{
+            accountAddress:items[0]
+        });
+        setIsAuthenticated(result.data);
+    }
+
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         if (items) {
             setSellerAddress(items[0]);
         }
         productListFunction();
+        getAuthenticationStatus();
     }, []);
     const requestHandler = (e) => {
         setproductQty(e.target.value);
@@ -117,8 +127,7 @@ export default function SellerProductReq() {
                     <QuestionOutlineIcon mt="4" cursor="pointer" />
                 </Tooltip>
             </Flex>
-
-            {!productRequestFlag ? (
+            {isAuthenticated ? !productRequestFlag ? (
                 <SimpleGrid
                     columns={4}
                     spacing={12}
@@ -189,7 +198,79 @@ export default function SellerProductReq() {
                         </Button>
                     </Flex>
                 </Box>
-            )}
+            ) : "Get Authenticated First Bro !"}
+            {/* {!productRequestFlag ? (
+                <SimpleGrid
+                    columns={4}
+                    spacing={12}
+                    ms="4"
+                    justifyContent="space-between"
+                >
+
+                    {productList?.map((productList) => {
+                        return(
+                        <Box onClick={()=>{setmodelNo(productList.modelNo); console.log(productList.modelNo); setproductRequestFlag(true)}}>
+                        <SellerProductAccordion
+                            productName={productList.productName}
+                            description={productList.description}
+                            price={productList.price}
+                            modelNo={productList.modelNo}
+                        />
+                        </Box>
+                        );
+                    })}
+
+                </SimpleGrid>
+            ) : (
+                <Box
+                    borderWidth="1px"
+                    mt="4"
+                    w="50%"
+                    align="center"
+                    boxShadow="lg"
+                    p="6"
+                    rounded="md"
+                    bg="blackAlpha.50"
+                >
+                    <Box>
+                        <Image h="150px" w="150px" src={productItems} />
+                    </Box>
+                    <Flex justifyContent="center" h="10vh">
+                        <Box pt="2">
+                            {" "}
+                            <Text fontSize="lg" fontWeight="bold">
+                                Number of products :{" "}
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Input
+                                type="text"
+                                placeholder="No of Products"
+                                w="80%"
+                                onChange={requestHandler}
+                                bg="white"
+                                borderColor="black"
+                                borderWidth="1px"
+                            />
+                        </Box>
+                    </Flex>
+                    <Flex justifyContent="center" mt="3">
+                        <Button
+                            bg="blue.500"
+                            variant="outline"
+                            color="white"
+                            borderRadius={"8"}
+                            onClick={reqProductsHandler}
+                            px="5"
+                            boxShadow="sm"
+                            fontSize="sm"
+                            _hover={{ backgroundColor: "black" }}
+                        >
+                            Send Request
+                        </Button>
+                    </Flex>
+                </Box>
+            )} */}
         </Box>
     );
 }

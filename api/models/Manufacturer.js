@@ -36,6 +36,7 @@ const ManufacturerSchema = new Schema({
     accountAddress: {
         type: String,
         required: true,
+        unique: true // Changes made !
     },
     authContractAddress: {
         type: String,
@@ -43,9 +44,12 @@ const ManufacturerSchema = new Schema({
     productsContractAddress: {
         type: String,
     },
-    productModelNo: {
-        type : [String]
-    },
+    product : [
+        {
+            modelNumber : String,
+            quantity : Number
+        }
+    ],
     //jwt 
     token: { type: String },
 });

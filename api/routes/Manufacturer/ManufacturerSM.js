@@ -211,7 +211,7 @@ router.get("/getAuthenticatedSellers", async (req, res) => {
 });
 
 router.post("/sendProducts", async (req, res) => {
-    const products = req.body.products;
+    const products = req.body.products; // Quantity
     const price = req.body.price;
     const productModelNo = req.body.productModelNo;
     console.log("price", price);

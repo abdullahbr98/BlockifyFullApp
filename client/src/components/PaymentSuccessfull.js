@@ -15,6 +15,24 @@ export default function PaymentSuccessfull() {
             address: address,
             productModelNo:modelNoOriginal,
         });
+        // Update Manufacturer Inventory
+
+        axios.post("http://localhost:8000/Manufacturer/updateProductQuantity",{
+            accountAddress:address,
+            modelNumber:modelNoOriginal,
+            quantity:products
+        });
+
+
+        // Add Product to Seller Db
+        axios.post("http://localhost:8000/Seller/addProductInSeller",{
+            accountAddress:address,
+            modelNumber:modelNoOriginal,
+            quantity:products
+        });
+
+
+        //
         axios.post("http://localhost:8000/Seller/deletePurchaseRequest", {
             sellerAddress: address,
             products: products,

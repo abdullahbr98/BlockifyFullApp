@@ -6,6 +6,7 @@ import axios from "axios";
 export default function SellerAuthenticationStatus() {
     const [authenticated, setauthenticated] = useState(0);
     const [accountAddress, setaccountAddress] = useState(0);
+    const [hasRequested,setHasRequested] = useState(false);
     const toast = useToast();
     //requestAuthetication
     const requestAutheticationHandler = async () => {
@@ -16,6 +17,7 @@ export default function SellerAuthenticationStatus() {
             duration: 9000,
             isClosable: true,
         });
+        setHasRequested(true);
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         setaccountAddress(items[0]);
         const data = await axios.post(
@@ -96,9 +98,9 @@ export default function SellerAuthenticationStatus() {
                                 </Text>
                                 <Text>Not authenticated</Text>
                             </Flex>
-                            <Button onClick={requestAutheticationHandler}>
-                                request authentic
-                            </Button>
+                            {hasRequested ? <Button onClick={requestAutheticationHandler}>
+                                request authentic 
+                            </Button> : ""}
                         </Box>
                     )}
                 </Box>

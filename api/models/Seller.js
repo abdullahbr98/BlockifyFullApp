@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+let Product = require('../models/Product');
 const { Schema } = mongoose;
 
 const SellerSchema = new Schema({
@@ -35,6 +36,7 @@ const SellerSchema = new Schema({
     accountAddress: {
         type: String,
         required: true,
+        unique: true // Changes made !
     },
     authenticated: {
         type: Boolean,
@@ -64,10 +66,12 @@ const SellerSchema = new Schema({
     documents : {
         type : Buffer
     },
-    // From Product schema
-    productModelNo : {
-        type : [String]
-    }
+    product : [
+        {
+            modelNumber : String,
+            quantity : Number
+        }
+    ]
 });
 
 module.exports = mongoose.model("Seller", SellerSchema);
