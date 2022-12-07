@@ -206,7 +206,9 @@ router.post('/addProductInSeller',async(req,res)=>{
 
 router.get("/getAuthenticationStatus", async(req,res)=>{
   const accountAddress = req.query.accountAddress;
+  console.log("yahan account add aya:",accountAddress);
   const seller  = await Seller.findOne({accountAddress:accountAddress});
+  console.log("yahan seller aya:",seller);
   res.json(seller.authenticated);
 })
 

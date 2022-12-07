@@ -6,7 +6,7 @@ import axios from "axios";
 export default function SellerAuthenticationStatus() {
     const [authenticated, setauthenticated] = useState(0);
     const [accountAddress, setaccountAddress] = useState(0);
-    const [hasRequested,setHasRequested] = useState(false);
+    const [hasRequested,setHasRequested] = useState(true);
     const toast = useToast();
     //requestAuthetication
     const requestAutheticationHandler = async () => {
@@ -17,7 +17,7 @@ export default function SellerAuthenticationStatus() {
             duration: 9000,
             isClosable: true,
         });
-        setHasRequested(true);
+        setHasRequested(false);
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         setaccountAddress(items[0]);
         const data = await axios.post(

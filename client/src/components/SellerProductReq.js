@@ -58,7 +58,7 @@ export default function SellerProductReq() {
     const [productQty, setproductQty] = useState(0);
     const [modelNo, setmodelNo] = useState("");
     const [sellerAddress, setSellerAddress] = useState(0);
-    const [isAuthenticated,setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const toasterShow = () => {
         toast({
             title: "Products Requested.",
@@ -74,7 +74,7 @@ export default function SellerProductReq() {
             {
                 sellerAddress: sellerAddress,
                 products: productQty,
-                productModelNo:modelNo,
+                productModelNo: modelNo,
             }
         );
         toasterShow();
@@ -89,13 +89,18 @@ export default function SellerProductReq() {
         console.log("productlist:", listOfProducts);
     };
 
-    const getAuthenticationStatus = async () =>{
+    // { params: { answer: 42 } }
+    // accountAddress:items[0]
+
+    const getAuthenticationStatus = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        const result = axios.get("http://localhost:8000/Seller/getAuthenticationStatus",{
-            accountAddress:items[0]
-        });
+        const result = await axios.get(
+            "http://localhost:8000/Seller/getAuthenticationStatus",
+            { params: { accountAddress: items[0] } }
+        );
         setIsAuthenticated(result.data);
-    }
+        console.log("yahan value ayi hai seller ki auth ki:", result);
+    };
 
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
@@ -111,12 +116,11 @@ export default function SellerProductReq() {
         console.log(productQty);
     };
 
-
     return (
         <Box w="90vw" align="center">
             <Flex justifyContent="center">
                 <Text fontSize="3xl" me="5">
-                    Request Products From Manufacturer
+                    Request Products From Manufacturer {isAuthenticated}
                 </Text>
                 <Tooltip
                     label="Enter the number of products below to request items from a manufacturer"
@@ -127,78 +131,87 @@ export default function SellerProductReq() {
                     <QuestionOutlineIcon mt="4" cursor="pointer" />
                 </Tooltip>
             </Flex>
-            {isAuthenticated ? !productRequestFlag ? (
-                <SimpleGrid
-                    columns={4}
-                    spacing={12}
-                    ms="4"
-                    justifyContent="space-between"
-                >
-
-                    {productList?.map((productList) => {
-                        return(
-                        <Box onClick={()=>{setmodelNo(productList.modelNo); console.log(productList.modelNo); setproductRequestFlag(true)}}>
-                        <SellerProductAccordion
-                            productName={productList.productName}
-                            description={productList.description}
-                            price={productList.price}
-                            modelNo={productList.modelNo}
-                        />
-                        </Box>
-                        );
-                    })}
-
-                </SimpleGrid>
-            ) : (
-                <Box
-                    borderWidth="1px"
-                    mt="4"
-                    w="50%"
-                    align="center"
-                    boxShadow="lg"
-                    p="6"
-                    rounded="md"
-                    bg="blackAlpha.50"
-                >
-                    <Box>
-                        <Image h="150px" w="150px" src={productItems} />
-                    </Box>
-                    <Flex justifyContent="center" h="10vh">
-                        <Box pt="2">
-                            {" "}
-                            <Text fontSize="lg" fontWeight="bold">
-                                Number of products :{" "}
-                            </Text>
-                        </Box>
+            {isAuthenticated ? (
+                !productRequestFlag ? (
+                    <SimpleGrid
+                        columns={4}
+                        spacing={12}
+                        ms="4"
+                        justifyContent="space-between"
+                    >
+                        {productList?.map((productList) => {
+                            return (
+                                <Box
+                                    onClick={() => {
+                                        setmodelNo(productList.modelNo);
+                                        console.log(productList.modelNo);
+                                        setproductRequestFlag(true);
+                                    }}
+                                >
+                                    <SellerProductAccordion
+                                        productName={productList.productName}
+                                        description={productList.description}
+                                        quantity={productList.quantity}
+                                        price={productList.price}
+                                        modelNo={productList.modelNo}
+                                    />
+                                </Box>
+                            );
+                        })}
+                    </SimpleGrid>
+                ) : (
+                    <Box
+                        borderWidth="1px"
+                        mt="4"
+                        w="50%"
+                        align="center"
+                        boxShadow="lg"
+                        p="6"
+                        rounded="md"
+                        bg="blackAlpha.50"
+                    >
                         <Box>
-                            <Input
-                                type="text"
-                                placeholder="No of Products"
-                                w="80%"
-                                onChange={requestHandler}
-                                bg="white"
-                                borderColor="black"
-                                borderWidth="1px"
-                            />
+                            <Image h="150px" w="150px" src={productItems} />
                         </Box>
-                    </Flex>
-                    <Flex justifyContent="center" mt="3">
-                        <Button
-                            bg="blue.500"
-                            variant="outline"
-                            color="white"
-                            borderRadius={"8"}
-                            onClick={reqProductsHandler}
-                            px="5"
-                            boxShadow="sm"
-                            fontSize="sm"
-                            _hover={{ backgroundColor: "black" }}
-                        >
-                            Send Request
-                        </Button>
-                    </Flex>
-                </Box>
-            ) : "Get Authenticated First Bro !"}
+                        <Flex justifyContent="center" h="10vh">
+                            <Box pt="2">
+                                {" "}
+                                <Text fontSize="lg" fontWeight="bold">
+                                    Number of products :{" "}
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Input
+                                    type="text"
+                                    placeholder="No of Products"
+                                    w="80%"
+                                    onChange={requestHandler}
+                                    bg="white"
+                                    borderColor="black"
+                                    borderWidth="1px"
+                                />
+                            </Box>
+                        </Flex>
+                        <Flex justifyContent="center" mt="3">
+                            <Button
+                                bg="blue.500"
+                                variant="outline"
+                                color="white"
+                                borderRadius={"8"}
+                                onClick={reqProductsHandler}
+                                px="5"
+                                boxShadow="sm"
+                                fontSize="sm"
+                                _hover={{ backgroundColor: "black" }}
+                            >
+                                Send Request
+                            </Button>
+                        </Flex>
+                    </Box>
+                )
+            ) : (
+                "Get Authenticated First Bro !"
+            )}
             {/* {!productRequestFlag ? (
                 <SimpleGrid
                     columns={4}
