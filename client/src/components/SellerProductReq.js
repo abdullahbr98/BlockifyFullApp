@@ -210,7 +210,7 @@ export default function SellerProductReq() {
                     </Box>
                 )
             ) : (
-                "Get Authenticated First Bro !"
+                <Text align="center" mt="50px" fontSize="xl">Sorry but you need to get Authenticated first by the Manufacturer.</Text>
             )}
             {/* {!productRequestFlag ? (
                 <SimpleGrid
