@@ -233,4 +233,12 @@ router.get("/getSellerProducts", async (req, res) => {
     res.json(productData);
 });
 
+
+router.get('/getSeller',async(req,res)=>{
+   const sellerAddress = req.query.sellerAddress;
+   const seller = await Seller.findOne({accountAddress:sellerAddress});
+   console.log(seller)
+   res.json(seller);
+})
+
 module.exports = router;

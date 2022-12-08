@@ -81,12 +81,26 @@ export default function SellerProductReq() {
     };
 
     const productListFunction = async () => {
+        console.log("Came here !!!!!")
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        // Get Seller !
+        const seller = await axios.get('http://localhost:8000/seller/getSeller',{
+            params:{
+                sellerAddress:items[0]
+            }
+        })
+        console.log("Seller : ", seller.data);
+        console.log("AuthenticatedBY : ", seller.data.authenticatedBy)
         const listOfProducts = await axios.get(
             "http://localhost:8000/Product/getAllProducts",
-            {}
+            {
+                params:{
+                    manufacturerAddress:seller.data.authenticatedBy
+                }
+            }
         );
-        setproductList(listOfProducts.data);
         console.log("productlist:", listOfProducts);
+        setproductList(listOfProducts.data);
     };
 
     // { params: { answer: 42 } }
@@ -151,7 +165,7 @@ export default function SellerProductReq() {
                                     <SellerProductAccordion
                                         productName={productList.productName}
                                         description={productList.description}
-                                        quantity={productList.quantity}
+                                        quantity={productList.productNo}
                                         price={productList.price}
                                         modelNo={productList.modelNo}
                                     />

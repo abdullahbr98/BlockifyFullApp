@@ -7,9 +7,9 @@ export default function SellerHomeItems({ displayHome }) {
     const [productList,setProductList] = useState([]);
     const getProducts = async () =>{
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        const result = await axios.get("http://localhost:8000/Seller/getSellerProducts",{
+        const result = await axios.get("http://localhost:8000/product/getAllProductsSeller",{
             params:{
-                accountAddress:items[0]
+                sellerAddress:items[0]
             }
         })
         setProductList(result.data);
@@ -47,10 +47,10 @@ export default function SellerHomeItems({ displayHome }) {
                             {productList?.map((product) => {
                         return(
                             <SellerProductAccordion
-                            productName={product.name}
-                            description={product.description}
-                            price={product.price}
-                            modelNo={product.modelNo}
+                            productName={product.item.name}
+                            description={product.item.description}
+                            price={product.item.price}
+                            modelNo={product.item.modelNo}
                             quantity={product.quantity}
                         />
                         );})}

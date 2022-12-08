@@ -6,41 +6,18 @@ import { Box, Flex, Text, Button, SimpleGrid, Icon } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { IoIosAddCircle } from "react-icons/io";
 import Sidebar from "../components/ManufacturerSideBar";
-const array = [
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800$",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800$",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800$",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800$",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800$",
-    },
-];
-
 
 export default function ManufacturerProductPage() {
     const [productList, setproductList] = useState([]);
     const productListFunction = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
         const listOfProducts = await axios.get(
             "http://localhost:8000/Product/getAllProducts",
-            {}
+            {
+                params:{
+                    manufacturerAddress:items[0]
+                }
+            }
         );
         setproductList(listOfProducts.data);
         console.log("productlist:", listOfProducts);
@@ -81,6 +58,7 @@ export default function ManufacturerProductPage() {
                             <SellerProductAccordion
                             productName={productList.productName}
                             description={productList.description}
+                            quantity={productList.productNo}
                             price={productList.price}
                             modelNo={productList.modelNo}
                         />
