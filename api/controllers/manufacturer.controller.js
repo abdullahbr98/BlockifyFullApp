@@ -233,9 +233,24 @@ const getManufacturerInfo = async (req, res) => {
 };
 
 const getAuthenticationRequest = async (req, res) => {
-  const request = await authenticationRequest.find({});
+  //
+  const manufacturerAddress = req.query.manufacturerAddress;
+  const request = await authenticationRequest.find({manufacturerAddress:manufacturerAddress});
+  console.log("Requests : ", request);
   res.json(request);
 };
+
+const getManufacturers = async(req,res) =>{
+  const result = await Manufacturer.find({});
+  const addresses = [];
+  result.map(item =>{
+    addresses.push({address:item.accountAddress,name:item.username});
+  })
+  console.log(result);
+  console.log(addresses);
+  res.json(addresses);
+}
+
 
 module.exports = {
   signup,
@@ -248,4 +263,5 @@ module.exports = {
   updateProductQuantity,
   getManufacturerInfo,
   getAuthenticationRequest,
+  getManufacturers
 };

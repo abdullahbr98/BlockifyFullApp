@@ -17,11 +17,19 @@ export default function DashboardItems({ setProductsFunc }) {
         useState(0);
     const authenticationReqestSetter = async () => {
         const data = await axios.get(
-            "http://localhost:8000/manufacturer/AuthenticationRequest"
+            "http://localhost:8000/manufacturer/AuthenticationRequest",
+            {
+                params:{
+                    manufacturerAddress: JSON.parse(
+                        localStorage.getItem("UserAddress")
+                    )[0]
+                }
+            }
         );
         setAuthenticationRequest(data.data);
         setAuthenticationRequestCount(data.data.length);
         localStorage.setItem("authenticationRequestList", JSON.stringify(data.data));
+        console.log(data.data)
         console.log("length of count:", data.data.length);
     };
 

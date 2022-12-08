@@ -39,8 +39,14 @@ export default function PendingAuthenticSellersList() {
     };
 
     const authenticationReqestSetter = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
         const data = await axios.get(
-            "http://localhost:8000/manufacturer/AuthenticationRequest"
+            "http://localhost:8000/manufacturer/AuthenticationRequest",
+            {
+                params:{
+                    manufacturerAddress:items[0]
+                }
+            }
         );
         setAuthenticationRequest(data.data);
     };

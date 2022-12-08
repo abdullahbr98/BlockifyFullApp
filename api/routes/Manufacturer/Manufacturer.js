@@ -1,7 +1,7 @@
 // Clean Imports
 var express = require("express");
 var router = express.Router();
-const {signup,login,addProduct,deleteProduct,getProductByName,createPurchaseRequest,deletePurchaseRequest,updateProductQuantity,getManufacturerInfo,getAuthenticationRequest} = require("../../controllers/manufacturer.controller");
+const {signup,login,addProduct,deleteProduct,getProductByName,createPurchaseRequest,deletePurchaseRequest,updateProductQuantity,getManufacturerInfo,getAuthenticationRequest,getManufacturers} = require("../../controllers/manufacturer.controller");
 //
 
 // Clean Routes
@@ -19,6 +19,7 @@ router.post("/updateProductQuantity",updateProductQuantity);
 router.get("/getProductByName", getProductByName);
 router.post("/getManufacturerInfo",getManufacturerInfo);
 router.get("/AuthenticationRequest",getAuthenticationRequest)
+router.get("/getManufacturers", getManufacturers);
 
 
 
