@@ -112,6 +112,7 @@ const createPurchaseRequest = async (req, res) => {
 const deletePurchaseRequest = async (req, res) => {
   const sellerAddress = req.body.sellerAddress;
   await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
+  console.log("something happened here:",sellerAddress);
   res.json("Request Deleted Successfully !");
 };
 
