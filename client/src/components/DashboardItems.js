@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Button, Link, Image, SimpleGrid } from "@chakra-ui/react";
-import Inventory from "../images/Inventory.png"
-import verification from "../images/verification.png"
+import {
+    Box,
+    Flex,
+    Text,
+    Button,
+    Link,
+    Image,
+    SimpleGrid,
+} from "@chakra-ui/react";
+import Inventory from "../images/Inventory.png";
+import verification from "../images/verification.png";
 import axios from "axios";
 import productRequests from "../images/productRequest.png";
 import authenticatedSeller from "../images/authenticatedSeller.png";
@@ -19,28 +27,37 @@ export default function DashboardItems({ setProductsFunc }) {
         const data = await axios.get(
             "http://localhost:8000/manufacturer/AuthenticationRequest",
             {
-                params:{
+                params: {
                     manufacturerAddress: JSON.parse(
                         localStorage.getItem("UserAddress")
-                    )[0]
-                }
+                    )[0],
+                },
             }
         );
         setAuthenticationRequest(data.data);
         setAuthenticationRequestCount(data.data.length);
-        localStorage.setItem("authenticationRequestList", JSON.stringify(data.data));
-        console.log(data.data)
+        localStorage.setItem(
+            "authenticationRequestList",
+            JSON.stringify(data.data)
+        );
+        console.log(data.data);
         console.log("length of count:", data.data.length);
     };
 
     const productListFunction = async () => {
         const listOfProducts = await axios.get(
             "http://localhost:8000/Product/getAllProducts",
-            {}
+            {
+                params: {
+                    manufacturerAddress: JSON.parse(
+                        localStorage.getItem("UserAddress")
+                    )[0],
+                },
+            }
         );
         setproductListLength(listOfProducts.data.length);
+        console.log("list of products here:", listOfProducts.data);
     };
-
 
     const getPendingRequests = async () => {
         const result = await axios.get(
@@ -57,7 +74,10 @@ export default function DashboardItems({ setProductsFunc }) {
             }
         );
         setsellerAuthenticList(authenticatedSeller.data);
-        localStorage.setItem("authenticSellerListData", JSON.stringify(authenticatedSeller.data));
+        localStorage.setItem(
+            "authenticSellerListData",
+            JSON.stringify(authenticatedSeller.data)
+        );
         setauthenticatedSellerCount(authenticatedSeller.data.length);
         console.log("length of auth seller: ", authenticatedSeller.data.length);
         const data = result.data;
@@ -86,7 +106,10 @@ export default function DashboardItems({ setProductsFunc }) {
                         me={4}
                         boxShadow="md"
                         rounded="md"
-                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        _hover={{
+                            backgroundColor: "gray.100",
+                            boxShadow: "dark-lg",
+                        }}
                         cursor="pointer"
                     >
                         <Flex justifyContent="space-between">
@@ -144,29 +167,36 @@ export default function DashboardItems({ setProductsFunc }) {
                         me={4}
                         boxShadow="md"
                         rounded="md"
-                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        _hover={{
+                            backgroundColor: "gray.100",
+                            boxShadow: "dark-lg",
+                        }}
                         cursor="pointer"
                     >
                         <Flex justifyContent="space-between">
-                        <Flex direction="column">
-                            <Text
-                                fontSize="lg"
-                                fontWeight="bold"
-                                color="gray.500"
-                            >
-                                Total Authenticated Sellers
-                            </Text>
-                            <Text
-                                fontSize="3xl"
-                                fontWeight="bold"
-                                color="black"
-                            >
-                                {authenticatedSellerCount} Sellers
-                            </Text>
-                        </Flex>
-                        <Box>
-                        <Image src={authenticatedSeller} h="80px" w="80px" />
-                        </Box>
+                            <Flex direction="column">
+                                <Text
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                    color="gray.500"
+                                >
+                                    Total Authenticated Sellers
+                                </Text>
+                                <Text
+                                    fontSize="3xl"
+                                    fontWeight="bold"
+                                    color="black"
+                                >
+                                    {authenticatedSellerCount} Sellers
+                                </Text>
+                            </Flex>
+                            <Box>
+                                <Image
+                                    src={authenticatedSeller}
+                                    h="80px"
+                                    w="80px"
+                                />
+                            </Box>
                         </Flex>
                         <Flex align="left">
                             <Button
@@ -188,7 +218,6 @@ export default function DashboardItems({ setProductsFunc }) {
                             </Button>
                         </Flex>
                     </Box>
-                    
 
                     <Box
                         color="white"
@@ -197,29 +226,32 @@ export default function DashboardItems({ setProductsFunc }) {
                         me={4}
                         boxShadow="md"
                         rounded="md"
-                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        _hover={{
+                            backgroundColor: "gray.100",
+                            boxShadow: "dark-lg",
+                        }}
                         cursor="pointer"
                     >
                         <Flex justifyContent="space-between">
-                        <Flex direction="column">
-                            <Text
-                                fontSize="lg"
-                                fontWeight="bold"
-                                color="gray.500"
-                            >
-                                Products in Inventory
-                            </Text>
-                            <Text
-                                fontSize="3xl"
-                                fontWeight="bold"
-                                color="black"
-                            >
-                                {productListLength} items
-                            </Text>
-                        </Flex>
-                        <Box>
-                        <Image src={Inventory} h="80px" w="80px" />
-                        </Box>
+                            <Flex direction="column">
+                                <Text
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                    color="gray.500"
+                                >
+                                    Products in Inventory
+                                </Text>
+                                <Text
+                                    fontSize="3xl"
+                                    fontWeight="bold"
+                                    color="black"
+                                >
+                                    {productListLength} items
+                                </Text>
+                            </Flex>
+                            <Box>
+                                <Image src={Inventory} h="80px" w="80px" />
+                            </Box>
                         </Flex>
                         <Flex align="left">
                             <Button
@@ -242,8 +274,6 @@ export default function DashboardItems({ setProductsFunc }) {
                         </Flex>
                     </Box>
 
-
-
                     <Box
                         color="white"
                         bg="white"
@@ -251,29 +281,32 @@ export default function DashboardItems({ setProductsFunc }) {
                         me={4}
                         boxShadow="md"
                         rounded="md"
-                        _hover={{ backgroundColor: "gray.100", boxShadow:"dark-lg" }}
+                        _hover={{
+                            backgroundColor: "gray.100",
+                            boxShadow: "dark-lg",
+                        }}
                         cursor="pointer"
                     >
                         <Flex justifyContent="space-between">
-                        <Flex direction="column">
-                            <Text
-                                fontSize="lg"
-                                fontWeight="bold"
-                                color="gray.500"
-                            >
-                                Pending Verification Requests
-                            </Text>
-                            <Text
-                                fontSize="3xl"
-                                fontWeight="bold"
-                                color="black"
-                            >
-                                {authenticationRequestCount} Requests
-                            </Text>
-                        </Flex>
-                        <Box>
-                        <Image src={verification} h="80px" w="80px" />
-                        </Box>
+                            <Flex direction="column">
+                                <Text
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                    color="gray.500"
+                                >
+                                    Pending Verification Requests
+                                </Text>
+                                <Text
+                                    fontSize="3xl"
+                                    fontWeight="bold"
+                                    color="black"
+                                >
+                                    {authenticationRequestCount} Requests
+                                </Text>
+                            </Flex>
+                            <Box>
+                                <Image src={verification} h="80px" w="80px" />
+                            </Box>
                         </Flex>
                         <Flex align="left">
                             <Button
