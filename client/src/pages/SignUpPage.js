@@ -62,7 +62,7 @@ function SignUpPage() {
                 "http://localhost:8000/Seller/signup",
                 {
                     userType: userType,
-                    phone: phone,
+                    phoneNumber: phone,
                     firstName: fname,
                     lastName: lname,
                     username: username,

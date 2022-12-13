@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt  = require("bcrypt");
 let Product = require('../models/Product');
 const { Schema } = mongoose;
 
@@ -73,5 +74,28 @@ const SellerSchema = new Schema({
         }
     ]
 });
+
+
+SellerSchema.pre('save', async function (next) {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(this.password,salt);
+        this.password = hashedPassword;
+        next();
+    } catch (error) {
+        next(error);
+    }
+})
+
+SellerSchema.methods.isValidPassword = async function (password) {
+    try {
+        return await bcrypt.compare(password,this.password);
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
 
 module.exports = mongoose.model("Seller", SellerSchema);
