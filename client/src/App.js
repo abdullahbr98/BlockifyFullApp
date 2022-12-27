@@ -18,6 +18,7 @@ import ManufacturerProductPage from "./pages/ManufacturerProductPage"
 import ManufacturerAddProduct from "./pages/ManufacturerAddProduct"
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestStripe from "./components/TestStripe"
+import ManufacturerTransactions from './components/ManufacturerTransactions'
 import SingleProductPage from "./components/SingleProductPage"
 // import BuyerCart from "./components/BuyerCart"
 
@@ -51,6 +52,7 @@ function App() {
                     <Route path="/seller/:id" element={<SellerHomePage/>}/>
                     <Route path="/pendingRequests" element={<PendingRequests/>}/>
                     <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
+                    <Route path="/manufacturerTransactions" element={<ManufacturerTransactions />}/>
                     <Route path="/pendingVerificationRequests" element={<PendingVerificationRequests/>}/>
                     <Route path="/stripePayment" element={<TestStripe/>}/>
                     <Route path="/shipment" element={<ShipmentPage/>}/>

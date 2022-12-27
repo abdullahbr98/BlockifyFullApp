@@ -74,7 +74,7 @@ export default function ManufacturerSideBar() {
                         <SideBarItem title={"Verification"} logo={GoVerified} link="pendingVerificationRequests"/>
                         <SideBarItem title={"Sellers"} logo={FaUsers} link="AuthenticSellers"/>
                         {/* <SideBarItem title={"User Profile"} logo={MdManageAccounts}/> */}
-                        <SideBarItem title={"Transactions"} logo={AiOutlineTransaction}/>
+                        <SideBarItem title={"Transactions"} logo={AiOutlineTransaction} link="manufacturerTransactions"/>
                         </DrawerBody>
                     </DrawerContent>
                 </Drawer>

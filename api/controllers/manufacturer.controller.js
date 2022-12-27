@@ -9,6 +9,7 @@ var ProductRequest = require("../models/productRequests");
 var authenticationRequest = require("../models/authenticationRequest");
 var Seller = require("../models/Seller");
 
+
 const { signAccessToken } = require("../helpers/jwt.helper");
 const createError = require("http-errors");
 
@@ -253,6 +254,10 @@ const getManufacturers = async(req,res) =>{
 }
 
 
+
+
+
+
 module.exports = {
   signup,
   login,
@@ -266,3 +271,4 @@ module.exports = {
   getAuthenticationRequest,
   getManufacturers
 };
+
