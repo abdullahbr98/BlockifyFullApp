@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import lcdImage from "../images/lcd-image.jpg";
 import GoogleMaps from "../components/GoogleMaps";
+import SellerShopInfo from "../components/SellerShopInfo";
 import {
     Box,
     Flex,
@@ -27,6 +30,25 @@ import {
 import BuyerNavbar from "../components/BuyerNavbar";
 import BuyerFooter from "../components/BuyerFooter";
 export default function SingleProductPage() {
+    const [productInfo, setproductInfo] = useState({});
+    ///getProductByModelNo
+    const { id } = useParams();
+    const getProductInfo = async () => {
+        const product = await axios.get(
+            "http://localhost:8000/Product/getProductByModelNo",
+            {
+                params: {
+                    modelNo: id,
+                },
+            }
+        );
+        console.log("value shown in single product page:", product.data);
+        setproductInfo(product.data);
+    };
+    useEffect(() => {
+        getProductInfo();
+    }, []);
+
     return (
         <Box bg="blackAlpha.50" w="100vw">
             <BuyerNavbar />
@@ -34,10 +56,10 @@ export default function SingleProductPage() {
                 <Image src={lcdImage} mt="5" ms="2" borderRadius="4"></Image>
                 <Box textAlign="left" mt="5">
                     <Text fontSize="4xl" ps="2">
-                        Product Name
+                        {productInfo.productName}
                     </Text>
                     <Text fontSize="2xl" ps="2" color="gray.500">
-                        $48.00
+                        ${productInfo.price}.00
                     </Text>
                     <Button
                         m="3"
@@ -45,7 +67,7 @@ export default function SingleProductPage() {
                         borderRadius={4}
                         colorScheme="facebook"
                     >
-                        Add to Cart{" "}
+                        Add to Cart
                     </Button>
                     <Text
                         fontSize="md"
@@ -54,15 +76,7 @@ export default function SingleProductPage() {
                         color="gray.500"
                         mt="4"
                     >
-                        "Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Rerum eligendi sed et sit corporis officia,
-                        molestias voluptate, aliquam recusandae quia magni
-                        perferendis minus neque, praesentium esse repellat!
-                        Optio, cupiditate dolorum. Lorem, ipsum dolor sit amet
-                        consectetur adipisicing elit. Vitae, neque! Id velit
-                        vero labore dolorum quasi. Maxime quibusdam enim minus
-                        alias aliquid provident eum facere quia, labore expedita
-                        voluptatem at."
+                        {productInfo.description}
                     </Text>
                     <Text
                         fontSize="md"
@@ -99,8 +113,89 @@ export default function SingleProductPage() {
                                     <Tbody>
                                         {/* mapping here to show data */}
                                         <Tr>
-                                            <Td>inches</Td>
-                                            <Td>millimetres (mm)</Td>
+                                            <Td>Brand</Td>
+                                            <Td>{productInfo.Brand}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Color</Td>
+                                            <Td>{productInfo.color}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Height</Td>
+                                            <Td>{productInfo.height}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Width</Td>
+                                            <Td>{productInfo.width}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Display Type</Td>
+                                            <Td>{productInfo.displayType}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Resolution</Td>
+                                            <Td>{productInfo.Resolution}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>HDR</Td>
+                                            <Td>{productInfo.HDR}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Refresh Rate</Td>
+                                            <Td>
+                                                {productInfo.refreshRate} Hz
+                                            </Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Smart capability</Td>
+                                            <Td>{productInfo.smartCapable}</Td>
+                                        </Tr>
+
+                                        <Tr>
+                                            <Td>Featured Streaming Services</Td>
+                                            <Td>
+                                                {
+                                                    productInfo.featuredStreamingServices
+                                                }
+                                            </Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Screen mirroring</Td>
+                                            <Td>
+                                                {productInfo.screenMirroring}
+                                            </Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>No of HDMI Inputs</Td>
+                                            <Td>{productInfo.hdmiInputs}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>No of USB Inputs</Td>
+                                            <Td>{productInfo.usbInputs}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Network Compatibility</Td>
+                                            <Td>
+                                                {
+                                                    productInfo.networkCompatibility
+                                                }
+                                            </Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>No of Speakers</Td>
+                                            <Td>{productInfo.speakers}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Speakers Type</Td>
+                                            <Td>{productInfo.speakerType}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Warranty</Td>
+                                            <Td>{productInfo.Warranty}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Total Time of Warranty</Td>
+                                            <Td>{productInfo.WarrantyTime}</Td>
                                         </Tr>
                                     </Tbody>
                                 </Table>
@@ -127,7 +222,7 @@ export default function SingleProductPage() {
                         <h2>
                             <AccordionButton _hover={{ color: "blue" }}>
                                 <Box flex="1" textAlign="left" fontSize="3xl">
-                                    Shop Location
+                                    Seller Information
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
@@ -135,7 +230,7 @@ export default function SingleProductPage() {
                         <AccordionPanel pb={4}>
                             <Flex justifyContent="center">
                                 <Box>
-                                    <GoogleMaps />
+                                    <SellerShopInfo />
                                 </Box>
                             </Flex>
                         </AccordionPanel>

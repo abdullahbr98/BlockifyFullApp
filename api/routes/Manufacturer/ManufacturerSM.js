@@ -21,7 +21,7 @@ var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
 var AuthenticationRequest = require("../../models/authenticationRequest");
 var Product = require("../../models/Product");
-const { toBigNumber } = require("web3/lib/utils/utils");
+// const { toBigNumber } = require("web3/lib/utils/utils");
 
 // Routes for Authenticate_Seller SM Functions
 // Accepts Request for Authenticating a Seller on Blockchain

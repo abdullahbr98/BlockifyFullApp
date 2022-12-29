@@ -63,7 +63,7 @@ router.post("/upload", upload.single("file"), (req, res) => {
 router.get("/getAllTransactions", async (req, res) => {
   const address = req.query.accountAddress;
   const provider = new providers.JsonRpcProvider("http://localhost:7545");
-
+  console.log("address of acc in trans:",address);
   // Retrieve the latest block
   const latestBlock = await provider.getBlock("latest");
   let result = [];
@@ -89,7 +89,7 @@ router.get("/getAllTransactions", async (req, res) => {
       }
     }
   }
-
+  console.log("result from api:",result);
   res.json(result);
 });
 

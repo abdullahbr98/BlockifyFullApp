@@ -20,17 +20,21 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestStripe from "./components/TestStripe"
 import ManufacturerTransactions from './components/ManufacturerTransactions'
 import SingleProductPage from "./components/SingleProductPage"
+import BuyerCartPage from "./components/BuyerCartPage"
 // import BuyerCart from "./components/BuyerCart"
 
 function App() {
     const [owner, setowner] = useState(0);
     const setAccountOwner = (address) => {
-        setowner(address);
-        console.log("Before Stringify : ", address);
-        console.log("After Stringify : ", JSON.stringify(address));
-        localStorage.setItem("UserAddress", JSON.stringify(address));
-        const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("After Local Storage : ", items[0]);
+        if (address === undefined) {
+            setowner("");
+            localStorage.setItem("UserAddress", JSON.stringify(""));
+        }
+        else
+        {
+            setowner(address);
+            localStorage.setItem("UserAddress", JSON.stringify(address));
+        }
         console.log(address);
     };
     
@@ -54,17 +58,18 @@ function App() {
                     <Route path="/login" element={<SignInPage />} />
                     <Route path="/manufacturer/:id" element={<ManufacturerHomeScreen />} />
                     <Route path="/seller/:id" element={<SellerHomePage/>}/>
+                    <Route path="/buyer/:id" element={<BuyerHomepage />} />
                     <Route path="/pendingRequests" element={<PendingRequests/>}/>
                     <Route path="/authenticSellers" element={<AuthenticSellers/>}/>
                     <Route path="/manufacturerTransactions" element={<ManufacturerTransactions />}/>
                     <Route path="/pendingVerificationRequests" element={<PendingVerificationRequests/>}/>
                     <Route path="/stripePayment" element={<TestStripe/>}/>
                     <Route path="/shipment" element={<ShipmentPage/>}/>
-                    <Route path="/buyer" element={<BuyerHomepage />} />
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
                     <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
-                    <Route path="/product" element={<SingleProductPage />} />
+                    <Route path="/product/:id" element={<SingleProductPage />} />
+                    <Route path="/cart" element={<BuyerCartPage />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}
 
                     {/* TO DO AHMED ZIA product name add also */}

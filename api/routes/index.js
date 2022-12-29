@@ -4,6 +4,7 @@ var axios = require("axios");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 var Manufacturer = require("../models/Manufacturer");
 var Seller = require("../models/Seller");
+var Buyer = require("../models/Buyer");
 var Product = require("../models/Product")
 
 const YOUR_DOMAIN = "http://localhost:3000";
@@ -59,7 +60,7 @@ router.post("/userLogin", async (req, res) => {
   // Determine User Type
   let result1 = await Manufacturer.findOne({ email: email });
   let result2 = await Seller.findOne({ email: email });
-//   let result3 = await Buyer.findOne({ accountAddress: accountAddress });
+  let result3 = await Buyer.findOne({ email: email });
 
   if (result1) {
     const result = await axios.post(

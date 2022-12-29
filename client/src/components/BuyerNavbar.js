@@ -6,6 +6,7 @@ import { MdStore, MdOutlineAccountCircle } from "react-icons/md";
 import {
     Box,
     Icon,
+    Button,
     Flex,
     Select,
     Image,
@@ -69,22 +70,17 @@ export default function BuyerNavbar() {
                         </Flex>
                         <Flex mx="2">
                             <Box pt="1">
-                                <Icon
-                                    as={MdOutlineAccountCircle}
-                                    color="white"
-                                ></Icon>
-                            </Box>
-
-                            <Link fontWeight="medium" color="white" mx="2">
-                                Account
-                            </Link>
-                        </Flex>
-                        <Flex mx="2">
-                            <Box pt="1">
                                 <Icon as={HiShoppingCart} color="white"></Icon>
                             </Box>
                             <Link fontWeight="medium" color="white" mx="2">
                                 Cart
+                            </Link>
+                        </Flex>
+                        <Flex mx="2">
+                            <Link fontWeight="medium" color="white" mx="2" href="/">
+                                <Button colorScheme='facebook' size="sm">
+                                    Log Out
+                                </Button>
                             </Link>
                         </Flex>
                     </Flex>
