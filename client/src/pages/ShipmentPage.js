@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import ShipmentDetails from "../components/ShipmentDetails";
-import { Container, Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 export default function ShipmentPage() {
     const [status, setstatus] = useState("PROCESSING")
     return (

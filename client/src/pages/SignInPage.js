@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import RadioCardUse from "../components/RadioCardUse";
 import {
     Input,
-    InputLeftAddon,
     InputRightElement,
     InputGroup,
     Box,

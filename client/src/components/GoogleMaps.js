@@ -17,7 +17,7 @@ function GoogleMaps({ latitude, longitude, onChange }) {
             <GoogleMapReact
                 onClick={_onClick}
                 bootstrapURLKeys={{
-                    key: "AIzaSyBWbI__mwrOAas2KtVKlM1Dx_VH_WNVfjw",
+                    key: "",
                 }}
                 center={{ lat: lati, lng: longi }}
                 //31.5160° N, 74.3429° E

@@ -5,7 +5,6 @@ import {
     TableContainer,
     Table,
     Th,
-    Tfoot,
     Td,
     Tr,
     Thead,
@@ -31,6 +30,7 @@ export default function AuthenticSellerTable() {
                 accountAddress: items,
             }
         );
+        console.log(data);
         toast({
             title: "Seller Removed.",
             description: "We've removed the seller for you.",

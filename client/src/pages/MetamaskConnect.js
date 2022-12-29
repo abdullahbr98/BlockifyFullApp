@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useMoralis } from "react-moralis";
-import LandingPage from "./LandingPage";
+import React, { useState } from "react";
 import Section from "../components/Section";
 import Faq from "../components/Faqs";
 import {
@@ -30,6 +28,7 @@ export default function MetamaskConnect(props) {
         if (address === undefined) {
             setowner(address);
             localStorage.setItem("UserAddress", JSON.stringify(""));
+            console.log(owner);
         }
         else{
             setowner()

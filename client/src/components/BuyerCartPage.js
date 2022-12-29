@@ -9,11 +9,9 @@ import {
     Thead,
     Button,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
     TableContainer,
 } from "@chakra-ui/react";
 import BuyerNavbar from "../components/BuyerNavbar";

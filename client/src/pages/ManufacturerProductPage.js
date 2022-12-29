@@ -1,8 +1,7 @@
 import React, { useState,useEffect } from "react";
-import ProductGrid from "../components/ProductGrid";
 import SellerProductAccordion from "../components/SellerProductAccordion"
 import axios from "axios"
-import { Box, Flex, Text, Button, SimpleGrid, Icon } from "@chakra-ui/react";
+import { Box, Flex, Text, SimpleGrid, Icon } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { IoIosAddCircle } from "react-icons/io";
 import Sidebar from "../components/ManufacturerSideBar";
