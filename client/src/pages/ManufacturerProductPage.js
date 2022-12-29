@@ -15,7 +15,7 @@ export default function ManufacturerProductPage() {
             "http://localhost:8000/Product/getAllProducts",
             {
                 params:{
-                    manufacturerAddress:items[0]
+                    manufacturerAddress:items
                 }
             }
         );

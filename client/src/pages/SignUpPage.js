@@ -44,6 +44,7 @@ function SignUpPage() {
         // console.log({ user });
         //axios intercepter
         if(userType==="Manufacturer"){
+        console.log("Account Address : ", accountAddress);
         const data = await axios.post(
             "http://localhost:8000/Manufacturer/signup",
             {
@@ -54,7 +55,7 @@ function SignUpPage() {
                 username: username,
                 email: email,
                 password: password, //TODO make this bycrypt function
-                accountAddress: accountAddress[0],
+                accountAddress: accountAddress
             }
         );}
         else if(userType==="Seller"){
@@ -68,7 +69,7 @@ function SignUpPage() {
                     username: username,
                     email: email,
                     password: password, //TODO make this bycrypt function
-                    sellerAddress: accountAddress[0],
+                    sellerAddress: accountAddress
                 }
             );
 

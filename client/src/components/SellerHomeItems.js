@@ -9,7 +9,7 @@ export default function SellerHomeItems({ displayHome }) {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         const result = await axios.get("http://localhost:8000/product/getAllProductsSeller",{
             params:{
-                sellerAddress:items[0]
+                sellerAddress:items
             }
         })
         setProductList(result.data);

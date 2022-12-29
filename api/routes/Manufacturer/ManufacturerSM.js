@@ -21,6 +21,7 @@ var Manufacturer = require("../../models/Manufacturer");
 var Seller = require("../../models/Seller");
 var AuthenticationRequest = require("../../models/authenticationRequest");
 var Product = require("../../models/Product");
+const { toBigNumber } = require("web3/lib/utils/utils");
 
 // Routes for Authenticate_Seller SM Functions
 // Accepts Request for Authenticating a Seller on Blockchain
@@ -212,84 +213,97 @@ router.get("/getAuthenticatedSellers", async (req, res) => {
 
 router.post("/sendProducts", async (req, res) => {
     const products = req.body.products; // Quantity
-    const price = req.body.price;
+    const price = req.body.price; // Price
+    console.log("Price : ",price);
     const productModelNo = req.body.productModelNo;
     console.log("price", price);
     // const accountAddress = req.body.accountAddress; //sellers address
     console.log("inside body:", req.body);
     const accountAddress = req.body.address; //sellers address
-    let conversion = products * price * 235;
+    let conversion = products * price;
     conversion = toString(conversion);
     console.log("apna original typeof string", typeof conversion);
 
+
+    // Seller as Signer
     const signer = new ethers.providers.JsonRpcProvider(
         "http://localhost:7545"
     ).getSigner(accountAddress);
+
+    // Get Seller from DB
     const seller = await Seller.findOne({
         accountAddress: accountAddress,
     });
 
-    // Balance Contract !
+    // Create Balance Contract !
     const BalanceContract = new ethers.ContractFactory(
         BALANCE_ABI,
         BALANCE_BYTE_CODE,
         signer
     );
-
-    // Deploying Products Contract for the Manufacturer
+    
+    // Deploying Balance Contract
     console.log(`Deploying from account : ${signer._address}`);
     const balanceContract = await BalanceContract.deploy();
     await balanceContract.deployed();
 
     console.log("account Address le original:", accountAddress);
-
+    
+    // Update Seller set Balance Contract Address
     await seller.updateOne(
         { accountAddress: accountAddress },
-        { set: { balanceContractAddress: balanceContract.address } }
+        { $set: { balanceContractAddress: balanceContract.address } }
     );
+
+    // Set Manufacturer Address for this Seller
     const manufacturerAddress = seller.authenticatedBy;
 
     console.log(manufacturerAddress);
-
+    
+    // Find Manufacturer who authenticated this Seller
     const manufacturer = await Manufacturer.findOne({
         accountAddress: manufacturerAddress,
     });
+
+    // Create Signer for Manufacturer
     const signer_mnf = new ethers.providers.JsonRpcProvider(
         "http://localhost:7545"
     ).getSigner(manufacturerAddress);
+
     let contract = new ethers.Contract(
         manufacturer.productsContractAddress,
         PRODUCTS_ABI,
         signer_mnf
     );
 
-    //Manufacturer ke through karna hai ------------------------------------------------------------
-    await contract.setTotalSupply(100);
-    console.log("after setting supply");
-
-    //----------------------------------------------------------------------------------------------
-
     // Transfer of Products !
     console.log(
         "manufacturer ka contractAddress product wala: ",
         manufacturer.productsContractAddress
     );
-    await contract.approve(accountAddress, products);
+    // await contract.approve(accountAddress, products);
     console.log("pehla approve");
-    console.log("type of conversion", typeof conversion);
-    const tx1 = await contract.transfer(accountAddress, products);
-
-    // console.log("tx1:", tx1);
-
+    console.log("type of conversion", typeof products);
+    // let bprd = products*Math.pow(10,18); 
+    let bprd = ethers.utils.parseEther(String(products));
+    console.log("Product : " , bprd);
+    const tx1 = await contract.transfer(accountAddress, String(products));
+    console.log(tx1);
+    const balance = await contract.balanceOf(accountAddress);
+    console.log("Balance : ", balance);
     contract = new ethers.Contract(
         balanceContract.address,
         BALANCE_ABI,
         signer
     );
-    await contract.setBalance(accountAddress, "20");
-    // Transfer of Balance !
-    await contract.approve(manufacturerAddress, "20");
-    const tx2 = await contract.transfer(manufacturerAddress, "20");
+
+    console.log("Calling Set Balance !");
+    console.log("Price : ", price);
+    await contract.setBalance(accountAddress, String(price));
+    
+    console.log("Transfer of Balance from Seller to his Manufacturer");
+    const tx2 = await contract.transfer(manufacturerAddress, String(price));
+    
     console.log(tx2);
     //--------------------------------------------------------
     // Product Contract !
@@ -306,7 +320,7 @@ router.post("/sendProducts", async (req, res) => {
     // Adding Product Contract Address
     await seller.updateOne(
         { accountAddress: accountAddress },
-        { set: { productContractAddress: productsContract.address } }
+        { $set: { productContractAddress: productsContract.address } }
     );
 
     const contract_ = new ethers.Contract(
@@ -329,14 +343,18 @@ router.post("/sendProducts", async (req, res) => {
     const newValue = productNo - products;
     await Product.updateOne(
         { modelNo: productModelNo },
-        { productNo: newValue }
+        {$set : { productNo: newValue }}
     );
-
-    const tx3 = await contract_.setTotalSupply(products);
+    
+    console.log("Setting Total Supply of Seller");
+    const tx3 = await contract_.setTotalSupply(bprd);
     console.log(tx3);
     // axios.get("http://localhost:3000");
     // res.redirect(303,"http://localhost:3000");
     // res.redirect(307,"http://localhost:3000/Seller/seller");
+    
+    res.json("Success !")
+
 });
 
 router.post("/transfer", async (req, res) => {
@@ -355,7 +373,7 @@ router.post("/transfer", async (req, res) => {
         signer
     );
 
-    const tx = await contract.transfer(sellerAddress, products);
+    const tx = await contract.transfer(sellerAddress, String(products));
     res.json(
         `${products} Products Transfered from ${accountAddress} to ${sellerAddress}! `
     );

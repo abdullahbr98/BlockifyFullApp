@@ -9,7 +9,7 @@ export default function ManufacturerTransactions() {
         const result = await axios.get('http://localhost:8000/Manufacturer/getAllTransactions',
         {
             params:{
-                accountAddress:items[0]
+                accountAddress:items
             }
         })
         setTransactions(result.data);

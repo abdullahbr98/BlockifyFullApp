@@ -35,7 +35,7 @@ function SignInPage() {
             { 
                 email: email,
                 password: password,
-                address: accountAddress[0] }
+                address: accountAddress }
         );
         localStorage.setItem('isLoggedIn', true);
         {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};

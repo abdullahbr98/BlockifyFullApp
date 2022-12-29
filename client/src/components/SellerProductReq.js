@@ -86,7 +86,7 @@ export default function SellerProductReq() {
         // Get Seller !
         const seller = await axios.get('http://localhost:8000/seller/getSeller',{
             params:{
-                sellerAddress:items[0]
+                sellerAddress:items
             }
         })
         console.log("Seller : ", seller.data);
@@ -104,13 +104,13 @@ export default function SellerProductReq() {
     };
 
     // { params: { answer: 42 } }
-    // accountAddress:items[0]
+    // accountAddress:items
 
     const getAuthenticationStatus = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         const result = await axios.get(
             "http://localhost:8000/Seller/getAuthenticationStatus",
-            { params: { accountAddress: items[0] } }
+            { params: { accountAddress: items } }
         );
         setIsAuthenticated(result.data);
         console.log("yahan value ayi hai seller ki auth ki:", result);
@@ -119,7 +119,7 @@ export default function SellerProductReq() {
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         if (items) {
-            setSellerAddress(items[0]);
+            setSellerAddress(items);
         }
         productListFunction();
         getAuthenticationStatus();

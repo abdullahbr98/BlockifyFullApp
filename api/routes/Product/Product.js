@@ -28,6 +28,7 @@ router.get("/getProductByModelNo", async (req, res) => {
 
 router.get("/getAllProducts", async (req, res) => {
     const manufacturerAddress = req.query.manufacturerAddress;
+    console.log("Address : ",manufacturerAddress);
     const manufacturer = await Manufacturer.find({
         accountAddress: manufacturerAddress,
     });
@@ -46,6 +47,7 @@ router.get("/getAllProducts", async (req, res) => {
 
 router.get("/getAllProductsSeller", async (req, res) => {
     const sellerAddress = req.query.sellerAddress;
+    console.log("Address : ", sellerAddress);
     const seller = await Seller.findOne({ accountAddress: sellerAddress });
     console.log("Seller : ", seller);
     const result = [];

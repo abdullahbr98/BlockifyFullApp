@@ -54,7 +54,7 @@ export default function ManufacturerTable() {
             "http://localhost:8000/manufacturer/purchaseRequest", //TODO customize this to seller and buyer
             {
                 sellerAddress: sellerAddress,
-                manufacturerAddress: manAddress[0],
+                manufacturerAddress: manAddress,
                 products: products,
                 productModelNo: modelNo,
             }

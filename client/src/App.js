@@ -26,7 +26,11 @@ function App() {
     const [owner, setowner] = useState(0);
     const setAccountOwner = (address) => {
         setowner(address);
+        console.log("Before Stringify : ", address);
+        console.log("After Stringify : ", JSON.stringify(address));
         localStorage.setItem("UserAddress", JSON.stringify(address));
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        console.log("After Local Storage : ", items[0]);
         console.log(address);
     };
     

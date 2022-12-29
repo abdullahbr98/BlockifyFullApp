@@ -31,11 +31,11 @@ export default function SellerAuthenticationStatus() {
     });
     setHasRequested(false);
     const items = JSON.parse(localStorage.getItem("UserAddress"));
-    setaccountAddress(items[0]);
+    setaccountAddress(items);
     const data = await axios.post(
       "http://localhost:8000/seller/requestAuthentication", //TODO customize this to seller and buyer
       {
-        sellerAddress: items[0],
+        sellerAddress: items,
         manufacturerAddress: selectedAddress,
       }
     );
@@ -43,11 +43,11 @@ export default function SellerAuthenticationStatus() {
 
   const authenticHandler = async () => {
     const items = JSON.parse(localStorage.getItem("UserAddress"));
-    setaccountAddress(items[0]);
+    setaccountAddress(items);
     const data = await axios.get(
       "http://localhost:8000/seller/getIsAuthenticated", //TODO customize this to seller and buyer
       {
-        params: { sellerAddress: items[0] },
+        params: { sellerAddress: items },
       }
     );
     console.log(data.data);

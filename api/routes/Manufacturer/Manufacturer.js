@@ -72,7 +72,7 @@ router.get("/getAllTransactions", async (req, res) => {
     let block = await provider.getBlock(i);
     for (const transaction of block.transactions) {
       let transactionDetails = await provider.getTransaction(transaction);
-      if (transactionDetails.from.toLowerCase() === address) {
+      if (transactionDetails.from === address) {
         let d = new Date(block.timestamp * 1000);
         let tx = {
           from: transactionDetails.from,

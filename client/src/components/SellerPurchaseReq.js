@@ -22,7 +22,7 @@ export default function SellerPurchaseReq() {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         const result = await axios.get(
             "http://localhost:8000/Seller/purchaseRequest",
-            {params:{sellerAddress:items[0]}}
+            {params:{sellerAddress:items}}
         );
         // localStorage.setItem("pendingRequests", JSON.stringify(result.data));
         setPurchaseRequests(result.data);

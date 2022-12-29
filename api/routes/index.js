@@ -4,14 +4,20 @@ var axios = require("axios");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 var Manufacturer = require("../models/Manufacturer");
 var Seller = require("../models/Seller");
+var Product = require("../models/Product")
 
 const YOUR_DOMAIN = "http://localhost:3000";
 
 router.post("/create-checkout-session", async (req, res) => {
+  console.log(req.body);
   const products = req.body.products;
   const address = req.body.address;
-  const productModelNo = req.body.productModelNo;
+  const productModelNo = req.body.modelNo;
   console.log("Product Model No", productModelNo);
+  console.log("Address in checkout : ", address);
+  const product = await Product.findOne({modelNo:productModelNo});
+  console.log(product)
+  console.log("Price : " , product.price);
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
@@ -21,7 +27,7 @@ router.post("/create-checkout-session", async (req, res) => {
       },
     ],
     mode: "payment",
-    success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${process.env.PRICE_ID}/${address}/${productModelNo}`,
+    success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${product.price}/${address}/${productModelNo}`,
     cancel_url: `${YOUR_DOMAIN}?canceled=true`,
   });
 

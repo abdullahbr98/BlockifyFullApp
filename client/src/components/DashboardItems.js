@@ -30,7 +30,7 @@ export default function DashboardItems({ setProductsFunc }) {
                 params: {
                     manufacturerAddress: JSON.parse(
                         localStorage.getItem("UserAddress")
-                    )[0],
+                    )
                 },
             }
         );
@@ -51,7 +51,7 @@ export default function DashboardItems({ setProductsFunc }) {
                 params: {
                     manufacturerAddress: JSON.parse(
                         localStorage.getItem("UserAddress")
-                    )[0],
+                    ),
                 },
             }
         );
@@ -69,7 +69,7 @@ export default function DashboardItems({ setProductsFunc }) {
                 params: {
                     accountAddress: JSON.parse(
                         localStorage.getItem("UserAddress")
-                    )[0],
+                    ),
                 },
             }
         );

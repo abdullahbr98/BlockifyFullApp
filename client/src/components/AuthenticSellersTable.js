@@ -23,12 +23,12 @@ export default function AuthenticSellerTable() {
     const removeSellerHandler = async (sellerAddress) => {
         console.log("clicked in remove:", sellerAddress);
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("manAddress:", items[0]);
+        console.log("manAddress:", items);
         const data = await axios.post(
             "http://localhost:8000/ManufacturerSM/remove_seller",
             {
                 sellerAddress: sellerAddress,
-                accountAddress: items[0],
+                accountAddress: items,
             }
         );
         toast({

@@ -25,7 +25,7 @@ export default function PendingAuthenticSellersList() {
             "http://localhost:8000/ManufacturerSM/authenticate_seller",
             {
                 sellerAddress: sellerAddress,
-                accountAddress: items[0],
+                accountAddress: items,
             }
         );
         toast({
@@ -44,7 +44,7 @@ export default function PendingAuthenticSellersList() {
             "http://localhost:8000/manufacturer/AuthenticationRequest",
             {
                 params:{
-                    manufacturerAddress:items[0]
+                    manufacturerAddress:items
                 }
             }
         );

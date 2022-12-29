@@ -41,11 +41,11 @@ export default function SellerShopInfo({ shopInfo }) {
 
     const editShopInfoHandler = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("accAdd:", items[0]);
+        console.log("accAdd:", items);
         const data = await axios.post(
             "http://localhost:8000/Seller/updateShopInformation", //TODO customize this to seller and buyer
             {
-                sellerAddress: items[0],
+                sellerAddress: items,
                 shopName: shopName,
                 cordinates: cordinates,
                 shopAddress: shopAddress,
@@ -56,11 +56,11 @@ export default function SellerShopInfo({ shopInfo }) {
 
     const getSellerShopInfo = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("accAdd:", items[0]);
+        console.log("accAdd:", items);
         const data = await axios.get(
             "http://localhost:8000/Seller/shopInformation", //TODO customize this to seller and buyer
             {
-                params: { sellerAddress: items[0] },
+                params: { sellerAddress: items },
             }
         );
         console.log(data);

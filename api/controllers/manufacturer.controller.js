@@ -8,6 +8,16 @@ var Product = require("../models/Product");
 var ProductRequest = require("../models/productRequests");
 var authenticationRequest = require("../models/authenticationRequest");
 var Seller = require("../models/Seller");
+const {
+  SELLER_AUTHENTICATION_ABI,
+  PRODUCTS_ABI,
+  BALANCE_ABI,
+  BALANCE_BYTE_CODE,
+  PRODUCTS_BYTE_CODE,
+} = require("../utils/Constants/ManufacturerSMConstants");
+var ethers = require("ethers");
+var Manufacturer = require("../models/Manufacturer");
+
 
 
 const { signAccessToken } = require("../helpers/jwt.helper");
@@ -26,6 +36,7 @@ const signup = async (req, res) => {
     password,
     accountAddress,
   } = req.body;
+  console.log("First Name : ", firstName);
   console.log("address : ", accountAddress);
   // Create contracts
   const authContract = getAuthContractInstance(
@@ -113,7 +124,7 @@ const createPurchaseRequest = async (req, res) => {
 const deletePurchaseRequest = async (req, res) => {
   const sellerAddress = req.body.sellerAddress;
   await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
-  console.log("something happened here:",sellerAddress);
+  console.log("something happened here:", sellerAddress);
   res.json("Request Deleted Successfully !");
 };
 
@@ -172,14 +183,49 @@ const addProduct = async (req, res) => {
     price,
   });
 
+
+  console.log("Account Address : ",manufacturerAddress);
+
+  // Find Manufacturer who authenticated this Seller
+  const manufacturer = await Manufacturer.findOne({
+    accountAddress: manufacturerAddress,
+  });
+
+  console.log("BP - 1");
+
+  const signer_mnf = new ethers.providers.JsonRpcProvider(
+    "http://localhost:7545"
+  ).getSigner(2);
+  
+
+
+  console.log("BP - 2");
+
+  let contract = new ethers.Contract(
+    manufacturer.productsContractAddress,
+    PRODUCTS_ABI,
+    signer_mnf
+  );
+  
+  console.log("BP - 3");
+  
+
+  await contract.setTotalSupply(productNo);
+  console.log("after setting supply");
+
+  const tx = await contract.totalSupply();
+  console.log('Total Supply : ' + tx);
+
   await product.save();
 
-  console.log("Manufacturer Address : ", manufacturerAddress[0]);
+  console.log("Manufacturer Address : ", manufacturerAddress);
 
   const result = await Manufacturer.updateOne(
-    { accountAddress: manufacturerAddress[0] },
-    {$push : {product:{modelNumber:modelNo,quantity:productNo}}}
+    { accountAddress: manufacturerAddress },
+    { $push: { product: { modelNumber: modelNo, quantity: productNo } } }
   );
+
+  console.log(result);
 
   console.log("Result : ", result);
 
@@ -202,7 +248,7 @@ const updateProductQuantity = async (req, res) => {
   const quantity = req.body.quantity;
   const modelNo = req.body.modelNumber;
 
-  const seller = await Seller.findOne({accountAddress:accountAddress});
+  const seller = await Seller.findOne({ accountAddress: accountAddress });
 
   const manufacturer = await Manufacturer.findOne({
     accountAddress: seller.authenticatedBy,
@@ -237,26 +283,23 @@ const getManufacturerInfo = async (req, res) => {
 const getAuthenticationRequest = async (req, res) => {
   //
   const manufacturerAddress = req.query.manufacturerAddress;
-  const request = await authenticationRequest.find({manufacturerAddress:manufacturerAddress});
+  const request = await authenticationRequest.find({
+    manufacturerAddress: manufacturerAddress,
+  });
   console.log("Requests : ", request);
   res.json(request);
 };
 
-const getManufacturers = async(req,res) =>{
+const getManufacturers = async (req, res) => {
   const result = await Manufacturer.find({});
   const addresses = [];
-  result.map(item =>{
-    addresses.push({address:item.accountAddress,name:item.username});
-  })
+  result.map((item) => {
+    addresses.push({ address: item.accountAddress, name: item.username });
+  });
   console.log(result);
   console.log(addresses);
   res.json(addresses);
-}
-
-
-
-
-
+};
 
 module.exports = {
   signup,
@@ -269,6 +312,5 @@ module.exports = {
   updateProductQuantity,
   getManufacturerInfo,
   getAuthenticationRequest,
-  getManufacturers
+  getManufacturers,
 };
-
