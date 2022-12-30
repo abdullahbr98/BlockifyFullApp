@@ -1,10 +1,8 @@
 import React from "react";
-import { Box, Button,Flex } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Box,Flex } from "@chakra-ui/react";
 import ManufacturerTable from "../components/ManufacturerTable"
 import Sidebar from "../components/ManufacturerSideBar"
 import Navbar from "../components/Navbar"
-import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
 export default function pendingRequests() {
     return (
         <>

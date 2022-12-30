@@ -58,6 +58,7 @@ export default function SellerProductReq() {
     const [productQty, setproductQty] = useState(0);
     const [modelNo, setmodelNo] = useState("");
     const [sellerAddress, setSellerAddress] = useState(0);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const toasterShow = () => {
         toast({
             title: "Products Requested.",
@@ -73,27 +74,55 @@ export default function SellerProductReq() {
             {
                 sellerAddress: sellerAddress,
                 products: productQty,
-                productModelNo:modelNo,
+                productModelNo: modelNo,
             }
         );
         toasterShow();
     };
 
     const productListFunction = async () => {
+        console.log("Came here !!!!!")
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        // Get Seller !
+        const seller = await axios.get('http://localhost:8000/seller/getSeller',{
+            params:{
+                sellerAddress:items
+            }
+        })
+        console.log("Seller : ", seller.data);
+        console.log("AuthenticatedBY : ", seller.data.authenticatedBy)
         const listOfProducts = await axios.get(
             "http://localhost:8000/Product/getAllProducts",
-            {}
+            {
+                params:{
+                    manufacturerAddress:seller.data.authenticatedBy
+                }
+            }
         );
-        setproductList(listOfProducts.data);
         console.log("productlist:", listOfProducts);
+        setproductList(listOfProducts.data);
+    };
+
+    // { params: { answer: 42 } }
+    // accountAddress:items
+
+    const getAuthenticationStatus = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        const result = await axios.get(
+            "http://localhost:8000/Seller/getAuthenticationStatus",
+            { params: { accountAddress: items } }
+        );
+        setIsAuthenticated(result.data);
+        console.log("yahan value ayi hai seller ki auth ki:", result);
     };
 
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         if (items) {
-            setSellerAddress(items[0]);
+            setSellerAddress(items);
         }
         productListFunction();
+        getAuthenticationStatus();
     }, []);
     const requestHandler = (e) => {
         setproductQty(e.target.value);
@@ -101,12 +130,11 @@ export default function SellerProductReq() {
         console.log(productQty);
     };
 
-
     return (
         <Box w="90vw" align="center">
             <Flex justifyContent="center">
                 <Text fontSize="3xl" me="5">
-                    Request Products From Manufacturer
+                    Request Products From Manufacturer {isAuthenticated}
                 </Text>
                 <Tooltip
                     label="Enter the number of products below to request items from a manufacturer"
@@ -117,8 +145,88 @@ export default function SellerProductReq() {
                     <QuestionOutlineIcon mt="4" cursor="pointer" />
                 </Tooltip>
             </Flex>
-
-            {!productRequestFlag ? (
+            {isAuthenticated ? (
+                !productRequestFlag ? (
+                    <SimpleGrid
+                        columns={4}
+                        spacing={12}
+                        ms="4"
+                        justifyContent="space-between"
+                    >
+                        {productList?.map((productList) => {
+                            return (
+                                <Box
+                                    onClick={() => {
+                                        setmodelNo(productList.modelNo);
+                                        console.log(productList.modelNo);
+                                        setproductRequestFlag(true);
+                                    }}
+                                >
+                                    <SellerProductAccordion
+                                        productName={productList.productName}
+                                        description={productList.description}
+                                        quantity={productList.productNo}
+                                        price={productList.price}
+                                        modelNo={productList.modelNo}
+                                    />
+                                </Box>
+                            );
+                        })}
+                    </SimpleGrid>
+                ) : (
+                    <Box
+                        borderWidth="1px"
+                        mt="4"
+                        w="50%"
+                        align="center"
+                        boxShadow="lg"
+                        p="6"
+                        rounded="md"
+                        bg="blackAlpha.50"
+                    >
+                        <Box>
+                            <Image h="150px" w="150px" src={productItems} />
+                        </Box>
+                        <Flex justifyContent="center" h="10vh">
+                            <Box pt="2">
+                                {" "}
+                                <Text fontSize="lg" fontWeight="bold">
+                                    Number of products :{" "}
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Input
+                                    type="text"
+                                    placeholder="No of Products"
+                                    w="80%"
+                                    onChange={requestHandler}
+                                    bg="white"
+                                    borderColor="black"
+                                    borderWidth="1px"
+                                />
+                            </Box>
+                        </Flex>
+                        <Flex justifyContent="center" mt="3">
+                            <Button
+                                bg="blue.500"
+                                variant="outline"
+                                color="white"
+                                borderRadius={"8"}
+                                onClick={reqProductsHandler}
+                                px="5"
+                                boxShadow="sm"
+                                fontSize="sm"
+                                _hover={{ backgroundColor: "black" }}
+                            >
+                                Send Request
+                            </Button>
+                        </Flex>
+                    </Box>
+                )
+            ) : (
+                <Text align="center" mt="50px" fontSize="xl">Sorry but you need to get Authenticated first by the Manufacturer.</Text>
+            )}
+            {/* {!productRequestFlag ? (
                 <SimpleGrid
                     columns={4}
                     spacing={12}
@@ -189,7 +297,7 @@ export default function SellerProductReq() {
                         </Button>
                     </Flex>
                 </Box>
-            )}
+            )} */}
         </Box>
     );
 }

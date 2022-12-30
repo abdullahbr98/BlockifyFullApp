@@ -22,6 +22,7 @@ var ManufacturerRouter = require("./routes/Manufacturer/Manufacturer");
 var ManufacturerSMRouter = require("./routes/Manufacturer/ManufacturerSM");
 var SellerRouter = require("./routes/Seller/Seller");
 var ProductRouter = require("./routes/Product/Product");
+var BuyerRouter = require("./routes/Buyer/Buyer");
 
 var app = express();
 const cors = require("cors");
@@ -48,6 +49,7 @@ app.use("/Manufacturer", ManufacturerRouter);
 app.use("/ManufacturerSM", ManufacturerSMRouter);
 app.use("/Seller", SellerRouter);
 app.use("/Product",ProductRouter);
+app.use("/Buyer",BuyerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useMoralis } from "react-moralis";
-import LandingPage from "./LandingPage";
+import React, { useState } from "react";
 import Section from "../components/Section";
 import Faq from "../components/Faqs";
 import {
@@ -20,14 +18,22 @@ import { BiRightArrowAlt } from "react-icons/bi";
 export default function MetamaskConnect(props) {
     const connect = async () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const accountOwner = await provider.send("eth_requestAccounts", []);
+        const signer = await provider.getSigner();
+        const accountOwner = await signer.getAddress();
         props.initAccountOwner(accountOwner);
     };
     //changes
     const [owner, setowner] = useState(0);
     const setAccountOwner = (address) => {
-        setowner(address);
-        localStorage.setItem("UserAddress", JSON.stringify(address));
+        if (address === undefined) {
+            setowner(address);
+            localStorage.setItem("UserAddress", JSON.stringify(""));
+            console.log(owner);
+        }
+        else{
+            setowner()
+            localStorage.setItem("UserAddress", JSON.stringify(address));
+        }
         console.log(address);
     };
     const wrapper = () => {

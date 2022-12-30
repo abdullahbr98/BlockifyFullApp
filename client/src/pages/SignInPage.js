@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import RadioCardUse from "../components/RadioCardUse";
 import {
     Input,
-    InputLeftAddon,
     InputRightElement,
     InputGroup,
     Box,
@@ -35,11 +33,11 @@ function SignInPage() {
             { 
                 email: email,
                 password: password,
-                address: accountAddress[0] }
+                address: accountAddress }
         );
         localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('usernameOfBuyer',data.data.username);
         {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};
-        // console.log(data.data.userType);
     }
         catch(err){
             seterror(true);

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SellerLeftMenu from "../components/SellerLeftMenu";
 import SellerHomeItems from "../components/SellerHomeItems";
@@ -11,17 +10,6 @@ import SellerAuthenticationStatus from "../components/SellerAuthenticationStatus
 import {
     Box,
     Flex,
-    Text,
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    Input,
-    useDisclosure,
 } from "@chakra-ui/react";
 export default function SellerHomePage() {
     const [displayHome, setdisplayHome] = useState(1);

@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Text, Box, Flex } from "@chakra-ui/react";
+import { Text, Box, Flex, SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import SellerProductAccordion from "../components/SellerProductAccordion";
 export default function SellerHomeItems({ displayHome }) {
-    // const [modelArray, setmodelArray] = useState({});
-    // const [address, setaddress] = useState("");
-    // const refreshApi = async () => {
-    //     const data = await axios.post(
-    //         "http://localhost:8000/Seller/getSellerProducts",
-    //         { sellerAddress: address }
-    //     );
-    //     setmodelArray(data);
-    //     console.log(data);
-    // };
-    // useEffect(() => {
-    //     const items = JSON.parse(localStorage.getItem("UserAddress"));
-    //     console.log(items);
-    //     setaddress(items[0]);
-    //     refreshApi();
-    // }, []);
+    const [productList,setProductList] = useState([]);
+    const getProducts = async () =>{
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        const result = await axios.get("http://localhost:8000/product/getAllProductsSeller",{
+            params:{
+                sellerAddress:items
+            }
+        })
+        setProductList(result.data);
+    }
+    useEffect(()=>{
+      getProducts();
+    },[])
     return (
         <>
             {displayHome ? (
@@ -41,7 +38,23 @@ export default function SellerHomeItems({ displayHome }) {
                             description="IPS Panel with 144Hz, 1080x720 "
                         />
                     </Flex> */}
-
+                    <SimpleGrid
+                            columns={4}
+                            spacing={12}
+                            ms="4"
+                            justifyContent="space-between"
+                        >
+                            {productList?.map((product) => {
+                        return(
+                            <SellerProductAccordion
+                            productName={product.item.name}
+                            description={product.item.description}
+                            price={product.item.price}
+                            modelNo={product.item.modelNo}
+                            quantity={product.quantity}
+                        />
+                        );})}
+                        </SimpleGrid>
                     <Flex justifyContent="center" my="5vh">
                         <Text fontSize="3xl" me="5">
                             Sold Products

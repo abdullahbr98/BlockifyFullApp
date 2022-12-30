@@ -1,10 +1,10 @@
+// Description : Displays a table that consists of a List of Authenticated Sellers !
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
     TableContainer,
     Table,
     Th,
-    Tfoot,
     Td,
     Tr,
     Thead,
@@ -22,14 +22,15 @@ export default function AuthenticSellerTable() {
     const removeSellerHandler = async (sellerAddress) => {
         console.log("clicked in remove:", sellerAddress);
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("manAddress:", items[0]);
+        console.log("manAddress:", items);
         const data = await axios.post(
             "http://localhost:8000/ManufacturerSM/remove_seller",
             {
                 sellerAddress: sellerAddress,
-                accountAddress: items[0],
+                accountAddress: items,
             }
         );
+        console.log(data);
         toast({
             title: "Seller Removed.",
             description: "We've removed the seller for you.",

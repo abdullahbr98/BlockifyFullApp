@@ -1,303 +1,96 @@
-// File Description : Contains Dapp Routes for Manufacturer User Type
-// Sign Up
-// Login
-// Purchase Request
+// Clean Imports
 var express = require("express");
-const bcrypt = require("bcrypt");
-var jwt = require("jsonwebtoken");
-var ethers = require("ethers");
+const { providers, utils } = require("ethers");
 var router = express.Router();
-var Manufacturer = require("../../models/Manufacturer");
-var Seller = require("../../models/Seller");
-var Product = require("../../models/Product");
-var PurchaseRequest = require("../../models/purchaseRequest");
-var ProductRequest = require("../../models/productRequests");
-var authenticationRequest = require("../../models/authenticationRequest");
-const auth = require("../../middleware/auth");
-var path = require("path");
-var multer = require("multer");
-
-// Importing ABI and BYTE CODE for Contract Deployment
 const {
-    SELLER_AUTHENTICATION_ABI,
-    SELLER_AUTHENTICATION_BYTE_CODE,
-    PRODUCTS_ABI,
-    PRODUCTS_BYTE_CODE,
-} = require("../../utils/Constants/ManufacturerSMConstants");
+  signup,
+  login,
+  addProduct,
+  deleteProduct,
+  getProductByName,
+  createPurchaseRequest,
+  deletePurchaseRequest,
+  updateProductQuantity,
+  getManufacturerInfo,
+  getAuthenticationRequest,
+  getManufacturers,
+} = require("../../controllers/manufacturer.controller");
+const multer = require("multer");
 
-
-router.post("/getManufacturerInfo",async(req,res)=>{
-    const accountAddress = req.body.userAddress;
-    const data = await Manufacturer.findOne({accountAddress:accountAddress});
-    res.send(data);
-})
-
-// Manufacturer Sign Up Route
-router.post("/signup", async (req, res) => {
-    //generating salt
-    const salt = await bcrypt.genSalt(10);
-    const userType = req.body.userType;
-    const phoneNumber = req.body.phoneNumber;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = await bcrypt.hash(req.body.password, salt);
-    const accountAddress = req.body.accountAddress;
-
-    const signer = new ethers.providers.JsonRpcProvider(
-        "http://localhost:7545"
-    ).getSigner(accountAddress);
-
-    const SellerAuthenticationContract = new ethers.ContractFactory(
-        SELLER_AUTHENTICATION_ABI,
-        SELLER_AUTHENTICATION_BYTE_CODE,
-        signer
-    );
-
-    // Deploying Authenticate Seller Contract for the Manufacturer
-    console.log(`Deploying from account : ${signer._address}`);
-    const authContract = await SellerAuthenticationContract.deploy();
-    await authContract.deployed();
-
-    console.log(
-        `Seller Authentication Contract Deployed at Address : ${authContract.address}`
-    );
-
-    const ProductsContract = new ethers.ContractFactory(
-        PRODUCTS_ABI,
-        PRODUCTS_BYTE_CODE,
-        signer
-    );
-
-    // Deploying Products Contract for the Manufacturer
-    console.log(`Deploying from account : ${signer._address}`);
-    const productsContract = await ProductsContract.deploy();
-    await productsContract.deployed();
-
-    console.log(
-        `Products Contract Deployed at Address : ${productsContract.address}`
-    );
-
-    const manufacturer = new Manufacturer({
-        userType: userType,
-        phoneNumber: phoneNumber,
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        email: email,
-        password: password,
-        accountAddress: accountAddress,
-        authContractAddress: authContract.address,
-        productsContractAddress: productsContract.address,
-    });
-    // Create token
-    const token = jwt.sign(
-        { user_id: manufacturer._id, email },
-        process.env.TOKEN_KEY,
-        {
-            expiresIn: "2h",
-        }
-    );
-    // save user token
-    manufacturer.token = token;
-    await manufacturer.save();
-
-    res.json("Sign up Successfull !");
-});
-
-router.post("/login", async (req, res) => {
-    const email = req.body.email;
-    const accountAddress = req.body.accountAddress;
-
-    const result = await Manufacturer.findOne({
-        email: email,
-        accountAddress: accountAddress,
-    });
-    console.log(result);
-    const validPassword = await bcrypt.compare(
-        req.body.password,
-        result.password
-    );
-
-    //jwt
-    const token = jwt.sign(
-        { user_id: result._id, email },
-        process.env.TOKEN_KEY,
-        {
-            expiresIn: "2h",
-        }
-    );
-    // save user token
-
-    result.token = token;
-    //jwt
-    let response = "";
-    validPassword !== null
-        ? (response = "Login Successful !")
-        : (response = "Invalid Credentials");
-
-    res.json(result);
-});
-
-// Purchase Request Route
-
-router.post("/purchaseRequest", async (req, res) => {
-    const sellerAddress = req.body.sellerAddress;
-    const manufacturerAddress = req.body.manufacturerAddress;
-    const products = req.body.products;
-    const productModelNo = req.body.productModelNo;
-
-    // Create a Purchase Request and Save in Database
-    const purchaseRequest_ = new PurchaseRequest({
-        manufacturer: manufacturerAddress,
-        seller: sellerAddress,
-        status: false,
-        products: products,
-        productModelNo: productModelNo,
-    });
-    await purchaseRequest_.save();
-
-    // Delete the Product Request from DataBase
-    // Syntax Confirm !
-    await ProductRequest.deleteOne({ sellerAddress: sellerAddress, productModelNo:productModelNo, products:products});
-
-    res.json("Request Sent Successfully !");
-});
-
-router.post("/deletePurchaseRequest", async (req, res) => {
-    const sellerAddress = req.body.sellerAddress;
-    const manufacturerAddress = req.body.manufacturerAddress;
-    const products = req.body.products;
-
-    // Delete the Product Request from DataBase
-    // Syntax Confirm !
-    await ProductRequest.deleteOne({ sellerAddress: sellerAddress });
-
-    res.json("Request Deleted Successfully !");
-});
-
-//TO DO create a GET request of fetching all authenticated sellers in the database
-
-//TO DO Products in Inventory GET request
-
-//new route
-//JWT EXPERIMENTATION
-router.post("/dashboard", auth, (req, res) => {
-    res.status(200).send("Welcome 🙌 ");
-});
-
-router.get("/AuthenticationRequest", async (req, res) => {
-    const request = await authenticationRequest.find({});
-    console.log(request);
-    res.json(request);
-});
+// Clean Routes
+// Authentication Routes
+router.post("/signup", signup); // Tested
+router.post("/login", login); // Tested
+// Product Routes
+router.post("/addProduct", addProduct);
+// Purchase Requests Routes
+router.post("/purchaseRequest", createPurchaseRequest);
+router.post("/deletePurchaseRequest", deletePurchaseRequest);
+router.post("/deleteProduct", deleteProduct);
+router.post("/updateProductQuantity", updateProductQuantity);
+// other Routes
+router.get("/getProductByName", getProductByName);
+router.post("/getManufacturerInfo", getManufacturerInfo);
+router.get("/AuthenticationRequest", getAuthenticationRequest);
+router.get("/getManufacturers", getManufacturers);
 
 const storage = multer.diskStorage({
-    destination: (req,file,cb)=>{
-        cb(null,'Images/')
-    },
-    filename: (req,file,cb)=>{
-        console.log(file)
-        cb(null,Date.now()+path.extname(file.originalname))
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+router.post("/upload", upload.single("file"), (req, res) => {
+  // req.file is the file that was uploaded
+  // do something with the file, such as save it to a database
+  const accountAddress = req.body.accountAddress;
+  console.log(accountAddress);
+  const fs = require("fs");
+  fs.rename(req.file.path, `uploads/${Date.now()}`, function (err) {
+    if (err) {
+      return next(err);
     }
+  });
+
+  res.send("File uploaded!");
 });
 
-const upload = multer({storage:storage})
-
-router.post("/upload",upload.single('image'),(req,res)=>{
-    res.json("image uploaded");
-    console.log(req.body);
-})
-
-router.post("/addProduct", async (req, res) => {
-    const {
-        productNo,
-        description,
-        productName,
-        Brand,
-        modelNo,
-        color,
-        height,
-        width,
-        displayType,
-        Resolution,
-        HDR,
-        refreshRate,
-        smartCapable,
-        featuredStreamingServices,
-        screenMirroring,
-        hdmiInputs,
-        usbInputs,
-        networkCompatibility,
-        speakers,
-        speakerType,
-        Warranty,
-        WarrantyTime,
-        price,
-        manufacturerAddress,
-    } = req.body;
-
-    const product = new Product({
-        productNo,
-        description,
-        productName,
-        Brand,
-        modelNo,
-        color,
-        height,
-        width,
-        displayType,
-        Resolution,
-        HDR,
-        refreshRate,
-        smartCapable,
-        featuredStreamingServices,
-        screenMirroring,
-        hdmiInputs,
-        usbInputs,
-        networkCompatibility,
-        speakers,
-        speakerType,
-        Warranty,
-        WarrantyTime,
-        price,
-    });
-
-    await product.save();
-    
-    const filter = { accountAddress: manufacturerAddress };
-    console.log("filter", filter);
-
-    console.log("Check", typeof manufacturerAddress );
-    
-
-    const result = await Manufacturer.updateOne(
-        {accountAddress: manufacturerAddress},{$push:{productModelNo:modelNo}}
-    );
-    console.log("result:", result);
-    res.json("working");
-});
-
-router.get("/getProductByName", async (req, res) => {
-    const productName = req.productName;
-
-    const result = await Product.findOne({
-        productName: productName,
-    });
-    consolelog(result);
-    res.json(result);
-});
-
-router.post("/deleteProduct", async (req, res) => {
-    const productName = req.body.productName;
-
-    await Product.deleteOne({
-        productName: productName,
-    });
-
-    console.log("done");
-    res.json("Deleted");
+router.get("/getAllTransactions", async (req, res) => {
+  const address = req.query.accountAddress;
+  const provider = new providers.JsonRpcProvider("http://localhost:7545");
+  console.log("address of acc in trans:",address);
+  // Retrieve the latest block
+  const latestBlock = await provider.getBlock("latest");
+  let result = [];
+  // Iterate over the transactions in the block
+  for (let i = 0; i < latestBlock.number; i++) {
+    let block = await provider.getBlock(i);
+    for (const transaction of block.transactions) {
+      let transactionDetails = await provider.getTransaction(transaction);
+      if (transactionDetails.from === address) {
+        let d = new Date(block.timestamp * 1000);
+        let tx = {
+          from: transactionDetails.from,
+          to: transactionDetails.to,
+          timeStamp:d.toISOString(),
+          value: transactionDetails.value._hex,
+          gasUsed: transactionDetails.gasLimit._hex,
+          gasPrice: transactionDetails.gasPrice._hex,
+          gasLimit: transactionDetails.gasLimit._hex,
+          minedInBlock: transactionDetails.blockNumber,
+          tHash: transaction,
+        };
+        result.push(tx);
+      }
+    }
+  }
+  console.log("result from api:",result);
+  res.json(result);
 });
 
 module.exports = router;

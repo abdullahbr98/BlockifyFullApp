@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { Box, Flex, Text, Button, SimpleGrid } from "@chakra-ui/react";
-import ManufacturerTable from "../components/ManufacturerTable";
+import { Box, Flex } from "@chakra-ui/react";
 import ManufacturerChart from "../components/ManufacturerChart";
 import ManufacturerSideBar from "../components/ManufacturerSideBar";
-import AuthenticSellersList from "../components/AuthenticSellersList";
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import DashboardItems from "../components/DashboardItems";
-import SellerProductAccordion from "../components/SellerProductAccordion";
-import ProductGrid from "../components/ProductGrid";
 export default function ManufacturerHomeScreen() {
     const { id } = useParams();
     const [products, setproducts] = useState(false);

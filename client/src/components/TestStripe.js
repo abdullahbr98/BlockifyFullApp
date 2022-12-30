@@ -4,17 +4,19 @@ import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 import lcd from "../images/lcd-image.jpg";
 const ProductDisplay = () => {
     const [accountAddress, setAccountAddress] = useState("");
+    const [modelNo,  setModelNo] = useState("");
+    const [products, setProducts] = useState("");
 
     const request = async () => {
         console.log(accountAddress);
-        const products = localStorage.getItem("noOfProducts");
-        const modelNo = localStorage.getItem("modelNo");
-        console.log(products);
+        console.log("Products : ", products);
+        console.log("Model No : ", modelNo);
         await axios.post(
             "http://localhost:8000/create-checkout-session", //TODO customize this to seller and buyer
             {
                 products: products,
                 productModelNo:modelNo,
+                address:accountAddress
             }
 
 
@@ -22,12 +24,18 @@ const ProductDisplay = () => {
     };
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        setAccountAddress(items[0]);
+        const products = localStorage.getItem("noOfProducts");
+        const modelNo = localStorage.getItem("modelNo");
+        setModelNo(modelNo);
+        setProducts(products);
+        setAccountAddress(items);
         console.log(accountAddress);
         console.log(
             "chonki",
-            JSON.parse(localStorage.getItem("UserAddress"))[0]
+            JSON.parse(localStorage.getItem("UserAddress"))
         );
+        console.log("Model No : ", modelNo);
+        console.log("Products : ", products);
     }, []);
 
     return (
@@ -57,10 +65,15 @@ const ProductDisplay = () => {
                     name="products"
                     value={localStorage.getItem("noOfProducts")}
                 />
+                <input 
+                    type="hidden"
+                    name="modelNo"
+                    value={localStorage.getItem("modelNo")}
+                />
                 <input
                     type="hidden"
                     name="address"
-                    value={JSON.parse(localStorage.getItem("UserAddress"))[0]}
+                    value={JSON.parse(localStorage.getItem("UserAddress"))}
                 />
                 <Box align="center">
                     <Button type="submit" color="black" bg="green.200" _hover={{"backgroundColor":"black", "color":"white"}}>Proceed To Checkout</Button>

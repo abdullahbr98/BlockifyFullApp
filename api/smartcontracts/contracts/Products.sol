@@ -38,13 +38,13 @@ contract Products is IERC20 {
     uint8 public constant decimals = 18;
 
     mapping(address => uint256) balances;
-
     mapping(address => mapping(address => uint256)) allowed;
+
 
     uint totalSupply_ = 0;
 
     function setTotalSupply(uint _totalSupply) public {
-        totalSupply_ = _totalSupply;
+        totalSupply_ += _totalSupply;
         balances[msg.sender] = totalSupply_;
     }
 

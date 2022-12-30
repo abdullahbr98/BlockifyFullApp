@@ -13,13 +13,22 @@ import { EditIcon } from "@chakra-ui/icons";
 import GoogleMaps from "../components/GoogleMaps"
 export default function SellerShopInfo({ shopInfo }) {
     const toast = useToast();
+    //31.516, lng: 74.3429
     const [editButton, seteditButton] = useState(0);
-    const [cordinates, setcordinates] = useState("");
+    const [latitude, setlatitude] = useState("31.516");
+    const [longitude, setlongitude] = useState("74.3429");
+    const [cordinates, setcordinates] = useState("31.516,74.3428");
     const [shopAddress, setshopAddress] = useState("");
     const [shopName, setshopName] = useState("");
 
     const setCordinatesFromMap = (value)=>{
         setcordinates(value);
+    }
+    const setValues = (lat,lng)=>{
+        setlatitude(lat);
+        setlongitude(lng);
+        setcordinates(lat+','+lng);
+        console.log("cordinates here man:", lat + "," + lng);
     }
 
     const toastIcon = () =>
@@ -41,11 +50,11 @@ export default function SellerShopInfo({ shopInfo }) {
 
     const editShopInfoHandler = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("accAdd:", items[0]);
+        console.log("accAdd:", items);
         const data = await axios.post(
             "http://localhost:8000/Seller/updateShopInformation", //TODO customize this to seller and buyer
             {
-                sellerAddress: items[0],
+                sellerAddress: items,
                 shopName: shopName,
                 cordinates: cordinates,
                 shopAddress: shopAddress,
@@ -54,19 +63,30 @@ export default function SellerShopInfo({ shopInfo }) {
         toastIcon();
     };
 
+    const converter = ()=>{
+        var myArray = cordinates.split(",",2);
+        setlatitude(myArray[0]);
+        setlongitude(myArray[1]);
+    }
+    
     const getSellerShopInfo = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        console.log("accAdd:", items[0]);
+        console.log("accAdd:", items);
         const data = await axios.get(
             "http://localhost:8000/Seller/shopInformation", //TODO customize this to seller and buyer
             {
-                params: { sellerAddress: items[0] },
+                params: { sellerAddress: items },
             }
         );
         console.log(data);
         setcordinates(data.data.cordinates);
+        let arrayNew = data.data.cordinates.split(",",2);
+        setlatitude(arrayNew[0]);
+        setlongitude(arrayNew[1]);
         setshopAddress(data.data.shopAddress);
         setshopName(data.data.shopName);
+        
+        console.log("getseller ran");
     };
     useEffect(() => {
         getSellerShopInfo();
@@ -124,6 +144,7 @@ export default function SellerShopInfo({ shopInfo }) {
                                         ms="4vw"
                                         onChange={(e) => {
                                             setcordinates(e.target.value);
+                                            converter();
                                         }}
                                     />
                                 ) : (
@@ -172,7 +193,7 @@ export default function SellerShopInfo({ shopInfo }) {
             )}
             </Box>
             <Box>
-            <GoogleMaps/>
+            <GoogleMaps latitude={latitude} longitude={longitude} onChange={setValues}/>
             </Box>
         </Flex>
     );

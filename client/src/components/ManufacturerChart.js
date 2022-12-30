@@ -4,11 +4,13 @@ import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const pendingRequests = JSON.parse(localStorage.getItem("pendingRequests"));
+const pendingRequests = JSON.parse(localStorage.getItem("pendingRequests")) ? JSON.parse(localStorage.getItem("pendingRequests")) : 1;
 const authenticationRequestList = JSON.parse(
     localStorage.getItem("authenticationRequestList")
-);
-const authenticSellerList = JSON.parse(localStorage.getItem("authenticSellerListData"));
+) ? JSON.parse(
+    localStorage.getItem("authenticationRequestList")
+) : 1;
+const authenticSellerList = JSON.parse(localStorage.getItem("authenticSellerListData")) ? JSON.parse(localStorage.getItem("authenticSellerListData")) : 1;
 export default function ManufacturerChart() {
     return <Doughnut data={data} />;
 }

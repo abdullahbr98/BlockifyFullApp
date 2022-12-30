@@ -25,7 +25,7 @@ export default function PendingAuthenticSellersList() {
             "http://localhost:8000/ManufacturerSM/authenticate_seller",
             {
                 sellerAddress: sellerAddress,
-                accountAddress: items[0],
+                accountAddress: items,
             }
         );
         toast({
@@ -39,8 +39,14 @@ export default function PendingAuthenticSellersList() {
     };
 
     const authenticationReqestSetter = async () => {
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
         const data = await axios.get(
-            "http://localhost:8000/manufacturer/AuthenticationRequest"
+            "http://localhost:8000/manufacturer/AuthenticationRequest",
+            {
+                params:{
+                    manufacturerAddress:items
+                }
+            }
         );
         setAuthenticationRequest(data.data);
     };

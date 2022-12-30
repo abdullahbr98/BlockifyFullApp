@@ -1,11 +1,13 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import logo from "../images/BlockifyLogo.png";
+import { HiHome } from "react-icons/hi";
 import { HiShoppingCart } from "react-icons/hi";
 import { MdStore, MdOutlineAccountCircle } from "react-icons/md";
 import {
     Box,
     Icon,
+    Button,
     Flex,
     Select,
     Image,
@@ -16,11 +18,21 @@ import {
     Text,
 } from "@chakra-ui/react";
 export default function BuyerNavbar() {
+    const [username, setusername] = useState("");
+    useEffect(() => {
+        const usernameBuyer = localStorage.getItem("usernameOfBuyer");
+        if(usernameBuyer){
+            setusername(usernameBuyer);
+        }
+    }, [])
+    
     return (
         <>
             <Box w="100vw" h="15vh" bg="blue.600" px="50px">
                 <Flex justifyContent="right" color="white" pe="4" pt="2">
-                    <Link fontSize="sm">Order Status</Link>
+                    <Link fontSize="sm" href="/orders">
+                        Order Status
+                    </Link>
                 </Flex>
                 <Flex justifyContent="space-between" pt="2">
                     <Flex>
@@ -42,21 +54,6 @@ export default function BuyerNavbar() {
                                 Blockify
                             </Text>
                         </Flex>
-                        <Box ms="3">
-                            <InputGroup>
-                                <InputRightElement
-                                    pointerEvents="none"
-                                    children={<SearchIcon color="blue.400" />}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Search Blockify"
-                                    bg="white"
-                                    w="30vw"
-                                    borderRadius="2px"
-                                />
-                            </InputGroup>
-                        </Box>
                     </Flex>
                     <Flex pt="2">
                         <Flex mx="2">
@@ -69,33 +66,66 @@ export default function BuyerNavbar() {
                         </Flex>
                         <Flex mx="2">
                             <Box pt="1">
-                                <Icon
-                                    as={MdOutlineAccountCircle}
-                                    color="white"
-                                ></Icon>
+                                <Icon as={HiShoppingCart} color="white"></Icon>
                             </Box>
-
-                            <Link fontWeight="medium" color="white" mx="2">
-                                Account
+                            <Link
+                                fontWeight="medium"
+                                color="white"
+                                mx="2"
+                                href="/cart"
+                            >
+                                Cart
                             </Link>
                         </Flex>
                         <Flex mx="2">
-                            <Box pt="1">
-                                <Icon as={HiShoppingCart} color="white"></Icon>
-                            </Box>
-                            <Link fontWeight="medium" color="white" mx="2">
-                                Cart
+                            <Link
+                                fontWeight="medium"
+                                color="white"
+                                mx="2"
+                                href="/"
+                            >
+                                <Button colorScheme="facebook" size="sm">
+                                    Log Out
+                                </Button>
                             </Link>
                         </Flex>
                     </Flex>
                 </Flex>
             </Box>
-            <Box w="100vw" h="5vh" bg="blue.500" px="50px">
-                {/* <Flex w="7vw">
-                    <Select placeholder="Brand" variant="unstyled">
-                        <option value="LG">LG TV</option>
-                    </Select>
-                </Flex> */}
+            <Box w="100vw" h="6vh" bg="blue.500" px="50px" color="white">
+                <Flex>
+                    <Button
+                        h="6vh"
+                        borderRadius={0}
+                        bg="blue.500"
+                        _hover={{ backgroundColor: "blue.600" }}
+                    >
+                        <Box pt="1" me="1">
+                            <Icon as={HiHome} color="white"></Icon>
+                        </Box>
+                        <Link href={`/Buyer/`+username}>
+                        HOME
+                        </Link>
+                    </Button>
+                    <Box borderWidth="1px" height="6vh" borderColor="blue.600"></Box>
+                    <Button
+                        h="6vh"
+                        borderRadius={0}
+                        bg="blue.500"
+                        _hover={{ backgroundColor: "blue.600" }}
+                    >
+                        FAQS
+                    </Button>
+                    <Box borderWidth="1px" height="6vh" borderColor="blue.600"></Box>
+                    <Button
+                        h="6vh"
+                        borderRadius={0}
+                        bg="blue.500"
+                        _hover={{ backgroundColor: "blue.600" }}
+                    >
+                        ABOUT US
+                    </Button>
+                </Flex>
             </Box>
         </>
     );
