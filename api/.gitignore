@@ -1,2 +1,3 @@
 /node_modules
+/smartcontracts/build/contracts/
 .env
