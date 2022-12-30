@@ -26,6 +26,12 @@ export default function BuyerCartPage() {
     const [productInfo, setproductInfo] = useState(null);
     const [quantity, setquantity] = useState(1);
     const toast = useToast();
+
+    const updateCartFunction = ()=>{
+        localStorage.setItem("cartItems", null);
+        {window.location.href = `http://localhost:3000/Buyer/` + localStorage.getItem("usernameOfBuyer")};
+    }
+
     const removeItem = () => {
         localStorage.setItem("cartItems", null);
         setproductInfo(null);
@@ -157,6 +163,7 @@ export default function BuyerCartPage() {
                                             backgroundColor: "black",
                                             color: "white",
                                         }}
+                                        onClick={updateCartFunction}
                                     >
                                         Update Cart
                                     </Button>
