@@ -9,7 +9,6 @@ var Product = require("../models/Product");
 
 const YOUR_DOMAIN = "http://localhost:3000";
 
-
 router.post("/create-checkout-session", async (req, res) => {
     console.log(req.body);
     const products = req.body.products;
@@ -25,7 +24,7 @@ router.post("/create-checkout-session", async (req, res) => {
         line_items: [
             {
                 // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: process.env.PRICE_ID,
+                price: product.stripePriceId,
                 quantity: products,
             },
         ],
