@@ -7,10 +7,25 @@ const ProductDisplay = () => {
     const [modelNo,  setModelNo] = useState("");
     const [products, setProducts] = useState("");
 
+    const getValuesOfModel = async()=>{
+        const value = await axios.get(
+            "http://localhost:8000/Product/getProductByModelNo", //TODO customize this to seller and buyer
+            {
+                params: {
+                    modelNo:modelNo,
+                }
+            }
+        );
+        console.log(value);
+    }
+
     const request = async () => {
         console.log(accountAddress);
         console.log("Products : ", products);
         console.log("Model No : ", modelNo);
+
+
+
         await axios.post(
             "http://localhost:8000/create-checkout-session", //TODO customize this to seller and buyer
             {
@@ -29,6 +44,7 @@ const ProductDisplay = () => {
         setModelNo(modelNo);
         setProducts(products);
         setAccountAddress(items);
+        getValuesOfModel();
         console.log(accountAddress);
         console.log(
             "chonki",

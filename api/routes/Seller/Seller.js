@@ -193,23 +193,24 @@ router.post("/addProductInSeller", async (req, res) => {
       { $push: { product: { modelNumber: modelNo, quantity: quantity } } }
     );
   } else {
+    let productList = seller.product;
     for (let i = 0; i < seller.product.length; i++) {
-      if (seller.product[i].modelNumber == modelNo) {
-        seller.product[i].quantity += quantity;
+      if (productList[i].modelNumber == modelNo) {
+        const addQuantity = parseInt(quantity);
+        const originalProductQuantity = parseInt(productList[i].quantity);
+        const newQuantity = addQuantity + originalProductQuantity;
+        productList[i].quantity = String(newQuantity);
       }
     }
-    await seller.save();
+    await Seller.updateOne(
+      {accountAddress : accountAddress},
+      {
+        $set: { product: productList}
+      }
+    );
   }
 
   res.json("Successful !");
-});
-
-router.get("/getAuthenticationStatus", async (req, res) => {
-  const accountAddress = req.query.accountAddress;
-  console.log("yahan account add aya:", accountAddress);
-  const seller = await Seller.findOne({ accountAddress: accountAddress });
-  console.log("yahan seller aya:", seller);
-  res.json(seller.authenticated);
 });
 
 router.get("/getSellerProducts", async (req, res) => {
