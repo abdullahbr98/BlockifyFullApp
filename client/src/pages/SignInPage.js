@@ -36,6 +36,7 @@ function SignInPage() {
                 address: accountAddress }
         );
         localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('usernameOfBuyer',data.data.username);
         {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};
     }
         catch(err){

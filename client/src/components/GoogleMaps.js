@@ -5,11 +5,9 @@ import { IoLocationSharp } from "react-icons/io5";
 import GoogleMapReact from "google-map-react";
 const AnyReactComponent = ()=>{return(<><Box position="absolute"></Box><Box position="relative" left="-23px" top="-45px"><Icon as={IoLocationSharp} color="red" h="50px" w="50px"/></Box></>);};
 function GoogleMaps({ latitude, longitude, onChange }) {
-    const [lati, setlati] = useState(parseFloat(latitude));
-    const [longi, setlongi] = useState(parseFloat(longitude));
-    const _onClick = ({x, y, lat, lng, event}) => {console.log(x, y, lat, lng, event); 
-        setlati(lat);
-        setlongi(lng);
+    console.log("google maps latitude:",latitude);
+    console.log("google maps longitude:",longitude);
+    const _onClick = ({x, y, lat, lng, event}) => {console.log(x, y, lat, lng, event);
         onChange(lat,lng);
     }
     return (
@@ -17,9 +15,9 @@ function GoogleMaps({ latitude, longitude, onChange }) {
             <GoogleMapReact
                 onClick={_onClick}
                 bootstrapURLKeys={{
-                    key: "",
+                    key: "AIzaSyBWbI__mwrOAas2KtVKlM1Dx_VH_WNVfjw",
                 }}
-                center={{ lat: lati, lng: longi }}
+                center={{ lat: parseFloat(latitude), lng: parseFloat(longitude) }}
                 //31.5160° N, 74.3429° E
                 defaultZoom={14}
                 // yesIWantToUseGoogleMapApiInternals
@@ -30,8 +28,8 @@ function GoogleMaps({ latitude, longitude, onChange }) {
             >
                 {/* <Marker position={{ lat: lati, lng: longi }}/> */}
                 <AnyReactComponent
-                    lat={lati}
-                    lng={longi}
+                    lat={parseFloat(latitude)}
+                    lng={parseFloat(longitude)}
                     text="My Marker"
         />
             </GoogleMapReact>

@@ -9,33 +9,6 @@ import BuyerProductSection from "../components/BuyerProductSection"
 import SellerProductAccordion from "../components/SellerProductAccordion";
 import BuyerFooter from "../components/BuyerFooter"
 
-const array = [
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800",
-    },
-    {
-        productName: "Samsung LCD",
-        description: "Samsung 32 LCD with Ultra wide Display",
-        price: "800",
-    },
-];
 
 function productList(val) {
     return (
@@ -50,7 +23,7 @@ function productList(val) {
 export default function BuyerHomepage() {
     return (
         <>
-            <BuyerNavbar />
+            <BuyerNavbar searchbar={true}/>
             <BuyerProductSection/>
             <BuyerFooter/>
         </>

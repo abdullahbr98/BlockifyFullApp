@@ -61,7 +61,7 @@ export default function BuyerproductCard(props) {
             </Flex>
             <Flex justifyContent="space-between" mt={3}>
                 <Text ms={2} fontSize="lg">
-                    {props.price}
+                    {"$" + props.price}
                 </Text>
                 <Flex me={2}>
                     <Text me={1}>approved</Text>

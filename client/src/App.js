@@ -21,6 +21,7 @@ import TestStripe from "./components/TestStripe"
 import ManufacturerTransactions from './components/ManufacturerTransactions'
 import SingleProductPage from "./components/SingleProductPage"
 import BuyerCartPage from "./components/BuyerCartPage"
+import Orderspage from "./pages/Orderspage"
 // import BuyerCart from "./components/BuyerCart"
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
                     <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
                     <Route path="/product/:id" element={<SingleProductPage />} />
                     <Route path="/cart" element={<BuyerCartPage />} />
+                    <Route path="/orders" element={<Orderspage />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}
 
                     {/* TO DO AHMED ZIA product name add also */}

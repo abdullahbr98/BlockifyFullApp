@@ -241,15 +241,12 @@ router.get("/getAllSellerProducts", async (req, res) => {
   const sellers = await Seller.find();
   // Get Data from Product from Product Db and Send to Front End
   console.log("Sellers", sellers);
-
   let productData = [];
   // Name, Price, Quantity, Description, Model Number
-
   for(let j =0; j<sellers.length; j++) {
-
     const address = sellers[j].accountAddress;
     const seller = await Seller.findOne({accountAddress : address})
-    console.log(seller)
+    console.log("seller:",seller);
     for (let i = 0; i < seller.product.length; i++) {
       let product = await Product.findOne({
         modelNo: seller.product[i].modelNumber,
@@ -265,7 +262,6 @@ router.get("/getAllSellerProducts", async (req, res) => {
       });
     }
 }
-
   res.json(productData);
 });
 

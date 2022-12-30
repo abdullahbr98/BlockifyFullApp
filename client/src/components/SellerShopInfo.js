@@ -80,8 +80,13 @@ export default function SellerShopInfo({ shopInfo }) {
         );
         console.log(data);
         setcordinates(data.data.cordinates);
+        let arrayNew = data.data.cordinates.split(",",2);
+        setlatitude(arrayNew[0]);
+        setlongitude(arrayNew[1]);
         setshopAddress(data.data.shopAddress);
         setshopName(data.data.shopName);
+        
+        console.log("getseller ran");
     };
     useEffect(() => {
         getSellerShopInfo();
