@@ -6,8 +6,11 @@ const ProductDisplay = () => {
     const [accountAddress, setAccountAddress] = useState("");
     const [modelNo,  setModelNo] = useState("");
     const [products, setProducts] = useState("");
-
+    const [productName, setproductName] = useState("");
+    const [price, setprice] = useState(0);
     const getValuesOfModel = async()=>{
+        const modelNo = localStorage.getItem("modelNo");
+        setModelNo(modelNo);
         const value = await axios.get(
             "http://localhost:8000/Product/getProductByModelNo", //TODO customize this to seller and buyer
             {
@@ -16,7 +19,8 @@ const ProductDisplay = () => {
                 }
             }
         );
-        console.log(value);
+        setproductName(value.data.productName);
+        setprice(value.data.price);
     }
 
     const request = async () => {
@@ -38,13 +42,11 @@ const ProductDisplay = () => {
         );
     };
     useEffect(() => {
+        getValuesOfModel();
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         const products = localStorage.getItem("noOfProducts");
-        const modelNo = localStorage.getItem("modelNo");
-        setModelNo(modelNo);
         setProducts(products);
         setAccountAddress(items);
-        getValuesOfModel();
         console.log(accountAddress);
         console.log(
             "chonki",
@@ -66,8 +68,8 @@ const ProductDisplay = () => {
                 />
                 <div className="description">
                     <Flex justifyContent="center" my="4">
-                        <Text fontWeight="bold" fontSize="md" me="4">Samsung LCD</Text>
-                        <Text fontWeight="bold" fontSize="md">$500.00</Text>
+                        <Text fontWeight="bold" fontSize="md" me="4">{productName}</Text>
+                        <Text fontWeight="bold" fontSize="md">${price}</Text>
                     </Flex>
                 </div>
             </Box>

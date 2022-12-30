@@ -236,6 +236,14 @@ export default function SingleProductPage() {
                         <AccordionPanel pb={4}>
                             <Flex justifyContent="center">
                                 <Box>
+
+                                    Seller Name: 
+                                    Shop Name:
+                                    Phone Number:
+                                    show cordinates on map 
+                                    Shop address
+                                    Authenticated By 
+                                    View Transaction => seller address pass kardo aur wo exact hash kardo (Total Products)
                                     <SellerShopInfo />
                                 </Box>
                             </Flex>

@@ -112,6 +112,14 @@ router.post("/deletePurchaseRequest", async (req, res) => {
   res.json("Deleted");
 });
 
+router.get("/getAuthenticationStatus", async (req, res) => {
+  const accountAddress = req.query.accountAddress;
+  console.log("yahan account add aya:", accountAddress);
+  const seller = await Seller.findOne({ accountAddress: accountAddress });
+  console.log("yahan seller aya:", seller);
+  res.json(seller.authenticated);
+});
+
 router.get("/getIsAuthenticated", async (req, res) => {
   const SellerAddress = req.query.sellerAddress;
   console.log(SellerAddress);
