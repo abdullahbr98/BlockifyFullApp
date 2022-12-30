@@ -33,6 +33,11 @@ export default function SingleProductPage() {
     const [productInfo, setproductInfo] = useState({});
     ///getProductByModelNo
     const { id } = useParams();
+    const goToCart = (product)=>{
+        localStorage.setItem("cartItems", JSON.stringify(product));
+        window.location.href = `http://localhost:3000/cart/`;
+
+    }
     const getProductInfo = async () => {
         const product = await axios.get(
             "http://localhost:8000/Product/getProductByModelNo",
@@ -66,6 +71,7 @@ export default function SingleProductPage() {
                         w="15rem"
                         borderRadius={4}
                         colorScheme="facebook"
+                        onClick={()=>{goToCart(productInfo)}}
                     >
                         Add to Cart
                     </Button>
