@@ -195,7 +195,7 @@ const addProduct = async (req, res) => {
 
   const signer_mnf = new ethers.providers.JsonRpcProvider(
     "http://localhost:7545"
-  ).getSigner(2);
+  ).getSigner(manufacturerAddress);
   
 
 
