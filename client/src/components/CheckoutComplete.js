@@ -17,6 +17,7 @@ export default function CheckoutComplete() {
             sellerAddress:sellerAddress
         });
 
+
         const buyer = await axios.get("http://localhost:8000/Buyer/getBuyerFromAddress", {
             params: {
                 accountAddress : buyerAddress
@@ -35,7 +36,7 @@ export default function CheckoutComplete() {
 
         today = mm + '/' + dd + '/' + yyyy;
 
-        await axios.post("http://localhost:8000/Order/placeOrder",{
+        const result = await axios.post("http://localhost:8000/Order/placeOrder",{
             items : products,
             orderAmount : price,
             orderDate :today,
@@ -46,6 +47,7 @@ export default function CheckoutComplete() {
             sellerAddress : sellerAddress
         });
 
+        console.log("result is here:",result);
 
         // // Add Product to Seller Db
         // axios.post("http://localhost:8000/Seller/addProductInSeller",{

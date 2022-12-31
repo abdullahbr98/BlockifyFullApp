@@ -76,7 +76,7 @@ function App() {
                     <Route path="/CheckoutComplete/:success/:products/:price/:buyerAddress/:productModelNo/:sellerAddress" element={<CheckoutComplete />} />
                     <Route path="/product/:id/:seller" element={<SingleProductPage />} />
                     <Route path="/cart" element={<BuyerCartPage />} />
-                    <Route path="/orders" element={<Orderspage />} />
+                    <Route path="/orders/:id" element={<Orderspage />} />
                     <Route path="/manufacturerEditProduct" element={<ManufacturerEditProduct />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}
 

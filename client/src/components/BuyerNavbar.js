@@ -30,7 +30,7 @@ export default function BuyerNavbar() {
         <>
             <Box w="100vw" h="15vh" bg="blue.600" px="50px">
                 <Flex justifyContent="right" color="white" pe="4" pt="2">
-                    <Link fontSize="sm" href="/orders">
+                    <Link fontSize="sm" href={`/orders/`+localStorage.getItem("usernameOfBuyer")}>
                         Order Status
                     </Link>
                 </Flex>

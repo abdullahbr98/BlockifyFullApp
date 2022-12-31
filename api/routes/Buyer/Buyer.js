@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
+var Buyer = require("../../models/Buyer");
 const {signup,login} = require("../../controllers/buyer.controller");
 
 // Clean Routes
