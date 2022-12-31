@@ -22,6 +22,8 @@ import ManufacturerTransactions from './components/ManufacturerTransactions'
 import SingleProductPage from "./components/SingleProductPage"
 import BuyerCartPage from "./components/BuyerCartPage"
 import Orderspage from "./pages/Orderspage"
+import StripeBuyer from "./components/StripeBuyer"
+import CheckoutComplete from "./components/CheckoutComplete";
 // import BuyerCart from "./components/BuyerCart"
 
 function App() {
@@ -65,11 +67,13 @@ function App() {
                     <Route path="/manufacturerTransactions" element={<ManufacturerTransactions />}/>
                     <Route path="/pendingVerificationRequests" element={<PendingVerificationRequests/>}/>
                     <Route path="/stripePayment" element={<TestStripe/>}/>
+                    <Route path="/stripePaymentBuyer" element={<StripeBuyer/>}/>
                     <Route path="/shipment" element={<ShipmentPage/>}/>
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
                     <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
-                    <Route path="/product/:id" element={<SingleProductPage />} />
+                    <Route path="/CheckoutComplete/:success/:products/:price/:buyerAddress/:productModelNo/:sellerAddress" element={<CheckoutComplete />} />
+                    <Route path="/product/:id/:seller" element={<SingleProductPage />} />
                     <Route path="/cart" element={<BuyerCartPage />} />
                     <Route path="/orders" element={<Orderspage />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}

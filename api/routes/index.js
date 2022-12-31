@@ -33,8 +33,61 @@ router.post("/create-checkout-session", async (req, res) => {
         cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
 
+//     const successUrl = `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${product.price}/${address}/${productModelNo}`;
+//     const cancelUrl =`${YOUR_DOMAIN}?canceled=true`;
+//     console.log("success url", successUrl);
+
+//     // Set the line items for the Checkout session
+//     const lineItems = [
+//     {
+//         price: product.stripePriceId,
+//         quantity: products,
+//     }
+//     ];
+
+//    const session =  stripe.checkout.sessions.create({
+//     success_url: successUrl,
+//     cancel_url: cancelUrl,
+//     mode: "payment",
+//     payment_method_types: ['card'],
+//     line_items: lineItems,
+//     }, function(err, session) {
+//     // Handle the response
+//     console.log(err);
+//     });
+
     res.redirect(303, session.url);
 });
+
+
+router.post("/create-checkout-session-buyer", async (req, res) => {
+    console.log(req.body);
+    const products = req.body.products;
+    const buyerAddress = req.body.buyerAddress;
+    const productModelNo = req.body.modelNo;
+    const sellerAddress = req.body.sellerAddress;
+
+    console.log("Product Model No", productModelNo);
+    const product = await Product.findOne({ modelNo: productModelNo });
+    console.log(product);
+    console.log("Price : ", product.price);
+
+    const session = await stripe.checkout.sessions.create({
+        line_items: [
+            {
+                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                price: product.stripePriceId,
+                quantity: products,
+            },
+        ],
+        mode: "payment",
+        success_url: `${YOUR_DOMAIN}/CheckoutComplete/true/${products}/${product.price}/${buyerAddress}/${productModelNo}/${sellerAddress}`,
+        cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    });
+
+    res.redirect(303, session.url);
+});
+
 
 router.get("/stripeIntermediate", async (req, res) => {
     const address = req.query.address;

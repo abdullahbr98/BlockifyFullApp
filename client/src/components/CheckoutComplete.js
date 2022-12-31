@@ -3,41 +3,53 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import PaymentSuccess from "../images/success.png";
 import { Box, Flex, Text, Button, Icon, Link, Image } from "@chakra-ui/react";
-export default function PaymentSuccessfull() {
+export default function CheckoutComplete() {
     const modelNoOriginal = localStorage.getItem("modelNo");
     console.log("modelNoOriginal:",modelNoOriginal);
-    const { success, products, price, address,productModelNo } = useParams();
+    const { success, products, price, buyerAddress,productModelNo, sellerAddress} = useParams();
     console.log("productModel",productModelNo);
     const handleButton = async () => {
-        axios.post("http://localhost:8000/ManufacturerSM/sendProducts", {
+        axios.post("http://localhost:8000/Seller/sendProducts", {
             products: products,
             price: price,
-            address: address,
+            buyerAddress: buyerAddress,
             productModelNo:modelNoOriginal,
+            sellerAddress:sellerAddress
         });
+
+        const buyer = axios.get("http://localhost:8000/Buyer/getBuyerFromAddress", {
+            params: {
+                accountAddress : buyerAddress
+            }
+        });
+
+        console.log(buyer);
+
+        const username = buyer.username;
         // Update Manufacturer Inventory
 
-        axios.post("http://localhost:8000/Manufacturer/updateProductQuantity",{
-            accountAddress:address,
-            modelNumber:modelNoOriginal,
-            quantity:products
-        });
+        // axios.post("http://localhost:8000/Manufacturer/updateProductQuantity",{
+        //     accountAddress:address,
+        //     modelNumber:modelNoOriginal,
+        //     quantity:products
+        // });
 
 
-        // Add Product to Seller Db
-        axios.post("http://localhost:8000/Seller/addProductInSeller",{
-            accountAddress:address,
-            modelNumber:modelNoOriginal,
-            quantity:products
-        });
+        // // Add Product to Seller Db
+        // axios.post("http://localhost:8000/Seller/addProductInSeller",{
+        //     accountAddress:address,
+        //     modelNumber:modelNoOriginal,
+        //     quantity:products
+        // });
 
 
-        //
-        axios.post("http://localhost:8000/Seller/deletePurchaseRequest", {
-            sellerAddress: address,
-            products: products,
-        });
-        window.location.href = "http://localhost:3000/Seller/seller";
+        // //
+        // axios.post("http://localhost:8000/Seller/deletePurchaseRequest", {
+        //     sellerAddress: address,
+        //     products: products,
+        // });
+        
+        window.location.href = "http://localhost:3000/Buyer/" + username;
     };
     return (
         <>
@@ -60,7 +72,7 @@ export default function PaymentSuccessfull() {
                     </Flex>
                     <Flex my="4" justifyContent="space-between" ps="5">
                         <Text fontSize="md" fontWeight="bold">Address:</Text>
-                        <Text>{address}</Text>
+                        <Text>{sellerAddress}</Text>
                     </Flex>
                     <Flex my="4" justifyContent="space-between" ps="5">
                         <Text fontSize="md" fontWeight="bold" me="3">Products Transacted:</Text>

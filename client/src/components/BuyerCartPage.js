@@ -43,6 +43,15 @@ export default function BuyerCartPage() {
             isClosable: true,
         });
     };
+
+    const checkoutHandler = ()=>{
+        // localStorage.setItem('modelNo', modelNo);
+        localStorage.setItem('noOfProducts', quantity);
+        console.log("i am clicked");
+        window.location.href="http://localhost:3000/stripePaymentBuyer"
+    }
+
+
     useEffect(() => {
         setproductInfo(JSON.parse(localStorage.getItem("cartItems")));
         console.log(productInfo);
@@ -167,12 +176,14 @@ export default function BuyerCartPage() {
                                     >
                                         Update Cart
                                     </Button>
-                                    <Button
-                                        colorScheme="facebook"
-                                        borderRadius="4"
-                                    >
-                                        Check out
-                                    </Button>
+                                        <Button
+                                            colorScheme="facebook"
+                                            borderRadius="4"
+                                            onClick= {() => {checkoutHandler()}}
+                                        >
+                                            
+                                            Check out
+                                        </Button>
                                 </Flex>
                             </Box>
                         </Box>

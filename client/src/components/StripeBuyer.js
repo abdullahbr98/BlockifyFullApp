@@ -74,10 +74,10 @@ const ProductDisplay = () => {
                 </div>
             </Box>
             <form
-                action="http://localhost:8000/create-checkout-session"
+                action="http://localhost:8000/create-checkout-session-buyer"
                 method="POST"
             >
-                <input type="hidden" name="price" value={price} />
+                <input type="hidden" name="price" value={69} />
                 <input
                     type="hidden"
                     name="products"
@@ -90,8 +90,13 @@ const ProductDisplay = () => {
                 />
                 <input
                     type="hidden"
-                    name="address"
+                    name="buyerAddress"
                     value={JSON.parse(localStorage.getItem("UserAddress"))}
+                />
+                <input
+                    type="hidden"
+                    name="sellerAddress"
+                    value={JSON.parse(localStorage.getItem("productSellerAddress"))}
                 />
                 <Box align="center">
                     <Button type="submit" color="black" bg="green.200" _hover={{"backgroundColor":"black", "color":"white"}}>Proceed To Checkout</Button>
@@ -109,7 +114,7 @@ const Message = ({ message }) => (
     </section>
 );
 
-export default function TestStripe() {
+export default function StripeBuyer() {
     const [message, setMessage] = useState("");
 
     useEffect(() => {

@@ -33,9 +33,14 @@ export default function SingleProductPage() {
     const [productInfo, setproductInfo] = useState({});
     ///getProductByModelNo
     const { id } = useParams();
+    const { seller } = useParams();
     const goToCart = (product)=>{
         localStorage.setItem("cartItems", JSON.stringify(product));
+        localStorage.setItem("productSellerAddress", JSON.stringify(seller));
+        localStorage.setItem("modelNo", id);
         window.location.href = `http://localhost:3000/cart/`;
+        console.log("modelNo", id);
+        console.log("seller", seller);
 
     }
     const getProductInfo = async () => {

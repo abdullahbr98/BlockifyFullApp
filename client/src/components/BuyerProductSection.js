@@ -27,7 +27,7 @@ export default function BuyerProductSection() {
 
     const wrapper = (p) => {
         {
-            window.location.href = `http://localhost:3000/product/` + p.modelNo;
+            window.location.href = `http://localhost:3000/product/` + p.modelNo + "/" +p.seller;
         }
     };
     const arrayDataMap = (searchArray) => {
@@ -47,6 +47,7 @@ export default function BuyerProductSection() {
                         description={p.description}
                         modelNo={p.modelNo}
                         productTrack={productTrack}
+                        sellerAddress = {p.seller}
                     />
                 </div>
             );
