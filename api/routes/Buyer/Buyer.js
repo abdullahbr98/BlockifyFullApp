@@ -8,6 +8,16 @@ const {signup,login} = require("../../controllers/buyer.controller");
 router.post("/signup", signup); 
 router.post("/login", login); 
 
+router.get("/getBuyerFromAddress",async (req, res) => {
+
+
+    const address = req.query.address;
+
+    const buyer = await Buyer.findOne({accountAddress: address});
+
+    res.json(buyer);
+
+});
 
 
 module.exports = router;
