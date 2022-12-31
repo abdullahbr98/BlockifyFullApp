@@ -27,27 +27,16 @@ export default function SellerHomeItems({ displayHome }) {
                         </Text>
                         <QuestionOutlineIcon mt="4" cursor="pointer" />
                     </Flex>
-                    {/* TODO map function here to load products seller owns */}
-                    {/* <Flex justifyContent="space-evenly" mx="5" mt="4">
-                        <SellerProductAccordion
-                            productName="LG LED 40' "
-                            description="Ultra wide display with high refresh rate upto 120Hz"
-                        />
-                        <SellerProductAccordion
-                            productName="LG LED 30' "
-                            description="IPS Panel with 144Hz, 1080x720 "
-                        />
-                    </Flex> */}
                     <SimpleGrid
                             columns={4}
                             spacing={12}
                             ms="4"
                             justifyContent="space-between"
                         >
-                            {productList?.map((product) => {
+                            {productList?.map((product,index) => {
                         return(
                             <SellerProductAccordion
-                            productName={product.item.name}
+                            productName={product.item.productName}
                             description={product.item.description}
                             price={product.item.price}
                             modelNo={product.item.modelNo}

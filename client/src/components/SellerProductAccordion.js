@@ -44,7 +44,7 @@ export default function SellerProductAccordion(props) {
                 </Text>
                 <Flex justifyContent="space-between" mt={3}>
                     <Text ms={2} fontSize="lg">
-                        {props.price}
+                        ${props.price}
                     </Text>
                     <Flex me={2}>
                         <Text me={1}>approved</Text>

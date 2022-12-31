@@ -49,7 +49,7 @@ export default function CheckoutComplete() {
         //     products: products,
         // });
         
-        window.location.href = "http://localhost:3000/Buyer/" + username;
+        window.location.href = "http://localhost:3000/Buyer/" + localStorage.getItem("usernameOfBuyer");
     };
     return (
         <>
