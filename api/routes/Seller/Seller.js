@@ -444,7 +444,7 @@ router.post("/sendProducts", async (req, res) => {
   // res.redirect(303,"http://localhost:3000");
   // res.redirect(307,"http://localhost:3000/Seller/seller");
   
-  res.json("Success !")
+  res.json(tx1)
 
 });
 
