@@ -9,7 +9,7 @@ export default function CheckoutComplete() {
     const { success, products, price, buyerAddress,productModelNo, sellerAddress} = useParams();
     console.log("productModel",productModelNo);
     const handleButton = async () => {
-        axios.post("http://localhost:8000/Seller/sendProducts", {
+        const trasaction = axios.post("http://localhost:8000/Seller/sendProducts", {
             products: products,
             price: price,
             buyerAddress: buyerAddress,
@@ -28,10 +28,15 @@ export default function CheckoutComplete() {
         const username = buyer.username;
         // Update Manufacturer Inventory
 
-        // axios.post("http://localhost:8000/Manufacturer/updateProductQuantity",{
-        //     accountAddress:address,
-        //     modelNumber:modelNoOriginal,
-        //     quantity:products
+        // axios.post("http://localhost:8000/Order/placeOrder",{
+        //     items : products,
+        //     orderAmount : price,
+        //     orderDate = ,
+        //     paymentMethod = "Stripe",
+        //     paymentStatus,
+        //     orderStatus,
+        //     buyerAddress,
+        //     sellerAddress
         // });
 
 
