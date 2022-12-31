@@ -9,7 +9,7 @@ export default function CheckoutComplete() {
     const { success, products, price, buyerAddress,productModelNo, sellerAddress} = useParams();
     console.log("productModel",productModelNo);
     const handleButton = async () => {
-        const trasaction = axios.post("http://localhost:8000/Seller/sendProducts", {
+        const trasaction = await axios.post("http://localhost:8000/Seller/sendProducts", {
             products: products,
             price: price,
             buyerAddress: buyerAddress,
@@ -17,7 +17,7 @@ export default function CheckoutComplete() {
             sellerAddress:sellerAddress
         });
 
-        const buyer = axios.get("http://localhost:8000/Buyer/getBuyerFromAddress", {
+        const buyer = await axios.get("http://localhost:8000/Buyer/getBuyerFromAddress", {
             params: {
                 accountAddress : buyerAddress
             }
@@ -28,16 +28,23 @@ export default function CheckoutComplete() {
         const username = buyer.username;
         // Update Manufacturer Inventory
 
-        // axios.post("http://localhost:8000/Order/placeOrder",{
-        //     items : products,
-        //     orderAmount : price,
-        //     orderDate = ,
-        //     paymentMethod = "Stripe",
-        //     paymentStatus,
-        //     orderStatus,
-        //     buyerAddress,
-        //     sellerAddress
-        // });
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+
+        await axios.post("http://localhost:8000/Order/placeOrder",{
+            items : products,
+            orderAmount : price,
+            orderDate :today,
+            paymentMethod : "Stripe",
+            paymentStatus : "paid",
+            orderStatus : "placed",
+            buyerAddress : buyerAddress,
+            sellerAddress : sellerAddress
+        });
 
 
         // // Add Product to Seller Db
