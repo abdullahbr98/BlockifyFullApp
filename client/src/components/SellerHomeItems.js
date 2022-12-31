@@ -4,19 +4,22 @@ import axios from "axios";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import SellerProductAccordion from "../components/SellerProductAccordion";
 export default function SellerHomeItems({ displayHome }) {
-    const [productList,setProductList] = useState([]);
-    const getProducts = async () =>{
+    const [productList, setProductList] = useState([]);
+    const getProducts = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
-        const result = await axios.get("http://localhost:8000/product/getAllProductsSeller",{
-            params:{
-                sellerAddress:items
+        const result = await axios.get(
+            "http://localhost:8000/product/getAllProductsSeller",
+            {
+                params: {
+                    sellerAddress: items,
+                },
             }
-        })
+        );
         setProductList(result.data);
-    }
-    useEffect(()=>{
-      getProducts();
-    },[])
+    };
+    useEffect(() => {
+        getProducts();
+    }, []);
     return (
         <>
             {displayHome ? (
@@ -28,29 +31,45 @@ export default function SellerHomeItems({ displayHome }) {
                         <QuestionOutlineIcon mt="4" cursor="pointer" />
                     </Flex>
                     <SimpleGrid
-                            columns={4}
-                            spacing={12}
-                            ms="4"
-                            justifyContent="space-between"
-                        >
-                            {productList?.map((product,index) => {
-                        return(
-                            <SellerProductAccordion
-                            productName={product.item.productName}
-                            description={product.item.description}
-                            price={product.item.price}
-                            modelNo={product.item.modelNo}
-                            quantity={product.quantity}
-                        />
-                        );})}
-                        </SimpleGrid>
-                    <Flex justifyContent="center" my="5vh">
+                        columns={4}
+                        spacing={12}
+                        ms="4"
+                        justifyContent="space-between"
+                        p="5"
+                        ps="6"
+                    >
+                        {productList?.map((product, index) => {
+                            if (product.quantity != 0) {
+                                return (
+                                    <SellerProductAccordion
+                                        productName={product.item.productName}
+                                        description={product.item.description}
+                                        price={product.item.price}
+                                        modelNo={product.item.modelNo}
+                                        quantity={product.quantity}
+                                    />
+                                );
+                            }
+                            else{
+                                return (
+                                    <SellerProductAccordion
+                                        productName={product.item.productName}
+                                        description={product.item.description}
+                                        price={product.item.price}
+                                        modelNo={product.item.modelNo}
+                                        quantity={"Out of Stock"}
+                                    />
+                                );
+                            }
+                        })}
+                    </SimpleGrid>
+                    {/* <Flex justifyContent="center" my="5vh">
                         <Text fontSize="3xl" me="5">
                             Sold Products
                         </Text>
                         <QuestionOutlineIcon mt="4" cursor="pointer" />
                     </Flex>
-                    <Text>You have sold nothing yet</Text>
+                    <Text>You have sold nothing yet</Text> */}
                 </Box>
             ) : (
                 <Box display="none"></Box>
