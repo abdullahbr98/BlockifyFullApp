@@ -6,6 +6,7 @@ import {
     Flex,
     Link,
     SimpleGrid,
+    Select,
     Text,
     InputGroup,
     InputRightElement,
@@ -14,6 +15,7 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 export default function BuyerProductSection() {
     const [searchArray, setsearchArray] = useState("");
+    const [sortBy, setsortBy] = useState("name-ascending");
     const [products, setproducts] = useState([]);
     const [productTrack, setproductTrack] = useState([]);
     const getProductInfo = async () => {
@@ -25,33 +27,88 @@ export default function BuyerProductSection() {
         setproducts(product.data);
     };
 
+    const sortProductsByNameCompareFunction = (p1,p2) => {
+        if (p1.name.toLowerCase() > p2.name.toLowerCase()) {
+            return 1;
+        } else if (p1.name < p2.name) {
+            return -1;
+        } else {
+            return 0;
+        }
+    };
+    const sortProductsByNameDescendingCompareFunction = (p1,p2) => {
+        if (p1.name.toLowerCase() > p2.name.toLowerCase()) {
+            return -1;
+        } else if (p1.name < p2.name) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+    const sortProductsByPriceCompareFunction = (p1,p2) => {
+        return p1.price - p2.price;
+    };
+    const sortProductsByPriceDescendingCompareFunction = (p1,p2) => {
+        return p2.price - p1.price;
+    };
+
+    const compareFunctionMap = {
+        "name-ascending":sortProductsByNameCompareFunction,
+        "name-descending":sortProductsByNameDescendingCompareFunction,
+        "price-ascending":sortProductsByPriceCompareFunction,
+        "price-descending":sortProductsByPriceDescendingCompareFunction,
+    }
+
     const wrapper = (p) => {
         {
-            window.location.href = `http://localhost:3000/product/` + p.modelNo + "/" +p.seller;
+            window.location.href =
+                `http://localhost:3000/product/` + p.modelNo + "/" + p.seller;
         }
     };
     const arrayDataMap = (searchArray) => {
-        return products.filter((p)=>{return(p.name.toLowerCase().includes(searchArray.toLowerCase()))}).map((p,index) => {
-            return (
-                <div
-                    key={index}
-                    onClick={() => {
-                        wrapper(p);
-                    }}
-                >
-                    <BuyerCard
-                        sellerName={p.sellerName}
-                        name={p.name}
-                        price={p.price}
-                        quantity={p.quantity}
-                        description={p.description}
-                        modelNo={p.modelNo}
-                        productTrack={productTrack}
-                        sellerAddress = {p.seller}
-                    />
-                </div>
-            );
-        });
+        console.log(sortBy);
+        return products
+            .filter((p) => {
+                return p.name.toLowerCase().includes(searchArray.toLowerCase());
+            })
+            .sort(compareFunctionMap[sortBy])
+            .map((p, index) => {
+                if (p.quantity != 0) {
+                    return (
+                        <Box
+                            key={index}
+                            onClick={() => {
+                                wrapper(p);
+                            }}
+                        >
+                            <BuyerCard
+                                sellerName={p.sellerName}
+                                name={p.name}
+                                price={p.price}
+                                quantity={p.quantity}
+                                description={p.description}
+                                modelNo={p.modelNo}
+                                productTrack={productTrack}
+                                sellerAddress={p.seller}
+                            />
+                        </Box>
+                    );
+                } else {
+                    return (
+                        <BuyerCard
+                            key={index}
+                            sellerName={p.sellerName}
+                            name={p.name}
+                            price={p.price}
+                            quantity={"Out of Stock"}
+                            description={p.description}
+                            modelNo={p.modelNo}
+                            productTrack={productTrack}
+                            sellerAddress={p.seller}
+                        />
+                    );
+                }
+            });
     };
     useEffect(() => {
         getProductInfo();
@@ -81,6 +138,29 @@ export default function BuyerProductSection() {
                         />
                     </InputGroup>
                 </Box>
+                <Box mt="6" ms="3" fontWeight="bold" fontSize="xs">
+                    sort by:
+                </Box>
+                <Select
+                    placeholder="FEATURED"
+                    w="10vw"
+                    h="5vh"
+                    bg="white"
+                    mt="4"
+                    ms="2"
+                    fontWeight="thinner"
+                    color="gray"
+                    fontSize="xs"
+                    borderRadius={0}
+                    onChange={(e) => {
+                        setsortBy(e.target.value);
+                    }}
+                >
+                    <option value="name-ascending">ALPHABETICALLY, A-Z</option>
+                    <option value="name-descending">ALPHABETICALLY, Z-A</option>
+                    <option value="price-ascending">PRICE, LOW TO HIGH</option>
+                    <option value="price-descending">PRICE, HIGH TO LOW</option>
+                </Select>
             </Flex>
             <Flex justifyContent="center" ps="4" py="4">
                 <Text fontSize="3xl" fontWeight="medium" color="blue.600">
@@ -88,29 +168,8 @@ export default function BuyerProductSection() {
                 </Text>
             </Flex>
             <Box ps="50px">
-                <SimpleGrid columns={4} p="5">
-                    {
-                        arrayDataMap(searchArray)
-                        // products.map((p) => {
-                        //     return (
-                        //         <div
-                        //             onClick={() => {
-                        //                 wrapper(p);
-                        //             }}
-                        //         >
-                        //             <BuyerCard
-                        //                 sellerName={p.sellerName}
-                        //                 name={p.name}
-                        //                 price={p.price}
-                        //                 quantity={p.quantity}
-                        //                 description={p.description}
-                        //                 modelNo={p.modelNo}
-                        //                 productTrack={productTrack}
-                        //             />
-                        //         </div>
-                        //     );
-                        // })
-                    }
+                <SimpleGrid columns={4} p="5" pb="50vh">
+                    {arrayDataMap(searchArray)}
                 </SimpleGrid>
             </Box>
         </Box>
