@@ -24,6 +24,7 @@ import BuyerCartPage from "./components/BuyerCartPage"
 import Orderspage from "./pages/Orderspage"
 import StripeBuyer from "./components/StripeBuyer"
 import CheckoutComplete from "./components/CheckoutComplete";
+import ManufacturerEditProduct from "./pages/ManufacturerEditProduct"
 // import BuyerCart from "./components/BuyerCart"
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
                     <Route path="/product/:id/:seller" element={<SingleProductPage />} />
                     <Route path="/cart" element={<BuyerCartPage />} />
                     <Route path="/orders" element={<Orderspage />} />
+                    <Route path="/manufacturerEditProduct" element={<ManufacturerEditProduct />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}
 
                     {/* TO DO AHMED ZIA product name add also */}

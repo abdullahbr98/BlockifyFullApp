@@ -61,12 +61,12 @@ export default function BuyerProductSection() {
 
     const wrapper = (p) => {
         {
+            localStorage.setItem('cartItemQuantity', p.quantity);
             window.location.href =
                 `http://localhost:3000/product/` + p.modelNo + "/" + p.seller;
         }
     };
     const arrayDataMap = (searchArray) => {
-        console.log(sortBy);
         return products
             .filter((p) => {
                 return p.name.toLowerCase().includes(searchArray.toLowerCase());
@@ -95,6 +95,12 @@ export default function BuyerProductSection() {
                     );
                 } else {
                     return (
+                        <Box
+                            key={index}
+                            onClick={() => {
+                                wrapper(p);
+                            }}
+                        >
                         <BuyerCard
                             key={index}
                             sellerName={p.sellerName}
@@ -106,6 +112,7 @@ export default function BuyerProductSection() {
                             productTrack={productTrack}
                             sellerAddress={p.seller}
                         />
+                        </Box>
                     );
                 }
             });
@@ -113,7 +120,11 @@ export default function BuyerProductSection() {
     useEffect(() => {
         getProductInfo();
         console.log(searchArray);
-    }, [searchArray]);
+    }, []);
+
+    useEffect(() => {
+    }, [searchArray])
+    
 
     return (
         <Box bg="blackAlpha.50" w="100vw">

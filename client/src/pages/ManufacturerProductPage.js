@@ -53,6 +53,7 @@ export default function ManufacturerProductPage() {
                             justifyContent="space-between"
                         >
                             {productList?.map((productList) => {
+                                console.log(productList);
                         return(
                             <SellerProductAccordion
                             productName={productList.productName}

@@ -180,21 +180,6 @@ router.post("/updateShopInformation", async (req, res) => {
   res.json("completed Updation");
 });
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./files");
-//   },
-//   filename: (req, file, cb) => {
-//     console.log(file);
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
-
-// const upload = multer({ dest: "./files/" });
-
-// router.post("/upload", upload.single("file"), (req, res) => {
-//   res.send("success");
-// });
 
 router.post("/addProductInSeller", async (req, res) => {
   const modelNo = req.body.modelNumber;
@@ -253,7 +238,7 @@ router.get("/getSellerProducts", async (req, res) => {
     productData.push({
       name: product.productName,
       price: product.price,
-      quantity: product.productNo,
+      quantity: seller.product[i].quantity,
       description: product.description,
       modelNo: product.modelNo,
     });
@@ -282,7 +267,7 @@ router.get("/getAllSellerProducts", async (req, res) => {
         sellerName: seller.username,
         name: product.productName,
         price: product.price,
-        quantity: product.productNo,
+        quantity: seller.product[i].quantity,
         description: product.description,
         modelNo: product.modelNo,
       });
@@ -436,12 +421,14 @@ router.post("/sendProducts", async (req, res) => {
   //Decrease quantity of Seller Products
   const quantity = seller.quantity - products;
   const sellerArray = seller.product;
-  for(let i=0; i<sellerArray.length; i++){
+  for(let i=0; i<sellerArray.length; i++){  //2
     if(productModelNo === sellerArray[i].modelNumber){
-      sellerArray[i].quantity = quantity;
+      console.log("seller bhai ke products before decrement:",sellerArray[i].quantity );
+      sellerArray[i].quantity -= products;
+      console.log("seller bhai ke products after decrement:",sellerArray[i].quantity );
     }
   }
-
+  console.log("sellerArray printed here",sellerArray);
   await Seller.updateOne(
     {accountAddress : accountAddress},
     {$set: {product: sellerArray}}

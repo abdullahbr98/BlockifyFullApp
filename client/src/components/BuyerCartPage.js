@@ -24,6 +24,7 @@ import BuyerNavbar from "../components/BuyerNavbar";
 import BuyerFooter from "../components/BuyerFooter";
 export default function BuyerCartPage() {
     const [productInfo, setproductInfo] = useState(null);
+    const [upperLimitQuantity, setupperLimitQuantity] = useState(0);
     const [quantity, setquantity] = useState(1);
     const toast = useToast();
 
@@ -54,6 +55,7 @@ export default function BuyerCartPage() {
 
     useEffect(() => {
         setproductInfo(JSON.parse(localStorage.getItem("cartItems")));
+        setupperLimitQuantity(localStorage.getItem("cartItemQuantity"));
         console.log(productInfo);
     }, [quantity]);
 
@@ -108,7 +110,7 @@ export default function BuyerCartPage() {
                                                         defaultValue={1}
                                                         min={1}
                                                         max={
-                                                            productInfo.productNo
+                                                            upperLimitQuantity
                                                         }
                                                         onChange={(e) => {
                                                             setquantity(e);

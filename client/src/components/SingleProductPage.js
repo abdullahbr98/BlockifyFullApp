@@ -34,15 +34,15 @@ export default function SingleProductPage() {
     ///getProductByModelNo
     const { id } = useParams();
     const { seller } = useParams();
-    const goToCart = (product)=>{
+    const goToCart = (product) => {
+        console.log("here is:", product);
         localStorage.setItem("cartItems", JSON.stringify(product));
         localStorage.setItem("productSellerAddress", JSON.stringify(seller));
         localStorage.setItem("modelNo", id);
         window.location.href = `http://localhost:3000/cart/`;
         console.log("modelNo", id);
         console.log("seller", seller);
-
-    }
+    };
     const getProductInfo = async () => {
         const product = await axios.get(
             "http://localhost:8000/Product/getProductByModelNo",
@@ -71,15 +71,23 @@ export default function SingleProductPage() {
                     <Text fontSize="2xl" ps="2" color="gray.500">
                         ${productInfo.price}.00
                     </Text>
-                    <Button
-                        m="3"
-                        w="15rem"
-                        borderRadius={4}
-                        colorScheme="facebook"
-                        onClick={()=>{goToCart(productInfo)}}
-                    >
-                        Add to Cart
-                    </Button>
+                    {(localStorage.getItem("cartItemQuantity")!=0) ? (
+                        <Button
+                            m="3"
+                            w="15rem"
+                            borderRadius={4}
+                            colorScheme="facebook"
+                            onClick={() => {
+                                goToCart(productInfo);
+                            }}
+                        >
+                            Add to Cart
+                        </Button>
+                    ) : (
+                        <Text fontSize="lg" color="red">
+                            Out Of Stock
+                        </Text>
+                    )}
                     <Text
                         fontSize="md"
                         pe={12}
@@ -241,14 +249,11 @@ export default function SingleProductPage() {
                         <AccordionPanel pb={4}>
                             <Flex justifyContent="center">
                                 <Box>
-
-                                    Seller Name: 
-                                    Shop Name:
-                                    Phone Number:
-                                    show cordinates on map 
-                                    Shop address
-                                    Authenticated By 
-                                    View Transaction => seller address pass kardo aur wo exact hash kardo (Total Products)
+                                    Seller Name: Shop Name: Phone Number: show
+                                    cordinates on map Shop address Authenticated
+                                    By View Transaction => seller address pass
+                                    kardo aur wo exact hash kardo (Total
+                                    Products)
                                     <SellerShopInfo />
                                 </Box>
                             </Flex>
