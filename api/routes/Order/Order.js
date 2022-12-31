@@ -73,5 +73,17 @@ router.get("/getOrderStatus", async(req, res)=> {
     res.json(order.orderStatus)
 });
 
+router.get("/getOrderOfSeller", async(req, res)=> {
+    const sellerAddress = req.query.sellerAddress;
+
+    console.log(sellerAddress);
+    const order = await Order.find({
+        sellerAddress: sellerAddress
+    })
+
+    res.json(order)
+});
+
+
 
 module.exports = router;
