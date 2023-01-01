@@ -42,9 +42,9 @@ const SellerSchema = new Schema({
     authenticated: {
         type: Boolean,
     },
-    authenticatedBy: {
+    authenticatedBy: [{
         type: String,
-    },
+    }],
     //jwt
     token: {
         type: String,

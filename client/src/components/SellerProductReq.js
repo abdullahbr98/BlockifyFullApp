@@ -95,12 +95,10 @@ export default function SellerProductReq() {
         );
         console.log("Seller : ", seller.data);
         console.log("AuthenticatedBY : ", seller.data.authenticatedBy);
-        const listOfProducts = await axios.get(
-            "http://localhost:8000/Product/getAllProducts",
+        const listOfProducts = await axios.post(
+            "http://localhost:8000/Product/getAllProductsOfManufacturer",
             {
-                params: {
-                    manufacturerAddress: seller.data.authenticatedBy,
-                },
+                    manufacturerAddress: seller.data.authenticatedBy
             }
         );
         console.log("productlist:", listOfProducts);
@@ -188,6 +186,7 @@ export default function SellerProductReq() {
                                 return (
                                     <Box>
                                         <SellerProductAccordion
+                                            image={productList.image}
                                             productName={
                                                 productList.productName
                                             }
@@ -241,7 +240,7 @@ export default function SellerProductReq() {
                                     step={1}
                                     me="3"
                                     w="5vw"
-                                    defaultValue={1}
+                                    defaultValue={0}
                                     min={1}
                                     max={quantityMaxLimit}
                                     onChange={(e) => {

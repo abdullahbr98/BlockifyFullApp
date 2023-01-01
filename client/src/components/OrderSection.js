@@ -58,7 +58,6 @@ export default function OrderSection() {
                             <Th>Payment Method</Th>
                             <Th>Payment Status</Th>
                             <Th>Order Status</Th>
-                            <Th>Shipment Details</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -78,9 +77,6 @@ export default function OrderSection() {
                                         <Badge colorScheme="purple" ms="5">
                                         {ordersList.orderStatus}
                                         </Badge>
-                                    </Td>
-                                    <Td>
-                                        <Link color="blue" ms="4"> View Details </Link>
                                     </Td>
                                 </Tr>
                             );

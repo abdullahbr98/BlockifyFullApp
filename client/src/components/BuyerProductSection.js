@@ -104,6 +104,7 @@ export default function BuyerProductSection() {
                         >
                         <BuyerCard
                             key={index}
+                            image={p.image}
                             sellerName={p.sellerName}
                             name={p.name}
                             price={p.price}

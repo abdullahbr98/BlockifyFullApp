@@ -27,9 +27,10 @@ export default function SellerPurchaseReq() {
         // localStorage.setItem("pendingRequests", JSON.stringify(result.data));
         setPurchaseRequests(result.data);
     };
-    const RequestCompleteHandler = (modelNo,products,sellerId)=>{
+    const RequestCompleteHandler = (modelNo,products,sellerId,manAdd)=>{
         localStorage.setItem('modelNo', modelNo);
         localStorage.setItem('noOfProducts', products);
+        localStorage.setItem('ManufacturerAddress',JSON.stringify(manAdd));
         console.log("i am clicked");
         window.location.href="http://localhost:3000/stripePayment"
     }
@@ -39,7 +40,7 @@ export default function SellerPurchaseReq() {
     }, []);
     return (
         <>
-            <Flex  flexDirection="column">
+            <Flex  flexDirection="column" w="100%">
                 <Text align="center" fontSize={"2xl"} color="black" my={4}>
                     Pending Purchase Requests
                 </Text>
@@ -81,7 +82,7 @@ export default function SellerPurchaseReq() {
                                                 <Badge
                                                     colorScheme="green"
                                                     cursor="pointer"
-                                                    onClick={()=>{RequestCompleteHandler(purchaseRequest.productModelNo,purchaseRequest.products,purchaseRequest.seller)}}
+                                                    onClick={()=>{RequestCompleteHandler(purchaseRequest.productModelNo,purchaseRequest.products,purchaseRequest.seller,purchaseRequest.manufacturer)}}
                                                 >
                                                     Complete
                                                 </Badge>

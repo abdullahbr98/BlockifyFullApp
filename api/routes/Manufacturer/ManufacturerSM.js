@@ -49,35 +49,46 @@ router.post("/authenticate_seller", async (req, res) => {
     }
 
     // Updating Seller Information
-    await Seller.updateOne(
+    const temp = await Seller.findOne({ accountAddress: sellerAddress });
+    const arrayVal = temp.authenticatedBy;
+    arrayVal.push(accountAddress);
+
+    //{ $set: { authenticated: true, authenticatedBy: arrayVal } }
+
+    const result = await Seller.updateOne(
         { accountAddress: sellerAddress },
-        { $set: { authenticated: true, authenticatedBy: accountAddress } }
+        // { $set: { authenticated: true } },
+        { $set: { authenticated: true, authenticatedBy: arrayVal } }
+        // { $push: { authenticatedBy: accountAddress } }
     );
     await AuthenticationRequest.deleteOne({ sellerAddress: sellerAddress });
-    res.json(response);
+    console.log(arrayVal);
+    console.log(response);
+    console.log("new result is:", result);
+    res.json(result);
 });
 
 // Accepts Request for Removing a Seller
 router.post("/remove_seller", async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
     const accountAddress = req.body.accountAddress;
-    console.log("in api sellerAdd:",sellerAddress);
-    console.log("in api accAdd:",accountAddress);
+    console.log("in api sellerAdd:", sellerAddress);
+    console.log("in api accAdd:", accountAddress);
     const signer = new ethers.providers.JsonRpcProvider(
         "http://localhost:7545"
     ).getSigner(accountAddress);
     const manufacturer = await Manufacturer.findOne({
         accountAddress: accountAddress,
     });
-    console.log("manObj:",manufacturer);
-    console.log("in api manAddress New:",manufacturer.authContractAddress);
+    console.log("manObj:", manufacturer);
+    console.log("in api manAddress New:", manufacturer.authContractAddress);
     const contract = new ethers.Contract(
         manufacturer.authContractAddress,
         SELLER_AUTHENTICATION_ABI,
         signer
     );
 
-    console.log("in api contract:",contract.address);
+    console.log("in api contract:", contract.address);
     let response = "";
     try {
         const tx = await contract.remove_seller(sellerAddress);
@@ -86,21 +97,20 @@ router.post("/remove_seller", async (req, res) => {
         response = "Seller already Unverified !";
     }
 
-    console.log("sellerAddress Before Finding:",sellerAddress );
+    console.log("sellerAddress Before Finding:", sellerAddress);
 
     sellerAddressLower = sellerAddress.toLowerCase();
 
-    const seller = await Seller.findOne({
-        accountAddress: sellerAddressLower,
-    });
+    // const seller = await Seller.findOne({
+    //     accountAddress: sellerAddressLower,
+    // });
 
+    // console.log("seller Values:", seller);
 
-    console.log("seller Values:", seller);
+    // seller.authenticated = false;
+    // seller.authenticatedBy = "";
 
-    seller.authenticated = false;
-    seller.authenticatedBy = "";
-
-    await seller.save();
+    // await seller.save();
 
     console.log("updated!");
 
@@ -211,10 +221,34 @@ router.get("/getAuthenticatedSellers", async (req, res) => {
     res.json(result);
 });
 
+router.get("/getManufactueresForAuthentication", async (req, res) => {
+    const sellerAddress = req.query.sellerAddress;
+
+    const seller = await Seller.findOne({ sellerAddress: sellerAddress });
+
+    const result = await Manufacturer.find({});
+    const addresses = [];
+
+    for (let i = 0; i < result.length; i++) {
+        for (let j = 0; j < seller.authenticatedBy.length; j++) {
+            if (result[i].accountAddress != seller.authenticatedBy[j]) {
+                addresses.push({
+                    address: result[i].accountAddress,
+                    name: result[i].username,
+                });
+            }
+        }
+    }
+    console.log(result);
+    console.log(addresses);
+    res.json(addresses);
+});
+
 router.post("/sendProducts", async (req, res) => {
     const products = req.body.products; // Quantity
     const price = req.body.price; // Price
-    console.log("Price : ",price);
+    console.log("Price : ", price);
+    const manufacturerAddress = req.body.manufacturerAddress;
     const productModelNo = req.body.productModelNo;
     console.log("price", price);
     // const accountAddress = req.body.accountAddress; //sellers address
@@ -223,7 +257,6 @@ router.post("/sendProducts", async (req, res) => {
     let conversion = products * price;
     conversion = toString(conversion);
     console.log("apna original typeof string", typeof conversion);
-
 
     // Seller as Signer
     const signer = new ethers.providers.JsonRpcProvider(
@@ -241,25 +274,22 @@ router.post("/sendProducts", async (req, res) => {
         BALANCE_BYTE_CODE,
         signer
     );
-    
+
     // Deploying Balance Contract
     console.log(`Deploying from account : ${signer._address}`);
     const balanceContract = await BalanceContract.deploy();
     await balanceContract.deployed();
 
     console.log("account Address le original:", accountAddress);
-    
+
     // Update Seller set Balance Contract Address
     await Seller.updateOne(
         { accountAddress: accountAddress },
         { $set: { balanceContractAddress: balanceContract.address } }
     );
 
-    // Set Manufacturer Address for this Seller
-    const manufacturerAddress = seller.authenticatedBy;
+    console.log("manufacturer Address New:", manufacturerAddress);
 
-    console.log(manufacturerAddress);
-    
     // Find Manufacturer who authenticated this Seller
     const manufacturer = await Manufacturer.findOne({
         accountAddress: manufacturerAddress,
@@ -284,9 +314,9 @@ router.post("/sendProducts", async (req, res) => {
     // await contract.approve(accountAddress, products);
     console.log("pehla approve");
     console.log("type of conversion", typeof products);
-    // let bprd = products*Math.pow(10,18); 
+    // let bprd = products*Math.pow(10,18);
     let bprd = ethers.utils.parseEther(String(products));
-    console.log("Product : " , bprd);
+    console.log("Product : ", bprd);
     const tx1 = await contract.transfer(accountAddress, String(products));
     console.log(tx1);
     const balance = await contract.balanceOf(accountAddress);
@@ -300,10 +330,10 @@ router.post("/sendProducts", async (req, res) => {
     console.log("Calling Set Balance !");
     console.log("Price : ", price);
     await contract.setBalance(accountAddress, String(price));
-    
+
     console.log("Transfer of Balance from Seller to his Manufacturer");
     const tx2 = await contract.transfer(manufacturerAddress, String(price));
-    
+
     console.log(tx2);
     //--------------------------------------------------------
     // Product Contract !
@@ -331,30 +361,29 @@ router.post("/sendProducts", async (req, res) => {
 
     //Increase Seller productModelNo array
     for (var i = 0; i < products; i++) {
-      let check = await Seller.updateOne(
-          { accountAddress: accountAddress },
-          { $push: { productModelNo: productModelNo } }
-      );
-      console.log("Check", check);
-  }
+        let check = await Seller.updateOne(
+            { accountAddress: accountAddress },
+            { $push: { productModelNo: productModelNo } }
+        );
+        console.log("Check", check);
+    }
     //Decrease product no in Product
     const productRetrieved = await Product.findOne({ modelNo: productModelNo });
     const productNo = productRetrieved.productNo;
     const newValue = productNo - products;
     await Product.updateOne(
         { modelNo: productModelNo },
-        {$set : { productNo: newValue }}
+        { $set: { productNo: newValue } }
     );
-    
+
     console.log("Setting Total Supply of Seller");
     const tx3 = await contract_.setTotalSupply(bprd);
     console.log(tx3);
     // axios.get("http://localhost:3000");
     // res.redirect(303,"http://localhost:3000");
     // res.redirect(307,"http://localhost:3000/Seller/seller");
-    
-    res.json("Success !")
 
+    res.json("Success !");
 });
 
 router.post("/transfer", async (req, res) => {

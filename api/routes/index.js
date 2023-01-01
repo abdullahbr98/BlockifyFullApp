@@ -14,6 +14,7 @@ router.post("/create-checkout-session", async (req, res) => {
     const products = req.body.products;
     const address = req.body.address;
     const productModelNo = req.body.modelNo;
+    const manufacturerAddress = req.body.manufacturerAddress;
     console.log("Product Model No", productModelNo);
     console.log("Address in checkout : ", address);
     const product = await Product.findOne({ modelNo: productModelNo });
@@ -29,7 +30,7 @@ router.post("/create-checkout-session", async (req, res) => {
             },
         ],
         mode: "payment",
-        success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${product.price}/${address}/${productModelNo}`,
+        success_url: `${YOUR_DOMAIN}/paymentSuccessfull/true/${products}/${product.price}/${address}/${productModelNo}/${manufacturerAddress}`,
         cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
 

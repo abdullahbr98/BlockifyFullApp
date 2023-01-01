@@ -54,6 +54,7 @@ export default function SellerHomeItems({ displayHome }) {
                             else{
                                 return (
                                     <SellerProductAccordion
+                                        image={product.item.image}
                                         productName={product.item.productName}
                                         description={product.item.description}
                                         price={product.item.price}

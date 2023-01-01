@@ -95,6 +95,11 @@ const ProductDisplay = () => {
                     name="address"
                     value={JSON.parse(localStorage.getItem("UserAddress"))}
                 />
+                <input
+                    type="hidden"
+                    name="manufacturerAddress"
+                    value={JSON.parse(localStorage.getItem("ManufacturerAddress"))}
+                />
                 <Box align="center">
                     <Button type="submit" color="black" bg="green.200" _hover={{"backgroundColor":"black", "color":"white"}}>Proceed To Checkout</Button>
                 </Box>
