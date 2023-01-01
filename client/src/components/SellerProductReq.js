@@ -188,6 +188,7 @@ export default function SellerProductReq() {
                                 return (
                                     <Box>
                                         <SellerProductAccordion
+                                            image={productList.image}
                                             productName={
                                                 productList.productName
                                             }

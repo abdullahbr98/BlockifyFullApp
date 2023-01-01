@@ -39,7 +39,7 @@ export default function SellerPurchaseReq() {
     }, []);
     return (
         <>
-            <Flex  flexDirection="column">
+            <Flex  flexDirection="column" w="100%">
                 <Text align="center" fontSize={"2xl"} color="black" my={4}>
                     Pending Purchase Requests
                 </Text>

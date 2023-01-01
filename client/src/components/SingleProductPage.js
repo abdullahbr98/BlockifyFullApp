@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import lcdImage from "../images/lcd-image.jpg";
-import GoogleMaps from "../components/GoogleMaps";
+import SellerProductsMaps from "../components/SellerProductsMaps";
 import SellerShopInfo from "../components/SellerShopInfo";
 import {
     Box,
@@ -30,7 +30,11 @@ import {
 import BuyerNavbar from "../components/BuyerNavbar";
 import BuyerFooter from "../components/BuyerFooter";
 export default function SingleProductPage() {
+    const openInNewTab = (url) => {
+        window.open(url, "_blank", "noopener,noreferrer");
+    };
     const [productInfo, setproductInfo] = useState({});
+    const [sellerInformationData, setsellerInformationData] = useState(null);
     ///getProductByModelNo
     const { id } = useParams();
     const { seller } = useParams();
@@ -43,6 +47,20 @@ export default function SingleProductPage() {
         console.log("modelNo", id);
         console.log("seller", seller);
     };
+
+    const getSellerInfoApi = async () => {
+        const sellerInformation = await axios.get(
+            "http://localhost:8000/Seller/getSeller",
+            {
+                params: {
+                    sellerAddress: seller,
+                },
+            }
+        );
+        setsellerInformationData(sellerInformation.data);
+        console.log("seller ki information", sellerInformation);
+    };
+
     const getProductInfo = async () => {
         const product = await axios.get(
             "http://localhost:8000/Product/getProductByModelNo",
@@ -57,6 +75,7 @@ export default function SingleProductPage() {
     };
     useEffect(() => {
         getProductInfo();
+        getSellerInfoApi();
     }, []);
 
     return (
@@ -87,7 +106,10 @@ export default function SingleProductPage() {
                             colorScheme="facebook"
                             onClick={() => {
                                 goToCart(productInfo);
-                                localStorage.setItem("imageUrl",productInfo.image)
+                                localStorage.setItem(
+                                    "imageUrl",
+                                    productInfo.image
+                                );
                             }}
                         >
                             Add to Cart
@@ -258,12 +280,112 @@ export default function SingleProductPage() {
                         <AccordionPanel pb={4}>
                             <Flex justifyContent="center">
                                 <Box>
-                                    Seller Name: Shop Name: Phone Number: show
+                                    {/* Seller Name: Shop Name: Phone Number: show
                                     cordinates on map Shop address Authenticated
                                     By View Transaction => seller address pass
                                     kardo aur wo exact hash kardo (Total
                                     Products)
-                                    <SellerShopInfo />
+                                    <SellerShopInfo /> */}
+                                    {sellerInformationData ? (
+                                        <SimpleGrid columns={2}>
+                                            <Box>
+                                                <Box w="100%" p="3">
+                                                    <Text
+                                                        fontWeight="bold"
+                                                        fontSize="lg"
+                                                    >
+                                                        Seller Name:{" "}
+                                                        {sellerInformationData.firstName +
+                                                            " " +
+                                                            sellerInformationData.lastName}
+                                                    </Text>
+                                                </Box>
+                                                <Box w="100%" p="3">
+                                                    <Text
+                                                        fontWeight="bold"
+                                                        fontSize="lg"
+                                                    >
+                                                        Shop Name:{" "}
+                                                        {
+                                                            sellerInformationData.shopName
+                                                        }
+                                                    </Text>
+                                                </Box>
+                                                <Box w="100%" p="3">
+                                                    <Text
+                                                        fontWeight="bold"
+                                                        fontSize="lg"
+                                                    >
+                                                        Shop Address:{" "}
+                                                        {
+                                                            sellerInformationData.shopAddress
+                                                        }
+                                                    </Text>
+                                                </Box>
+                                                <Box>
+                                                    <Text
+                                                        fontWeight="bold"
+                                                        p="3"
+                                                        fontSize="lg"
+                                                    >
+                                                        Phone Number:{" "}
+                                                        {
+                                                            sellerInformationData.phoneNumber
+                                                        }
+                                                    </Text>
+                                                </Box>
+                                                <Box>
+                                                    <Text
+                                                        fontWeight="bold"
+                                                        p="3"
+                                                        fontSize="lg"
+                                                    >
+                                                        Seller Shop Cordinates:{" "}
+                                                        {
+                                                            sellerInformationData.cordinates
+                                                        }
+                                                    </Text>
+                                                </Box>
+                                                <Box>
+                                                    <Flex>
+                                                        <Text
+                                                            fontWeight="bold"
+                                                            p="3"
+                                                            fontSize="lg"
+                                                        >
+                                                            Authenticated By
+                                                            Manufacturer
+                                                            Address:{" "}
+                                                            {
+                                                                sellerInformationData.authenticatedBy
+                                                            }
+                                                        </Text>
+                                                    </Flex>
+                                                </Box>
+                                                <Box align="center">
+                                                    <Button
+                                                        colorScheme="blue"
+                                                        onClick={() => openInNewTab(`http://google.com/maps/place/${sellerInformationData.cordinates}`)}
+                                                    >
+                                                        Get Navigation
+                                                    </Button>
+                                                </Box>
+                                            </Box>
+                                            <Flex>
+                                                <Box w="100%">
+                                                    <SellerProductsMaps
+                                                        cordinates={
+                                                            sellerInformationData.cordinates
+                                                        }
+                                                    />
+                                                </Box>
+                                            </Flex>
+                                        </SimpleGrid>
+                                    ) : (
+                                        <Flex>
+                                            <Text>Nothing to Show here</Text>
+                                        </Flex>
+                                    )}
                                 </Box>
                             </Flex>
                         </AccordionPanel>
