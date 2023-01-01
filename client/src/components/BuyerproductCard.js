@@ -32,7 +32,7 @@ export default function BuyerproductCard(props) {
             cursor="pointer"
         >
             <Image
-                src={Tv}
+                src={`http://localhost:8000${props.image}`}
                 alt="LCD"
                 w="17vw"
                 h="24vh"

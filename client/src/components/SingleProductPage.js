@@ -63,7 +63,15 @@ export default function SingleProductPage() {
         <Box bg="blackAlpha.50" w="100vw">
             <BuyerNavbar />
             <SimpleGrid columns={2} h="80vh" w="100vw" spacing="5">
-                <Image src={lcdImage} mt="5" ms="2" borderRadius="4"></Image>
+                <Box align="center">
+                    <Image
+                        src={`http://localhost:8000${productInfo.image}`}
+                        mt="5"
+                        ms="2"
+                        borderRadius="4"
+                        w="50%"
+                    ></Image>
+                </Box>
                 <Box textAlign="left" mt="5">
                     <Text fontSize="4xl" ps="2">
                         {productInfo.productName}
@@ -71,7 +79,7 @@ export default function SingleProductPage() {
                     <Text fontSize="2xl" ps="2" color="gray.500">
                         ${productInfo.price}.00
                     </Text>
-                    {(localStorage.getItem("cartItemQuantity")!=0) ? (
+                    {localStorage.getItem("cartItemQuantity") != 0 ? (
                         <Button
                             m="3"
                             w="15rem"
@@ -79,6 +87,7 @@ export default function SingleProductPage() {
                             colorScheme="facebook"
                             onClick={() => {
                                 goToCart(productInfo);
+                                localStorage.setItem("imageUrl",productInfo.image)
                             }}
                         >
                             Add to Cart

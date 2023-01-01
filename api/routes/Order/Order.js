@@ -91,7 +91,6 @@ router.get("/getOrderOfBuyer", async(req, res)=> {
     const order = await Order.find({
         buyerAddress: buyerAddress
     })
-
     res.json(order)
 });
 

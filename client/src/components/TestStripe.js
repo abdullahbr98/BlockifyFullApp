@@ -7,6 +7,7 @@ const ProductDisplay = () => {
     const [modelNo,  setModelNo] = useState("");
     const [products, setProducts] = useState("");
     const [productName, setproductName] = useState("");
+    const [image, setimage] = useState("");
     const [price, setprice] = useState(0);
     const getValuesOfModel = async()=>{
         const modelNo = localStorage.getItem("modelNo");
@@ -19,6 +20,7 @@ const ProductDisplay = () => {
                 }
             }
         );
+        setimage(value.data.image);
         setproductName(value.data.productName);
         setprice(value.data.price);
     }
@@ -62,7 +64,7 @@ const ProductDisplay = () => {
             <Box borderWidth="1px" w="30%" p="4" borderRadius={8} bg="alphaBlack.50" boxShadow="lg">
             <Box className="product" w="100%" h="100%" align="center" mt="5">
                 <Image
-                    src={lcd}
+                    src={`http://localhost:8000${image}`}
                     w="30vw"
                     alt="LCD Image"
                 />

@@ -90,8 +90,8 @@ export default function BuyerCartPage() {
                                             <Td>
                                                 <Flex>
                                                     <Image
-                                                        src={lcd}
-                                                        w="10rem"
+                                                        src={`http://localhost:8000${localStorage.getItem("imageUrl")}`}
+                                                        w="4rem"
                                                     />
                                                     <Text ps="2" fontSize="2xl">
                                                         {

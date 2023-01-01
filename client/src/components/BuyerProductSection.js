@@ -82,6 +82,7 @@ export default function BuyerProductSection() {
                             }}
                         >
                             <BuyerCard
+                                image={p.image}
                                 sellerName={p.sellerName}
                                 name={p.name}
                                 price={p.price}

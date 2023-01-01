@@ -154,6 +154,7 @@ const addProduct = async (req, res) => {
         WarrantyTime,
         price,
         manufacturerAddress,
+        image
     } = req.body;
 
     const productstripe = await stripe.products.create({
@@ -194,6 +195,7 @@ const addProduct = async (req, res) => {
         Warranty,
         WarrantyTime,
         price,
+        image,
         stripePriceId: pricestripe.id,
         stripeProductId:productstripe.id,
     });

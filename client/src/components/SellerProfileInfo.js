@@ -146,13 +146,14 @@ export default function SellerProfileInfo({ profileInfoFunc }) {
                                                                 borderRadius={4}
                                                                 borderColor="green.500"
                                                                 borderWidth="1px"
-                                                                onClick={() => {
-                                                                    changeOrderStatusApi(
+                                                                onClick={async() => {
+                                                                    await changeOrderStatusApi(
                                                                         orderArray.orderId,
                                                                         orderStatusHelperFunction(
                                                                             orderArray.orderStatus
                                                                         )
                                                                     );
+                                                                    sellerOrdersRequest()
                                                                 }}
                                                             >
                                                                 {changeSellerOrderStatus(

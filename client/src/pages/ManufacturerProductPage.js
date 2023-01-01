@@ -56,6 +56,7 @@ export default function ManufacturerProductPage() {
                                 console.log(productList);
                         return(
                             <SellerProductAccordion
+                            image={productList.image}
                             productName={productList.productName}
                             description={productList.description}
                             quantity={productList.productNo}

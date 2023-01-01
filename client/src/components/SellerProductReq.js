@@ -171,6 +171,7 @@ export default function SellerProductReq() {
                                         }}
                                     >
                                         <SellerProductAccordion
+                                            image={productList.image}
                                             productName={
                                                 productList.productName
                                             }

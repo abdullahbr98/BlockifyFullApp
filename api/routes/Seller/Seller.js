@@ -270,6 +270,7 @@ router.get("/getAllSellerProducts", async (req, res) => {
         quantity: seller.product[i].quantity,
         description: product.description,
         modelNo: product.modelNo,
+        image: product.image,
       });
     }
 }
