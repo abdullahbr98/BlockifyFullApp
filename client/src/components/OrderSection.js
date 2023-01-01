@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
     Box,
     Button,
@@ -17,8 +18,28 @@ import {
     TableContainer,
 } from "@chakra-ui/react";
 export default function OrderSection() {
+    const [ordersList, setordersList] = useState([]);
+    const getBuyerOrdersFromApi = async () => {
+        const result = await axios.get(
+            "http://localhost:8000/Order/getOrderOfBuyer", //TODO customize this to seller and buyer
+            {
+                params: {
+                    buyerAddress: JSON.parse(
+                        localStorage.getItem("UserAddress")
+                    ),
+                },
+            }
+        );
+        setordersList(result.data);
+        console.log("value of orders List: ", result.data);
+    };
+
+    useEffect(() => {
+        getBuyerOrdersFromApi();
+    }, []);
+
     return (
-        <Box mx="50px" my="5">
+        <Box mx="50px" my="5" pb="16vh">
             <Text fontSize="3xl" fontWeight="medium" py="3">
                 Order History
             </Text>
@@ -41,25 +62,29 @@ export default function OrderSection() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>1</Td>
-                            <Td>1234</Td>
-                            <Td>1</Td>
-                            <Td>500$</Td>
-                            <Td>14 july 2021</Td>
-                            <Td>Stripe</Td>
-                            <Td>
-                                <Badge colorScheme="green">Paid</Badge>
-                            </Td>
-                            <Td>
-                                <Badge colorScheme="green">Shipped</Badge>
-                                <Badge colorScheme="red">Cancelled</Badge>
-                                <Badge colorScheme="yellow">In transit</Badge>
-                            </Td>
-                            <Td>
-                                <Link color="blue">Details </Link>
-                            </Td>
-                        </Tr>
+                        {ordersList?.map((ordersList,index) => {
+                            return (
+                                <Tr>
+                                    <Td>{index+1}</Td>
+                                    <Td>{ordersList.orderId}</Td>
+                                    <Td>{ordersList.items}</Td>
+                                    <Td>{ordersList.orderAmount}$</Td>
+                                    <Td>{ordersList.orderDate}</Td>
+                                    <Td>{ordersList.paymentMethod}</Td>
+                                    <Td>
+                                        <Badge colorScheme="green" ms="8">{ordersList.paymentStatus}</Badge>
+                                    </Td>
+                                    <Td>
+                                        <Badge colorScheme="purple" ms="5">
+                                        {ordersList.orderStatus}
+                                        </Badge>
+                                    </Td>
+                                    <Td>
+                                        <Link color="blue" ms="4"> View Details </Link>
+                                    </Td>
+                                </Tr>
+                            );
+                        })}
                     </Tbody>
                 </Table>
             </TableContainer>

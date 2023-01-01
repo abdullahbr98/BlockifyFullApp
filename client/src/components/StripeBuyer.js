@@ -7,7 +7,6 @@ const ProductDisplay = () => {
     const [modelNo,  setModelNo] = useState("");
     const [products, setProducts] = useState("");
     const [productName, setproductName] = useState("");
-    const [image, setimage] = useState("");
     const [price, setprice] = useState(0);
     const getValuesOfModel = async()=>{
         const modelNo = localStorage.getItem("modelNo");
@@ -20,7 +19,6 @@ const ProductDisplay = () => {
                 }
             }
         );
-        setimage(value.data.image);
         setproductName(value.data.productName);
         setprice(value.data.price);
     }
@@ -64,7 +62,7 @@ const ProductDisplay = () => {
             <Box borderWidth="1px" w="30%" p="4" borderRadius={8} bg="alphaBlack.50" boxShadow="lg">
             <Box className="product" w="100%" h="100%" align="center" mt="5">
                 <Image
-                    src={`http://localhost:8000${image}`}
+                    src={lcd}
                     w="30vw"
                     alt="LCD Image"
                 />
@@ -76,10 +74,10 @@ const ProductDisplay = () => {
                 </div>
             </Box>
             <form
-                action="http://localhost:8000/create-checkout-session"
+                action="http://localhost:8000/create-checkout-session-buyer"
                 method="POST"
             >
-                <input type="hidden" name="price" value={price} />
+                <input type="hidden" name="price" value={69} />
                 <input
                     type="hidden"
                     name="products"
@@ -92,8 +90,13 @@ const ProductDisplay = () => {
                 />
                 <input
                     type="hidden"
-                    name="address"
+                    name="buyerAddress"
                     value={JSON.parse(localStorage.getItem("UserAddress"))}
+                />
+                <input
+                    type="hidden"
+                    name="sellerAddress"
+                    value={JSON.parse(localStorage.getItem("productSellerAddress"))}
                 />
                 <Box align="center">
                     <Button type="submit" color="black" bg="green.200" _hover={{"backgroundColor":"black", "color":"white"}}>Proceed To Checkout</Button>
@@ -111,7 +114,7 @@ const Message = ({ message }) => (
     </section>
 );
 
-export default function TestStripe() {
+export default function StripeBuyer() {
     const [message, setMessage] = useState("");
 
     useEffect(() => {

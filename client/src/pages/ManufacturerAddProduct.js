@@ -45,7 +45,7 @@ export default function ManufacturerAddProduct() {
   const [warranty, setwarranty] = useState("");
   const [warrantyTime, setwarrantyTime] = useState("");
   const [price, setprice] = useState("");
-  const [fileName, setfileName] = useState("");
+  const [image, setimage] = useState("");
   // File Uploading !
   const [file, setFile] = useState(null);
   const handleChange = (event) => {
@@ -79,7 +79,8 @@ export default function ManufacturerAddProduct() {
       Warranty: warranty,
       WarrantyTime: warrantyTime,
       price: price,
-      manufacturerAddress: manAddress
+      manufacturerAddress: manAddress,
+      image:image
     });
 
     toast({
@@ -108,7 +109,7 @@ export default function ManufacturerAddProduct() {
       },
     }).then(response => {
       // Do something with the response
-      console.log(response);
+      setimage(response.data);
     });
   };
   return (
@@ -130,13 +131,6 @@ export default function ManufacturerAddProduct() {
             <Box align="center">
               <Box>
                 <Flex w="50%" direction="column">
-                  {/*have to do file uploading task soon  */}
-                  {/* <form method="POST" action="http://localhost:8000/Manufacturer/upload" encType="multipart/form-data">
-                                        <Input type="file" name="image"/>
-                                        <Button type="submit">
-                                            upload file
-                                        </Button>
-                                        </form> */}
                   <form onSubmit={handleSubmit}>
                     <input type="file" onChange={handleChange} ref={fileInput} />
                     <button type="submit">Upload</button>

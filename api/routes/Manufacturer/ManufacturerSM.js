@@ -250,7 +250,7 @@ router.post("/sendProducts", async (req, res) => {
     console.log("account Address le original:", accountAddress);
     
     // Update Seller set Balance Contract Address
-    await seller.updateOne(
+    await Seller.updateOne(
         { accountAddress: accountAddress },
         { $set: { balanceContractAddress: balanceContract.address } }
     );
@@ -318,7 +318,7 @@ router.post("/sendProducts", async (req, res) => {
     const productsContract = await ProductsContract.deploy();
     await productsContract.deployed();
     // Adding Product Contract Address
-    await seller.updateOne(
+    await Seller.updateOne(
         { accountAddress: accountAddress },
         { $set: { productContractAddress: productsContract.address } }
     );

@@ -59,6 +59,7 @@ export default function SellerProductReq() {
     const [modelNo, setmodelNo] = useState("");
     const [sellerAddress, setSellerAddress] = useState(0);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [quantityMaxLimit, setquantityMaxLimit] = useState(0);
     const toasterShow = () => {
         toast({
             title: "Products Requested.",
@@ -81,22 +82,25 @@ export default function SellerProductReq() {
     };
 
     const productListFunction = async () => {
-        console.log("Came here !!!!!")
+        console.log("Came here !!!!!");
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         // Get Seller !
-        const seller = await axios.get('http://localhost:8000/seller/getSeller',{
-            params:{
-                sellerAddress:items
+        const seller = await axios.get(
+            "http://localhost:8000/seller/getSeller",
+            {
+                params: {
+                    sellerAddress: items,
+                },
             }
-        })
+        );
         console.log("Seller : ", seller.data);
-        console.log("AuthenticatedBY : ", seller.data.authenticatedBy)
+        console.log("AuthenticatedBY : ", seller.data.authenticatedBy);
         const listOfProducts = await axios.get(
             "http://localhost:8000/Product/getAllProducts",
             {
-                params:{
-                    manufacturerAddress:seller.data.authenticatedBy
-                }
+                params: {
+                    manufacturerAddress: seller.data.authenticatedBy,
+                },
             }
         );
         console.log("productlist:", listOfProducts);
@@ -154,23 +158,49 @@ export default function SellerProductReq() {
                         justifyContent="space-between"
                     >
                         {productList?.map((productList) => {
-                            return (
-                                <Box
-                                    onClick={() => {
-                                        setmodelNo(productList.modelNo);
-                                        console.log(productList.modelNo);
-                                        setproductRequestFlag(true);
-                                    }}
-                                >
-                                    <SellerProductAccordion
-                                        productName={productList.productName}
-                                        description={productList.description}
-                                        quantity={productList.productNo}
-                                        price={productList.price}
-                                        modelNo={productList.modelNo}
-                                    />
-                                </Box>
-                            );
+                            if (productList.productNo != 0) {
+                                return (
+                                    <Box
+                                        onClick={() => {
+                                            setmodelNo(productList.modelNo);
+                                            setquantityMaxLimit(
+                                                productList.productNo
+                                            );
+                                            console.log(productList.modelNo);
+                                            setproductRequestFlag(true);
+                                        }}
+                                    >
+                                        <SellerProductAccordion
+                                            image={productList.image}
+                                            productName={
+                                                productList.productName
+                                            }
+                                            description={
+                                                productList.description
+                                            }
+                                            quantity={productList.productNo}
+                                            price={productList.price}
+                                            modelNo={productList.modelNo}
+                                        />
+                                    </Box>
+                                );
+                            } else {
+                                return (
+                                    <Box>
+                                        <SellerProductAccordion
+                                            productName={
+                                                productList.productName
+                                            }
+                                            description={
+                                                productList.description
+                                            }
+                                            quantity={"Out of Stock"}
+                                            price={productList.price}
+                                            modelNo={productList.modelNo}
+                                        />
+                                    </Box>
+                                );
+                            }
                         })}
                     </SimpleGrid>
                 ) : (
@@ -195,7 +225,7 @@ export default function SellerProductReq() {
                                 </Text>
                             </Box>
                             <Box>
-                                <Input
+                                {/* <Input
                                     type="text"
                                     placeholder="No of Products"
                                     w="80%"
@@ -203,7 +233,27 @@ export default function SellerProductReq() {
                                     bg="white"
                                     borderColor="black"
                                     borderWidth="1px"
-                                />
+                                /> */}
+
+                                <NumberInput
+                                    ms="2"
+                                    bg="white"
+                                    step={1}
+                                    me="3"
+                                    w="5vw"
+                                    defaultValue={1}
+                                    min={1}
+                                    max={quantityMaxLimit}
+                                    onChange={(e) => {
+                                        setproductQty(e);
+                                    }}
+                                >
+                                    <NumberInputField />
+                                    <NumberInputStepper>
+                                        <NumberIncrementStepper />
+                                        <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                </NumberInput>
                             </Box>
                         </Flex>
                         <Flex justifyContent="center" mt="3">
@@ -224,7 +274,10 @@ export default function SellerProductReq() {
                     </Box>
                 )
             ) : (
-                <Text align="center" mt="50px" fontSize="xl">Sorry but you need to get Authenticated first by the Manufacturer.</Text>
+                <Text align="center" mt="50px" fontSize="xl">
+                    Sorry but you need to get Authenticated first by the
+                    Manufacturer.
+                </Text>
             )}
             {/* {!productRequestFlag ? (
                 <SimpleGrid

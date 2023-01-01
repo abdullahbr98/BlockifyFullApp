@@ -7,6 +7,13 @@ var multer = require("multer");
 var express = require("express");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const {
+  SELLER_AUTHENTICATION_ABI,
+  PRODUCTS_ABI,
+  BALANCE_ABI,
+  BALANCE_BYTE_CODE,
+  PRODUCTS_BYTE_CODE,
+} = require("../../utils/Constants/ManufacturerSMConstants");
 var ethers = require("ethers");
 var router = express.Router();
 var productRequests = require("../../models/productRequests");
@@ -74,6 +81,16 @@ router.post("/login", async (req, res) => {
   });
 });
 
+
+router.get("/getSellerFromModelNo", async(req, res) => {
+
+  const modelNo = req.query.modelNo;
+
+  
+
+
+});
+
 router.post("/productRequest", async (req, res) => {
   const sellerAddress = req.body.sellerAddress;
   const products = req.body.products;
@@ -110,6 +127,14 @@ router.post("/deletePurchaseRequest", async (req, res) => {
     products: products,
   });
   res.json("Deleted");
+});
+
+router.get("/getAuthenticationStatus", async (req, res) => {
+  const accountAddress = req.query.accountAddress;
+  console.log("yahan account add aya:", accountAddress);
+  const seller = await Seller.findOne({ accountAddress: accountAddress });
+  console.log("yahan seller aya:", seller);
+  res.json(seller.authenticated);
 });
 
 router.get("/getIsAuthenticated", async (req, res) => {
@@ -155,21 +180,6 @@ router.post("/updateShopInformation", async (req, res) => {
   res.json("completed Updation");
 });
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./files");
-//   },
-//   filename: (req, file, cb) => {
-//     console.log(file);
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
-
-// const upload = multer({ dest: "./files/" });
-
-// router.post("/upload", upload.single("file"), (req, res) => {
-//   res.send("success");
-// });
 
 router.post("/addProductInSeller", async (req, res) => {
   const modelNo = req.body.modelNumber;
@@ -193,23 +203,24 @@ router.post("/addProductInSeller", async (req, res) => {
       { $push: { product: { modelNumber: modelNo, quantity: quantity } } }
     );
   } else {
+    let productList = seller.product;
     for (let i = 0; i < seller.product.length; i++) {
-      if (seller.product[i].modelNumber == modelNo) {
-        seller.product[i].quantity += quantity;
+      if (productList[i].modelNumber == modelNo) {
+        const addQuantity = parseInt(quantity);
+        const originalProductQuantity = parseInt(productList[i].quantity);
+        const newQuantity = addQuantity + originalProductQuantity;
+        productList[i].quantity = String(newQuantity);
       }
     }
-    await seller.save();
+    await Seller.updateOne(
+      {accountAddress : accountAddress},
+      {
+        $set: { product: productList}
+      }
+    );
   }
 
   res.json("Successful !");
-});
-
-router.get("/getAuthenticationStatus", async (req, res) => {
-  const accountAddress = req.query.accountAddress;
-  console.log("yahan account add aya:", accountAddress);
-  const seller = await Seller.findOne({ accountAddress: accountAddress });
-  console.log("yahan seller aya:", seller);
-  res.json(seller.authenticated);
 });
 
 router.get("/getSellerProducts", async (req, res) => {
@@ -227,7 +238,7 @@ router.get("/getSellerProducts", async (req, res) => {
     productData.push({
       name: product.productName,
       price: product.price,
-      quantity: product.productNo,
+      quantity: seller.product[i].quantity,
       description: product.description,
       modelNo: product.modelNo,
     });
@@ -256,9 +267,10 @@ router.get("/getAllSellerProducts", async (req, res) => {
         sellerName: seller.username,
         name: product.productName,
         price: product.price,
-        quantity: product.productNo,
+        quantity: seller.product[i].quantity,
         description: product.description,
         modelNo: product.modelNo,
+        image: product.image,
       });
     }
 }
@@ -272,5 +284,171 @@ router.get("/getSeller", async (req, res) => {
   console.log(seller);
   res.json(seller);
 });
+
+
+router.post("/sendProducts", async (req, res) => {
+  const products = req.body.products; // Quantity
+  const price = req.body.price; // Price
+  console.log("Price : ",price);
+  const productModelNo = req.body.productModelNo;
+  console.log("price", price);
+  // const accountAddress = req.body.accountAddress; //sellers address
+  console.log("inside body:", req.body);
+  const accountAddress = req.body.sellerAddress; //sellers address
+  const buyerAddress = req.body.buyerAddress;
+  let conversion = products * price;
+  conversion = toString(conversion);
+  console.log("apna original typeof string", typeof conversion);
+
+
+  // Seller as Signer
+  const signer = new ethers.providers.JsonRpcProvider(
+      "http://localhost:7545"
+  ).getSigner(accountAddress);
+
+  // Get Seller from DB
+  const seller = await Seller.findOne({
+      accountAddress: accountAddress,
+  });
+  console.log("Seller", seller);
+
+  // const buyer = await Buyer.findOne({
+  //   accountAddress : buyerAddress,
+  // });
+
+  // // Create Balance Contract !
+  // const BalanceContract = new ethers.ContractFactory(
+  //     BALANCE_ABI,
+  //     BALANCE_BYTE_CODE,
+  //     signer
+  // );
+  
+  // // Deploying Balance Contract
+  // console.log(`Deploying from account : ${signer._address}`);
+  // const balanceContract = await BalanceContract.deploy();
+  // await balanceContract.deployed();
+
+  // console.log("account Address le original:", accountAddress);
+  
+  // // Update Seller set Balance Contract Address
+  // await seller.updateOne(
+  //     { accountAddress: accountAddress },
+  //     { $set: { balanceContractAddress: balanceContract.address } }
+  // );
+
+  // // Set Manufacturer Address for this Seller
+  // const manufacturerAddress = seller.authenticatedBy;
+
+  // console.log(manufacturerAddress);
+  
+  // // Find Manufacturer who authenticated this Seller
+  // const manufacturer = await Manufacturer.findOne({
+  //     accountAddress: manufacturerAddress,
+  // });
+
+  // Create Signer for Manufacturer
+  // const signer_buyer = new ethers.providers.JsonRpcProvider(
+  //     "http://localhost:7545"
+  // ).getSigner(buyerAddress);
+
+
+  console.log("Came here", seller.productContractAddress);
+  //creating Product Contract signed by seller
+  let contract = new ethers.Contract(
+      seller.productContractAddress,
+      PRODUCTS_ABI,
+      signer
+  );
+
+  // Transfer of Products !
+  console.log(
+      "seller ka contractAddress product wala: ",
+      seller.productContractAddress
+  );
+  // await contract.approve(accountAddress, products);
+  console.log("pehla approve");
+  console.log("type of conversion", typeof products);
+  // let bprd = products*Math.pow(10,18); 
+  let bprd = ethers.utils.parseEther(String(products));
+  console.log("Product : " , bprd);
+  const tx1 = await contract.transfer(buyerAddress, String(products));
+  console.log(tx1);
+  const balance = await contract.balanceOf(buyerAddress);
+  console.log("products sent to buyer : ", balance);
+
+
+  //Updating Seller balance contract
+  contract = new ethers.Contract(
+      seller.balanceContractAddress,
+      BALANCE_ABI,
+      signer
+  );
+
+  console.log("Calling Set Balance !");
+  console.log("Price : ", price);
+  await contract.setBalance(accountAddress, String(price));
+  const temp = await contract.balanceOf(accountAddress);
+  console.log("Balance of seller", temp)
+  // console.log("Transfer of Balance from Seller to his Manufacturer");
+  // const tx2 = await contract.transfer(manufacturerAddress, String(price));
+  
+  // console.log(tx2);
+
+
+  //--------------------------------------------------------
+  // // Product Contract  By Buyer!
+  // const ProductsContract = new ethers.ContractFactory(
+  //     PRODUCTS_ABI,
+  //     PRODUCTS_BYTE_CODE,
+  //     signer_buyer
+  // );
+
+  // Deploying Products Contract for the Manufacturer
+  // console.log(`Deploying from account : ${signer_buyer._address}`);
+  // const productsContract = await ProductsContract.deploy();
+  // await productsContract.deployed();
+  // // Adding Product Contract Address
+  // await buyer.updateOne(
+  //     { accountAddress: accountAddress },
+  //     { $set: { productContractAddress: productsContract.address } }
+  // );
+
+  // const contract_ = new ethers.Contract(
+  //     productsContract.address,
+  //     PRODUCTS_ABI,
+  //     signer_buyer
+  // );
+
+  //Decrease quantity of Seller Products
+  const quantity = seller.quantity - products;
+  const sellerArray = seller.product;
+  for(let i=0; i<sellerArray.length; i++){  //2
+    if(productModelNo === sellerArray[i].modelNumber){
+      console.log("seller bhai ke products before decrement:",sellerArray[i].quantity );
+      sellerArray[i].quantity -= products;
+      console.log("seller bhai ke products after decrement:",sellerArray[i].quantity );
+    }
+  }
+  console.log("sellerArray printed here",sellerArray);
+  await Seller.updateOne(
+    {accountAddress : accountAddress},
+    {$set: {product: sellerArray}}
+  )
+
+ 
+
+  
+  // console.log("Setting Total Supply of Seller");
+  // const tx3 = await contract_.setTotalSupply(bprd);
+  // console.log(tx3);
+  // axios.get("http://localhost:3000");
+  // res.redirect(303,"http://localhost:3000");
+  // res.redirect(307,"http://localhost:3000/Seller/seller");
+  
+  res.json(tx1)
+
+});
+
+
 
 module.exports = router;

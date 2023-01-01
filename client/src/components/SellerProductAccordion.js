@@ -23,7 +23,7 @@ export default function SellerProductAccordion(props) {
                 cursor="pointer"
             >
                 <Image
-                    src={LCD}
+                    src={`http://localhost:8000${props.image}`}
                     alt="LCD"
                     w="17vw"
                     h="24vh"
@@ -44,7 +44,7 @@ export default function SellerProductAccordion(props) {
                 </Text>
                 <Flex justifyContent="space-between" mt={3}>
                     <Text ms={2} fontSize="lg">
-                        {props.price}
+                        ${props.price}
                     </Text>
                     <Flex me={2}>
                         <Text me={1}>approved</Text>

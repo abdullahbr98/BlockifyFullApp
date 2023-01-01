@@ -53,8 +53,10 @@ export default function ManufacturerProductPage() {
                             justifyContent="space-between"
                         >
                             {productList?.map((productList) => {
+                                console.log(productList);
                         return(
                             <SellerProductAccordion
+                            image={productList.image}
                             productName={productList.productName}
                             description={productList.description}
                             quantity={productList.productNo}

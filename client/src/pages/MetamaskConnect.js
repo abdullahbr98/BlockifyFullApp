@@ -17,6 +17,7 @@ import { ethers } from "ethers";
 import { BiRightArrowAlt } from "react-icons/bi";
 export default function MetamaskConnect(props) {
     const connect = async () => {
+        const accounts = await window.ethereum.enable();
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = await provider.getSigner();
         const accountOwner = await signer.getAddress();

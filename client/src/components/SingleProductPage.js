@@ -33,6 +33,16 @@ export default function SingleProductPage() {
     const [productInfo, setproductInfo] = useState({});
     ///getProductByModelNo
     const { id } = useParams();
+    const { seller } = useParams();
+    const goToCart = (product) => {
+        console.log("here is:", product);
+        localStorage.setItem("cartItems", JSON.stringify(product));
+        localStorage.setItem("productSellerAddress", JSON.stringify(seller));
+        localStorage.setItem("modelNo", id);
+        window.location.href = `http://localhost:3000/cart/`;
+        console.log("modelNo", id);
+        console.log("seller", seller);
+    };
     const getProductInfo = async () => {
         const product = await axios.get(
             "http://localhost:8000/Product/getProductByModelNo",
@@ -53,7 +63,15 @@ export default function SingleProductPage() {
         <Box bg="blackAlpha.50" w="100vw">
             <BuyerNavbar />
             <SimpleGrid columns={2} h="80vh" w="100vw" spacing="5">
-                <Image src={lcdImage} mt="5" ms="2" borderRadius="4"></Image>
+                <Box align="center">
+                    <Image
+                        src={`http://localhost:8000${productInfo.image}`}
+                        mt="5"
+                        ms="2"
+                        borderRadius="4"
+                        w="50%"
+                    ></Image>
+                </Box>
                 <Box textAlign="left" mt="5">
                     <Text fontSize="4xl" ps="2">
                         {productInfo.productName}
@@ -61,14 +79,24 @@ export default function SingleProductPage() {
                     <Text fontSize="2xl" ps="2" color="gray.500">
                         ${productInfo.price}.00
                     </Text>
-                    <Button
-                        m="3"
-                        w="15rem"
-                        borderRadius={4}
-                        colorScheme="facebook"
-                    >
-                        Add to Cart
-                    </Button>
+                    {localStorage.getItem("cartItemQuantity") != 0 ? (
+                        <Button
+                            m="3"
+                            w="15rem"
+                            borderRadius={4}
+                            colorScheme="facebook"
+                            onClick={() => {
+                                goToCart(productInfo);
+                                localStorage.setItem("imageUrl",productInfo.image)
+                            }}
+                        >
+                            Add to Cart
+                        </Button>
+                    ) : (
+                        <Text fontSize="lg" color="red">
+                            Out Of Stock
+                        </Text>
+                    )}
                     <Text
                         fontSize="md"
                         pe={12}
@@ -230,6 +258,11 @@ export default function SingleProductPage() {
                         <AccordionPanel pb={4}>
                             <Flex justifyContent="center">
                                 <Box>
+                                    Seller Name: Shop Name: Phone Number: show
+                                    cordinates on map Shop address Authenticated
+                                    By View Transaction => seller address pass
+                                    kardo aur wo exact hash kardo (Total
+                                    Products)
                                     <SellerShopInfo />
                                 </Box>
                             </Flex>

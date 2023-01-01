@@ -15,6 +15,7 @@ import {
     Tooltip,
 } from "@chakra-ui/react";
 import { SettingsIcon, AddIcon, EditIcon } from "@chakra-ui/icons";
+import { GoPackage } from "react-icons/go";
 export default function SellerLeftMenu(props) {
     return (
         <>
@@ -64,11 +65,11 @@ export default function SellerLeftMenu(props) {
                         />
                     </Tooltip>
                 </Box>
-                {/* <Box align="center" pt="0">
-                    <Tooltip label="Account Information" fontSize="md">
+                <Box align="center" pt="0">
+                    <Tooltip label="Orders Placed" fontSize="md">
                         <span>
                         <Icon
-                            as={FaUserEdit}
+                            as={GoPackage}
                             w="6"
                             h="6"
                             cursor="pointer"
@@ -76,7 +77,7 @@ export default function SellerLeftMenu(props) {
                         />
                         </span>
                     </Tooltip>
-                </Box> */}
+                </Box>
                 <Box align="center" pt="0">
                     <Tooltip label="Purchase Requests" fontSize="md">
                         <span>

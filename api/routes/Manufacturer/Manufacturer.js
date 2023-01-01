@@ -1,5 +1,6 @@
 // Clean Imports
 var express = require("express");
+var path = require("path");
 const { providers, utils } = require("ethers");
 var router = express.Router();
 const {
@@ -51,13 +52,14 @@ router.post("/upload", upload.single("file"), (req, res) => {
   const accountAddress = req.body.accountAddress;
   console.log(accountAddress);
   const fs = require("fs");
-  fs.rename(req.file.path, `uploads/${Date.now()}`, function (err) {
+  const filename = Date.now()+ path.basename(req.file.path);
+  fs.rename(req.file.path, `public/images/${filename}` , function (err) {
     if (err) {
       return next(err);
     }
   });
 
-  res.send("File uploaded!");
+  res.send(`/images/${filename}`);
 });
 
 router.get("/getAllTransactions", async (req, res) => {
