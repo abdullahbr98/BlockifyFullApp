@@ -1,6 +1,7 @@
 // Description : Defines Routes and Entry Point for the Application
 import "./App.css";
 import LandingPage from "./pages/LandingPage";
+import SellerTransaction from "./components/SellerTransaction";
 import { useState,useEffect } from "react";
 import SignUpPage from "./pages/SignUpPage";
 import SignInPage from "./pages/SignInPage";
@@ -72,12 +73,13 @@ function App() {
                     <Route path="/shipment" element={<ShipmentPage/>}/>
                     <Route path="/manufacturerProductPage" element={<ManufacturerProductPage />} />
                     <Route path="/manufacturerAddProduct" element={<ManufacturerAddProduct />} />
-                    <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo" element={<PaymentSuccessfull />} />
+                    <Route path="/paymentSuccessfull/:success/:products/:price/:address/:productModelNo/:manufacturerAddress" element={<PaymentSuccessfull />} />
                     <Route path="/CheckoutComplete/:success/:products/:price/:buyerAddress/:productModelNo/:sellerAddress" element={<CheckoutComplete />} />
                     <Route path="/product/:id/:seller" element={<SingleProductPage />} />
                     <Route path="/cart" element={<BuyerCartPage />} />
                     <Route path="/orders/:id" element={<Orderspage />} />
                     <Route path="/manufacturerEditProduct" element={<ManufacturerEditProduct />} />
+                    <Route path="/SellerTransaction/:id" element={<SellerTransaction />} />
                     {/* <Route path="/cart" element={<BuyerCart />} /> */}
 
                     {/* TO DO AHMED ZIA product name add also */}

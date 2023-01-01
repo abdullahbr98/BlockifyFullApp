@@ -6,7 +6,7 @@ import { Box, Flex, Text, Button, Icon, Link, Image } from "@chakra-ui/react";
 export default function PaymentSuccessfull() {
     const modelNoOriginal = localStorage.getItem("modelNo");
     console.log("modelNoOriginal:",modelNoOriginal);
-    const { success, products, price, address,productModelNo } = useParams();
+    const { success, products, price, address,productModelNo,manufacturerAddress } = useParams();
     console.log("productModel",productModelNo);
     const handleButton = async () => {
         axios.post("http://localhost:8000/ManufacturerSM/sendProducts", {
@@ -14,6 +14,7 @@ export default function PaymentSuccessfull() {
             price: price,
             address: address,
             productModelNo:modelNoOriginal,
+            manufacturerAddress:manufacturerAddress
         });
         // Update Manufacturer Inventory
 

@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
+import SellerTransaction from "../components/SellerTransaction";
 import axios from "axios";
 import {
     Box,
     Text,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    useDisclosure,
+    ModalBody,
+    ModalCloseButton,
     Image,
     Flex,
     Button,
@@ -10,8 +19,12 @@ import {
     useToast,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
-import GoogleMaps from "../components/GoogleMaps"
+import GoogleMaps from "../components/GoogleMaps";
 export default function SellerShopInfo({ shopInfo }) {
+    const openInNewTab = (url) => {
+        window.open(url, "_blank", "noopener,noreferrer");
+    };
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     //31.516, lng: 74.3429
     const [editButton, seteditButton] = useState(0);
@@ -21,15 +34,15 @@ export default function SellerShopInfo({ shopInfo }) {
     const [shopAddress, setshopAddress] = useState("");
     const [shopName, setshopName] = useState("");
 
-    const setCordinatesFromMap = (value)=>{
+    const setCordinatesFromMap = (value) => {
         setcordinates(value);
-    }
-    const setValues = (lat,lng)=>{
+    };
+    const setValues = (lat, lng) => {
         setlatitude(lat);
         setlongitude(lng);
-        setcordinates(lat+','+lng);
+        setcordinates(lat + "," + lng);
         console.log("cordinates here man:", lat + "," + lng);
-    }
+    };
 
     const toastIcon = () =>
         toast({
@@ -63,12 +76,12 @@ export default function SellerShopInfo({ shopInfo }) {
         toastIcon();
     };
 
-    const converter = ()=>{
-        var myArray = cordinates.split(",",2);
+    const converter = () => {
+        var myArray = cordinates.split(",", 2);
         setlatitude(myArray[0]);
         setlongitude(myArray[1]);
-    }
-    
+    };
+
     const getSellerShopInfo = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         console.log("accAdd:", items);
@@ -80,12 +93,12 @@ export default function SellerShopInfo({ shopInfo }) {
         );
         console.log(data);
         setcordinates(data.data.cordinates);
-        let arrayNew = data.data.cordinates.split(",",2);
+        let arrayNew = data.data.cordinates.split(",", 2);
         setlatitude(arrayNew[0]);
         setlongitude(arrayNew[1]);
         setshopAddress(data.data.shopAddress);
         setshopName(data.data.shopName);
-        
+
         console.log("getseller ran");
     };
     useEffect(() => {
@@ -93,108 +106,158 @@ export default function SellerShopInfo({ shopInfo }) {
     }, []);
 
     return (
-        <Flex ms="10">
-            <Box borderWidth="1px" h="60vh" borderWidth="1px" boxShadow='xl' rounded='md' bg='white' mx="5" bg="blackAlpha.30">
-            {shopInfo ? (
-                <Box align="center" w="40vw"  pt="8vh">
-                    <Flex justifyContent="center">
-                        <Text fontSize="2xl">Shop Information</Text>
-                        <EditIcon
-                            mt="2"
-                            cursor="pointer"
-                            color="green.400"
-                            ms="8vh"
-                            h="5"
-                            w="5"
-                            onClick={editButtonHandler}
-                        />
-                    </Flex>
-                    <Box mt="10vh" align="center">
-                        <Flex justifyContent="center">
-                            <Text my="4" fontWeight="bold">Shop Name :</Text>
-                            <Box pt="2">
-                                {editButton ? (
-                                    <Input
-                                        placeholder={shopName}
-                                        value={shopName}
-                                        size="md"
-                                        w="20vw"
-                                        ms="7vw"
-                                        onChange={(e) => {
-                                            setshopName(e.target.value);
-                                        }}
-                                    />
-                                ) : (
-                                    <Text ms="7vw" size="md" pt="2">
-                                        {shopName}
+        <>
+            <Flex ms="10">
+                <Box
+                    borderWidth="1px"
+                    h="60vh"
+                    borderWidth="1px"
+                    boxShadow="xl"
+                    rounded="md"
+                    bg="white"
+                    mx="5"
+                    bg="blackAlpha.30"
+                >
+                    {shopInfo ? (
+                        <Box align="center" w="40vw" pt="8vh">
+                            <Flex justifyContent="center">
+                                <Text fontSize="2xl">Shop Information</Text>
+                                <EditIcon
+                                    mt="2"
+                                    cursor="pointer"
+                                    color="green.400"
+                                    ms="8vh"
+                                    h="5"
+                                    w="5"
+                                    onClick={editButtonHandler}
+                                />
+                            </Flex>
+                            <Flex justifyContent="center" py="2">
+                                <Button
+                                    colorScheme="teal"
+                                    variant="outline"
+                                    size="sm"
+                                    ms="6"
+                                    // onClick={()=>{
+                                    //     window.location.href=("http://localhost:3000/"+"SellerTransaction/"+JSON.parse(localStorage.getItem("UserAddress")))
+                                    // }}
+                                    onClick={() =>
+                                        openInNewTab(
+                                            `http://localhost:3000/SellerTransaction/${JSON.parse(
+                                                localStorage.getItem(
+                                                    "UserAddress"
+                                                )
+                                            )}`
+                                        )
+                                    }
+                                >
+                                    My Transactions
+                                </Button>
+                            </Flex>
+                            <Box mt="4" align="center">
+                                <Flex justifyContent="center">
+                                    <Text my="4" fontWeight="bold">
+                                        Shop Name :
                                     </Text>
-                                )}
-                            </Box>
-                        </Flex>
-                        <Flex justifyContent="center">
-                            <Text my="4" fontWeight="bold">Cordinates in Lg Lt :</Text>
-                            <Box pt="2">
-                                {editButton ? (
-                                    <Input
-                                        placeholder="Cordinates of Shop"
-                                        placeholder={cordinates}
-                                        value={cordinates}
-                                        size="md"
-                                        w="20vw"
-                                        ms="4vw"
-                                        onChange={(e) => {
-                                            setcordinates(e.target.value);
-                                            converter();
-                                        }}
-                                    />
-                                ) : (
-                                    <Text ms="7vw" size="md" pt="2">
-                                        {cordinates}
+                                    <Box pt="2">
+                                        {editButton ? (
+                                            <Input
+                                                placeholder={shopName}
+                                                value={shopName}
+                                                size="md"
+                                                w="20vw"
+                                                ms="7vw"
+                                                onChange={(e) => {
+                                                    setshopName(e.target.value);
+                                                }}
+                                            />
+                                        ) : (
+                                            <Text ms="7vw" size="md" pt="2">
+                                                {shopName}
+                                            </Text>
+                                        )}
+                                    </Box>
+                                </Flex>
+                                <Flex justifyContent="center">
+                                    <Text my="4" fontWeight="bold">
+                                        Cordinates in Lg Lt :
                                     </Text>
-                                )}
-                            </Box>
-                        </Flex>
-                        <Flex justifyContent="center">
-                            <Text my="4" fontWeight="bold">Shop Address Full :</Text>
-                            <Box pt="2">
-                                {editButton ? (
-                                    <Input
-                                        placeholder={shopAddress}
-                                        value={shopAddress}
-                                        size="md"
-                                        w="20vw"
-                                        ms="4vw"
-                                        onChange={(e) => {
-                                            setshopAddress(e.target.value);
-                                        }}
-                                    />
-                                ) : (
-                                    <Text ms="7vw" size="md" pt="2">
-                                        {shopAddress}
+                                    <Box pt="2">
+                                        {editButton ? (
+                                            <Input
+                                                placeholder="Cordinates of Shop"
+                                                placeholder={cordinates}
+                                                value={cordinates}
+                                                size="md"
+                                                w="20vw"
+                                                ms="4vw"
+                                                onChange={(e) => {
+                                                    setcordinates(
+                                                        e.target.value
+                                                    );
+                                                    converter();
+                                                }}
+                                            />
+                                        ) : (
+                                            <Text ms="7vw" size="md" pt="2">
+                                                {cordinates}
+                                            </Text>
+                                        )}
+                                    </Box>
+                                </Flex>
+                                <Flex justifyContent="center">
+                                    <Text my="4" fontWeight="bold">
+                                        Shop Address Full :
                                     </Text>
-                                )}
+                                    <Box pt="2">
+                                        {editButton ? (
+                                            <Input
+                                                placeholder={shopAddress}
+                                                value={shopAddress}
+                                                size="md"
+                                                w="20vw"
+                                                ms="4vw"
+                                                onChange={(e) => {
+                                                    setshopAddress(
+                                                        e.target.value
+                                                    );
+                                                }}
+                                            />
+                                        ) : (
+                                            <Text ms="7vw" size="md" pt="2">
+                                                {shopAddress}
+                                            </Text>
+                                        )}
+                                    </Box>
+                                </Flex>
                             </Box>
-                        </Flex>
-                    </Box>
 
-                    {editButton?<Button
-                        mt="15vh"
-                        bg="green.400"
-                        color="white"
-                        borderRadius="10"
-                        onClick={editShopInfoHandler}
-                    >
-                        Confirm Change
-                    </Button>:<Box display="none"></Box>}
-
+                            {editButton ? (
+                                <Button
+                                    mt="15vh"
+                                    bg="green.400"
+                                    color="white"
+                                    borderRadius="10"
+                                    onClick={editShopInfoHandler}
+                                >
+                                    Confirm Change
+                                </Button>
+                            ) : (
+                                <Box display="none"></Box>
+                            )}
+                        </Box>
+                    ) : (
+                        <Box display="none"></Box>
+                    )}
                 </Box>
-            ) : (
-                <Box display="none"></Box>
-            )}
-            </Box>
-            <Box>
-            <GoogleMaps latitude={latitude} longitude={longitude} onChange={setValues}/>
-            </Box>
-        </Flex>
+                <Box>
+                    <GoogleMaps
+                        latitude={latitude}
+                        longitude={longitude}
+                        onChange={setValues}
+                    />
+                </Box>
+            </Flex>
+        </>
     );
 }

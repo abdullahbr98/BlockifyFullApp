@@ -20,11 +20,13 @@ export default function SimpleMap(props) {
     console.log("props of cordinates:", props.cordinates);
 
     useEffect(() => {
+        if(props.cordinates){
         var myArray = props.cordinates.split(",", 2);
         setlatitude(parseFloat(myArray[0]));
         setlongitude(parseFloat(myArray[1]));
         console.log(latitude);
         console.log(longitude);
+        }
     }, []);
 
     let defaultProps = {

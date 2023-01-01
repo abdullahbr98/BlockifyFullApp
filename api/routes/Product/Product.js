@@ -26,6 +26,33 @@ router.get("/getProductByModelNo", async (req, res) => {
     res.json(result);
 });
 
+
+router.post("/getAllProductsOfManufacturer", async (req, res) => {
+    const manufacturerAddress = req.body.manufacturerAddress;
+    console.log("Address of Man : ",manufacturerAddress);
+    // const manufacturer = await Manufacturer.find({
+    //     accountAddress: manufacturerAddress,
+    // });
+    const result = [];
+
+    for(let j = 0; j<manufacturerAddress.length; j++){
+        const manufacturer = await Manufacturer.findOne({
+            accountAddress: manufacturerAddress[j],
+        });
+        for (let i = 0; i < manufacturer.product.length; i++) {
+            let product = await Product.findOne({
+                modelNo: manufacturer.product[i].modelNumber,
+            });
+            result.push(product);
+        }
+    }
+
+
+    console.log(result);
+    res.json(result);
+});
+
+
 router.get("/getAllProducts", async (req, res) => {
     const manufacturerAddress = req.query.manufacturerAddress;
     console.log("Address : ",manufacturerAddress);
