@@ -36,6 +36,7 @@ const BuyerSchema = new Schema({
     accountAddress: {
         type: String,
         required: true,
+        unique: true
     }
 })
 

@@ -38,6 +38,11 @@ export default function AuthenticSellerTable() {
             duration: 9000,
             isClosable: true,
         });
+         // let sellersList = JSON.parse(localStorage.getItem("authenticatedSeller"));
+        // let removed = sellersList.filter(function(element) {
+        //     return element !==  sellerAddress; // remove elements that are not equal to 'two'
+        //   });
+        // localStorage.setItem("authenticatedSeller", removed);
     };
     useEffect(() => {
         setauthenticSellers(

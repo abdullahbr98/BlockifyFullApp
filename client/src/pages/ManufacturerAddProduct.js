@@ -55,7 +55,7 @@ export default function ManufacturerAddProduct() {
   const toast = useToast();
   const submitForm = async (data) => {
     const manAddress = JSON.parse(localStorage.getItem("UserAddress"));
-    await axios.post("http://localhost:8000/Manufacturer/addProduct", {
+   const flag = await axios.post("http://localhost:8000/Manufacturer/addProduct", {
       productNo: productNo,
       description: description,
       productName: productName,
@@ -83,6 +83,16 @@ export default function ManufacturerAddProduct() {
       image:image
     });
 
+    if(flag.data == false){
+    toast({
+      title: "Products not Added.",
+      description: "Invalid Fields.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+  else{
     toast({
       title: "Products Added.",
       description: "We've Added the products for you.",
@@ -90,6 +100,7 @@ export default function ManufacturerAddProduct() {
       duration: 5000,
       isClosable: true,
     });
+  }
     console.log(data);
   };
 

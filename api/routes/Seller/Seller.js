@@ -27,6 +27,7 @@ const createError = require("http-errors");
 
 router.post("/signup", async (req, res) => {
     // Get form data from body
+    try{
     const {
         userType,
         phoneNumber,
@@ -60,10 +61,16 @@ router.post("/signup", async (req, res) => {
     const accessToken = await signAccessToken(sellerAddress);
     // Return response
     res.send({ accessToken });
+}
+catch(err){
+    res.send(false);
+}
 });
 
 router.post("/login", async (req, res) => {
     // Get form data from body
+
+    try{
     const { email, password } = req.body;
     // Check if buyer exists
     const seller = await Seller.findOne({
@@ -80,6 +87,10 @@ router.post("/login", async (req, res) => {
         userType: seller.userType,
         username: seller.username,
     });
+}
+catch(err){
+    res.send(false);
+}
 });
 
 router.get("/getSellerFromModelNo", async (req, res) => {
@@ -136,9 +147,12 @@ router.get("/getIsAuthenticated", async (req, res) => {
     const SellerAddress = req.query.sellerAddress;
     console.log(SellerAddress);
     const seller = await Seller.findOne({ accountAddress: SellerAddress });
-    console.log(seller);
-    const isAuthenticated = seller.authenticated;
-    console.log(isAuthenticated);
+    console.log("seller",seller);
+    let isAuthenticated = seller.authenticated;
+    console.log("seller.authenticated", isAuthenticated);
+    if(isAuthenticated == undefined){
+        isAuthenticated = false;
+    }
     res.json(isAuthenticated);
 });
 

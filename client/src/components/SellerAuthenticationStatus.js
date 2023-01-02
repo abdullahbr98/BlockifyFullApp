@@ -51,13 +51,14 @@ export default function SellerAuthenticationStatus() {
     const authenticHandler = async () => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
         setaccountAddress(items);
+        console.log(items);
         const data = await axios.get(
             "http://localhost:8000/seller/getIsAuthenticated", //TODO customize this to seller and buyer
             {
                 params: { sellerAddress: items },
             }
         );
-        console.log(data.data);
+        console.log("data",data.data);
         setauthenticated(data.data);
     };
     useEffect(() => {
@@ -144,6 +145,25 @@ export default function SellerAuthenticationStatus() {
                                 </Text>
                                 <Text>Not authenticated</Text>
                             </Flex>
+                            <Box>
+                                    <select
+                                        onClick={selectAddressHandler}
+                                        placeholder="Select Option"
+                                    >
+                                        {manufacturerAddresses.map((item) => {
+                                            return (
+                                                <option value={item.address}>
+                                                    {item.name}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                    <Button
+                                        onClick={requestAutheticationHandler}
+                                    >
+                                        request authentic
+                                    </Button>
+                                </Box>
                         </Box>
                     )}
                 </Box>

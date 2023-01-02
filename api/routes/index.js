@@ -137,7 +137,7 @@ router.post("/userLogin", async (req, res) => {
             }
         );
         res.send(result.data);
-    } else {
+    } else if(result3) {
         const result = await axios.post(
             "http://localhost:8000/Buyer/login", //TODO customize this to seller and buyer
             {
@@ -147,35 +147,10 @@ router.post("/userLogin", async (req, res) => {
             }
         );
         res.send(result.data);
+    }
+    else{
+        res.send(false);
     }
-
-    // if (!result) {
-    //     result = await Seller.findOne({
-    //         accountAddress: accountAddress,
-    //     });
-    //     // result ? res.json('User Type is Seller !') : 'Undefined User Type !'
-    //     const data = await axios.post(
-    //         "http://localhost:8000/Seller/login", //TODO customize this to seller and buyer
-    //         {
-    //             email: email,
-    //             password: password,
-    //             accountAddress: accountAddress,
-    //         }
-    //     );
-    //     res.json(data.data);
-    // } else {
-    //     // res.json('User Type is Manufacturer !')
-    //     const data = await axios.post(
-    //         "http://localhost:8000/Manufacturer/login", //TODO customize this to seller and buyer
-    //         {
-    //             email: email,
-    //             password: password,
-    //             accountAddress: accountAddress,
-    //         }
-    //     );
-
-    //     res.json(data.data);
-    // }
 });
 
 module.exports = router;

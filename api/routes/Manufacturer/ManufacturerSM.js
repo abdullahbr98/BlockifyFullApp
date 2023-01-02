@@ -61,7 +61,8 @@ router.post("/authenticate_seller", async (req, res) => {
         { $set: { authenticated: true, authenticatedBy: arrayVal } }
         // { $push: { authenticatedBy: accountAddress } }
     );
-    await AuthenticationRequest.deleteOne({ sellerAddress: sellerAddress });
+    const delete_result = await AuthenticationRequest.deleteOne({ sellerAddress: sellerAddress });
+    console.log("DElete result",delete_result)
     console.log(arrayVal);
     console.log(response);
     console.log("new result is:", result);
@@ -99,22 +100,27 @@ router.post("/remove_seller", async (req, res) => {
 
     console.log("sellerAddress Before Finding:", sellerAddress);
 
-    sellerAddressLower = sellerAddress.toLowerCase();
 
-    // const seller = await Seller.findOne({
-    //     accountAddress: sellerAddressLower,
-    // });
+    const seller = await Seller.findOne({
+        accountAddress: sellerAddress,
+    });
 
-    // console.log("seller Values:", seller);
+    console.log("seller Values:", seller);
 
-    // seller.authenticated = false;
-    // seller.authenticatedBy = "";
+    const authArray = seller.authenticatedBy;
+    let removed = authArray.filter(function(element) {
+        return element !== accountAddress; // remove elements that are not equal to 'two'
+      });
+    await Seller.updateOne(
+        {accountAddress : sellerAddress},
+        {$set: {authenticated: false, authenticatedBy:removed}}
+        );
 
     // await seller.save();
 
     console.log("updated!");
 
-    res.json(response);
+    res.json("ok");
 });
 
 // Route to Verify Seller

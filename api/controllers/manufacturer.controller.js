@@ -37,6 +37,8 @@ const signup = async (req, res) => {
     } = req.body;
     console.log("First Name : ", firstName);
     console.log("address : ", accountAddress);
+
+    try{
     // Create contracts
     const authContract = getAuthContractInstance(
         "http://localhost:7545",
@@ -64,35 +66,56 @@ const signup = async (req, res) => {
     });
     // Save manufacturer
     await manufacturer.save();
-    // Getting Access Token
+
     const accessToken = await signAccessToken(accountAddress);
     // Return response
+    console.log("ez scene");
     res.send({ accessToken });
+}
+catch(err){
+    console.log(err);
+    res.send(false);
+}
+    // Getting Access Token
+   
 };
 
 // login manufacturer
 const login = async (req, res) => {
     // Get form data from body
-    const { email, password } = req.body;
+    try{
+    const { email, accountAddress } = req.body;
+    console.log(req.body);
     // Check if manufacturer exists
     const manufacturer = await Manufacturer.findOne({
-        email: email,
+      accountAddress:accountAddress
     });
     console.log(manufacturer);
     // if (!manufacturer) throw createError.NotFound("User not Registered !");
     // const isMatch = await manufacturer.isValidPassword(password);
     // if (!isMatch) throw createError.Unauthorized("Invalid Username or Password");
-    const accessToken = await signAccessToken(manufacturer.accountAddress);
-    console.log("Type : ", manufacturer.userType);
-    console.log("Name : ", manufacturer.username);
-    // return response
-    res.json({
-        token: accessToken,
-        userType: manufacturer.userType,
-        username: manufacturer.username,
-    });
-};
-
+    let accessToken,valid = false;
+    if (manufacturer && manufacturer.email == email) {
+      accessToken = await signAccessToken(manufacturer.accountAddress);
+      valid = true;
+      console.log("Type : ", manufacturer.userType);
+      console.log("Name : ", manufacturer.username);
+    }
+  
+    if(valid){
+      res.json({
+          token: accessToken,
+          userType: manufacturer.userType,
+          username: manufacturer.username,
+        });
+    }else{
+      res.json("Invalid");
+    }
+}catch(err){
+    res.send(false);
+}
+    // return response
+  };
 // create a purchase request
 const createPurchaseRequest = async (req, res) => {
     const sellerAddress = req.body.sellerAddress;
@@ -129,6 +152,7 @@ const deletePurchaseRequest = async (req, res) => {
 
 // Add a product to inventory
 const addProduct = async (req, res) => {
+    try{
     const {
         productNo,
         description,
@@ -243,6 +267,10 @@ const addProduct = async (req, res) => {
     console.log("Result : ", result);
 
     res.send({ message: "Product Successfully Added !" });
+    }
+    catch(err){
+        res.send(false);
+    }
 };
 
 // Delete a Product

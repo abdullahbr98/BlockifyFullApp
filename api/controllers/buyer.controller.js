@@ -5,6 +5,8 @@ var Buyer = require("../models/Buyer");
 // sign up buyer
 const signup = async (req, res) => {
     // Get form data from body
+
+    try{
     const {
         userType,
         phoneNumber,
@@ -33,11 +35,16 @@ const signup = async (req, res) => {
     const accessToken = await signAccessToken(accountAddress);
     // Return response
     res.send({ accessToken });
+}
+catch(err){
+    res.send(false);
+}
 };
 
 // login buyer
 const login = async (req, res) => {
     // Get form data from body
+    try{
     const { email, password } = req.body;
     // Check if buyer exists
     const buyer = await Buyer.findOne({
@@ -54,6 +61,9 @@ const login = async (req, res) => {
         userType: buyer.userType,
         username: buyer.username,
     });
+}catch(err){
+    res.send(false);
+}
 };
 
 module.exports = { signup, login };

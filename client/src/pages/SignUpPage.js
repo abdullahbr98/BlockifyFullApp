@@ -28,6 +28,7 @@ function SignUpPage() {
     const [fname, setfname] = useState("");
     const [lname, setlname] = useState("");
     const [userType, setuserType] = useState("");
+    const [error, seterror] = useState(false);
     const [accountAddress, setaccountAddress] = useState("");
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
@@ -43,9 +44,10 @@ function SignUpPage() {
     const signUpFunction = async () => {
         // console.log({ user });
         //axios intercepter
+        let data;
         if (userType === "Manufacturer") {
             console.log("Account Address : ", accountAddress);
-            const data = await axios.post(
+            data = await axios.post(
                 "http://localhost:8000/Manufacturer/signup",
                 {
                     userType: userType,
@@ -58,8 +60,12 @@ function SignUpPage() {
                     accountAddress: accountAddress,
                 }
             );
+            if(data.data == false){
+                seterror(true);
+                console.log("Data", data.data);
+            }
         } else if (userType === "Seller") {
-            const data = await axios.post(
+            data = await axios.post(
                 "http://localhost:8000/Seller/signup",
                 {
                     userType: userType,
@@ -72,8 +78,13 @@ function SignUpPage() {
                     sellerAddress: accountAddress,
                 }
             );
+            if(data.data == false){
+                seterror(true);
+                console.log("Data", data.data);
+                console.log("error", error);
+            }
         } else if (userType === "Buyer") {
-            const data = await axios.post(
+            data = await axios.post(
                 "http://localhost:8000/Buyer/signup",
                 {
                     userType: userType,
@@ -86,8 +97,20 @@ function SignUpPage() {
                     accountAddress: accountAddress,
                 }
             );
+            if(data.data == false){
+                seterror(true);
+                console.log("Data", data.data);
+            }
         }
-        window.location.href = "http://localhost:3000/";
+
+        if(data.data == false){
+            seterror(true);
+        }
+        else{
+            
+            window.location.href = "http://localhost:3000/";
+            console.log("Error nai hai");
+        }
     };
     return (
         <>
@@ -235,6 +258,10 @@ function SignUpPage() {
                                 </Button>
                             </InputRightElement>
                         </InputGroup>
+                    </Flex>
+
+                    <Flex  justifyContent={"center"}>
+                    {error ? (<Text color="red">something went wrong</Text>) : (<div></div>)}
                     </Flex>
                     <Flex justifyContent={"center"}>
                         <Button

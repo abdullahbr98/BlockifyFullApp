@@ -23,11 +23,15 @@ function SignInPage() {
     const [error, seterror] = useState(false);
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem("UserAddress"));
+        console.log(items)
         if (items) {
             setaccountAddress(items);
         }
     }, []);
     const handleSignIn = async ()=>{
+        const items = JSON.parse(localStorage.getItem("UserAddress"));
+        console.log(items);
+        setaccountAddress(items);
         try{const data = await axios.post(
             "http://localhost:8000/userLogin", //TODO customize this to seller and buyer
             { 
@@ -37,7 +41,8 @@ function SignInPage() {
         );
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('usernameOfBuyer',data.data.username);
-        {window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username};
+        console.log(data.data.username);
+        data.data.username ? window.location.href = `http://localhost:3000/` + data.data.userType + `/` + data.data.username : seterror(true);
     }
         catch(err){
             seterror(true);
@@ -154,4 +159,4 @@ function SignInPage() {
         </>
     );
 }
-export default SignInPage;
+export default SignInPage;
